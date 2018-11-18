@@ -4,10 +4,10 @@
 - [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
 
 - Straps
-	- [sample](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md ':include :type=iframe width=100% height=auto')
+  - [sample](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md ':include :type=iframe width=100% height=auto')
   - [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md)
   - [Brew](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew/README.md)
-	- [Brew Cask](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_cask/README.md)
+  - [Brew Cask](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_cask/README.md)
   - [Brew Tap](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_tap/README.md)
   - [Directories](https://raw.githubusercontent.com/azohra/strapped/master/straps/directories/README.md)
   - [Echo](https://raw.githubusercontent.com/azohra/strapped/master/straps/echo/README.md)
