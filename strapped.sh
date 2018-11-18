@@ -81,9 +81,9 @@ load_strapped () {
     strap_repo=$(yq read "${yml_file}" -j | jq -r '.strapped.repo')
     if [[ "${strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
     if [[ ${strap_repo} =~ ${url_regex} ]]; then
-        source /dev/stdin <<< "$(curl -s "${strap_repo}"/strapped.sh)"
+        source /dev/stdin <<< "$(curl -s "${strap_repo}"/strapped/strapped.sh)"
     else
-        source "${strap_repo}/strapped.sh"
+        source "${strap_repo}/strapped/strapped.sh"
     fi
     echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${strap_repo}${C_REG}"
 }
