@@ -1,6 +1,5 @@
 strapped:
-  repo: ./straps
-  #repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
+  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
 
 echo:
   - You have successfully installed strapped.sh
