@@ -4,7 +4,7 @@
 - [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
 
 - Straps
-  - [filename](https://raw.githubusercontent.com/azohra/strapped/master/straps/symlinks/README.md ':include')
+  - [cinwell website](https://cinwell.com ':include :type=iframe width=100% height=400px')
   - [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md)
   - [Brew](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew/README.md)
   - [Brew Cask](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_cask/README.md)
