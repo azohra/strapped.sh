@@ -45,9 +45,9 @@ strapped () {
     for strap in ${__straps}; do
         if [[ ${strap} = "strapped" ]]; then continue; fi
         if [[ ${l_strap_repo} =~ ${l_url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${l_strap_repo}/${strap}.sh")"
+            source /dev/stdin <<< "$(curl -s "${l_strap_repo}/${strap}/${strap}.sh")"
         else
-            source "${l_strap_repo}/${strap}.sh"
+            source "${l_strap_repo}/${strap}/${strap}.sh"
         fi
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
         strapped_"${strap}"_before "${l_yml_file}"

@@ -19,5 +19,3 @@ strapped_echo () {
 strapped_echo_after () { 
     return 
 }
-
-
