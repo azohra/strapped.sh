@@ -1,7 +1,7 @@
 ![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)
 
 - [Home](/)
-- [Guide](https://raw.githubusercontent.com/azohra/strapped/README.md)
+- [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
 
 - Straps
   - [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md)
