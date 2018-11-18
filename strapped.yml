@@ -1,6 +1,11 @@
-#strap_repo: https://raw.githubusercontent.com/azohra/strapped/master/straps
-strap_repo: ./straps
+strapped:
+  repo: ./straps
+  #repo: https://raw.githubusercontent.com/azohra/strapped/master/straps
 
+echo:
+  - You have successfully installed strapped.sh
+  - Made with <3 by Azohra
+  
 git:
   - { repo: git@github.com:kelseyhightower/nocode.git, folder: /Users/justin/Development/nocode }
 

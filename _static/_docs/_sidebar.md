@@ -4,7 +4,8 @@
 - [Guide](/README.md)
 
 - Straps
-  - [Example](straps/example.md)
+  - [Strapped](straps/strapped.md)
+  - [Echo](straps/echo.md)
   - [Git](straps/git.md)
   - [Brew](straps/brew.md)
   - [Brew Tap](straps/brew-tap.md)

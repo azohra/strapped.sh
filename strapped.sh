@@ -44,14 +44,14 @@ load_config () {
 }
 
 load_straps () {
-    __strap_repo=$(yq read "${__config_file}" -j | jq -r '.strap_repo')
-    if [[ "${__strap_repo}" = "null" ]]; then echo "Strap Repo Must Be Defined" && exit 2; fi
+    __strap_repo=$(yq read "${__config_file}" -j | jq -r '.strapped.repo')
+    if [[ "${__strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
     if [ "${__passed_straps}" ]; then 
-        straps="${__passed_straps//,/ }"
+        __straps="${__passed_straps//,/ }"
     else
-        straps=$(yq read "${__config_file}" -j | jq -r 'keys[]')
+        __straps=$(yq read "${__config_file}" -j | jq -r 'keys[]')
     fi 
-    for strap in ${straps}; do
+    for strap in ${__straps}; do
         if [[ ${strap} = "strap_repo" ]]; then continue; fi
         if [[ ${__strap_repo} =~ ${__url_regex} ]]; then 
             source /dev/stdin <<< "$(curl -s "${__strap_repo}/${strap}.sh")"
@@ -63,7 +63,7 @@ load_straps () {
 }
 
 execute_straps () {
-    for strap in ${straps}; do
+    for strap in ${__straps}; do
         if [[ "${strap}" = "strap_repo" ]]; then continue; fi
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
         strapped_"${strap}"_before "${__config_file}"

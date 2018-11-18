@@ -1,4 +1,6 @@
-strap_repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
+strapped:
+  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
 
-example:
-  - You have successfully installed strapped
+echo:
+  - You have successfully installed strapped.sh
+  - Made with <3 by Azohra
