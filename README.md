@@ -8,7 +8,7 @@ curl -s https://stay.strapped.sh | sh
 ```
 ### Upgrade
 ```console
-curl -s https://stay.strapped.sh | sh
+strapped --upgrade
 ```
 ### Use
 ```console
@@ -16,8 +16,10 @@ Usage:
   strapped [Flags]
 
 Flags:
-  -a, --approve               do not prompt for confirmation
-  -c, --config dir/url        path to your strapped config
+  -u, --upgrade               upgrade strapped to the latest version
+  -v, --version               print the current strapped version
+  -a, --auto                  do not prompt for confirmation
+  -y, --yml file/url          path to a valid strapped yml config
   -s, --straps string         run a subset of your config. Comma seperated.
   -h, --help                  prints this message
 ```

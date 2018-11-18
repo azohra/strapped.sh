@@ -6,26 +6,31 @@ C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
 __url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
-__config_loc="${HOME}/.strapped/strapped.yml"
+__yml_loc="${HOME}/.strapped/strapped.yml"
 
 while [ $# -gt 0 ] ; do
     case "$1" in
-    -c|--config)
-        __config_loc="$2"
+    -u|--upgrade)
+        rm /usr/local/bin/strapped
+        curl -s https://stay.strapped.sh | sh
+        exit 0
+    ;;
+    -y|--yml)
+        __yml_loc="$2"
         shift # extra value 
     ;;
     -s|--straps)
         __passed_straps="$2"
         shift # extra value 
     ;;
-    -a|--agree)
-        __auto_apply=yes
+    -a|--auto)
+        __auto=yes
     ;;
     -v|--version)
-        echo 'v0.1'
+        echo 'v0.1' && exit 0
     ;;
     -h|--help)
-        echo '🔫Print Help Here'
+        echo '🔫Print Help Here' && exit 0
     ;;
     -*)
         "Unknown option: '$1'"
@@ -34,66 +39,33 @@ while [ $# -gt 0 ] ; do
     shift
 done
 
-load_config () {
-    if [ -f '/tmp/strapped.yml' ]; then rm /tmp/strapped.yml; fi 
-    if [[ ${__config_loc} =~ ${__url_regex} ]]; then 
-        curl -s "${__config_loc}" --output /tmp/strapped.yml
+verify_config () {
+    if ! yq -V > /dev/null; then echo "😞 yq is required to run strapped.sh" && exit; fi 
+    if ! jq -V > /dev/null; then echo "😞 jq required to run strapped.sh" && exit; fi 
+    if [[ ${__yml_loc} =~ ${__url_regex} ]]; then 
+        wget -N -O /tmp/strapped.yml "${__yml_loc}"
         __config_file='/tmp/strapped.yml'
     else
-        __config_file=${__config_loc}
+        __config_file=${__yml_loc}
     fi
     if [ ! -f "${__config_file}" ]; then echo "Config Could Not Be Loaded!" && exit 2; fi
-    echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${__config_loc}${C_REG}" 
+    echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${__yml_loc}${C_REG}" 
 }
 
-load_straps () {
+load_strapped () {
+
     __strap_repo=$(yq read "${__config_file}" -j | jq -r '.strapped.repo')
     if [[ "${__strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
-    if [ "${__passed_straps}" ]; then 
-        __straps="${__passed_straps//,/ }"
+    if [[ ${__strap_repo} =~ ${__url_regex} ]]; then
+        source /dev/stdin <<< "$(curl -s "${__strap_repo}"/strapped.sh)"
     else
-        __straps=$(yq read "${__config_file}" -j | jq -r 'keys[]')
-    fi 
-    for strap in ${__straps}; do
-        if [[ ${__strap_repo} =~ ${__url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${__strap_repo}/${strap}.sh")"
-        else
-            source "${__strap_repo}/${strap}.sh"
-        fi
-    done
+        source "${__strap_repo}/strapped.sh"
+    fi
     echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${__strap_repo}${C_REG}"
 }
 
-execute_straps () {
-    for strap in ${__straps}; do
-        if [[ ${strap} = "strapped" ]]; then continue; fi
-        echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
-        strapped_"${strap}"_before "${__config_file}"
-        strapped_"${strap}" "${__config_file}"
-        strapped_"${strap}"_after "${__config_file}"
-    done
-}
-
-ask_permission () {
-    while true
-    do
-      echo -e "${C_GREEN}Run the strap? (Y/N)${C_REG} "
-      read -r ans
-      case ${ans} in
-       [yY]* ) printf "\\n🔥🔥🔥 LETS DO THIS 🔥🔥🔥\\n" && break;;
-       [nN]* ) printf "\\n🔥🔥🔥 CRISIS AVERTED 🔥🔥🔥\\n" && exit;;
-       * )     echo "enter Y/y or N/n 😠";;
-      esac
-    done
-}
-
-check_deps () {
-    if ! yq -V > /dev/null; then echo "😞 yq is required to run strapped.sh" && exit; fi 
-    if ! jq -V > /dev/null; then echo "😞 jq required to run strapped.sh" && exit; fi 
-}
-
-check_deps
-load_config
-load_straps
-if ! [ "${__auto_apply}" ]; then ask_permission; fi 
-execute_straps
+verify_config
+load_strapped
+strapped_before
+strapped 
+strapped_after

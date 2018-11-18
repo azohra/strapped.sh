@@ -1,4 +1,4 @@
 mkdir -p ~/.strapped
-curl -s https://raw.githubusercontent.com/azohra/strapped/master/strapped.sh --output /usr/local/bin/strapped > /dev/null
+wget -N -O /usr/local/bin/strapped https://raw.githubusercontent.com/azohra/strapped/master/strapped.sh
+wget -N -O ~/.strapped/strapped.yml https://raw.githubusercontent.com/azohra/strapped/master/strapped.yml
 chmod u+x /usr/local/bin/strapped 
-curl -s https://raw.githubusercontent.com/azohra/strapped/master/strapped.yml --output ~/.strapped/strapped.yml > /dev/null
