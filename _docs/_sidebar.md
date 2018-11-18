@@ -3,7 +3,8 @@
 - [Home](/)
 - [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
 
-- [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md ':include')
+- [Some Other link](/)
+- [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
 
 - Straps
   - [Brew](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew/README.md)
