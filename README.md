@@ -1,3 +1,5 @@
+![logo](/img/logo-black.png)
+
 # Strapped
 
 [![Build Status](https://travis-ci.org/azohra/strapped.svg?branch=master)](https://travis-ci.org/azohra/strapped)
