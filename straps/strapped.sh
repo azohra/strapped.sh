@@ -36,13 +36,15 @@ strapped () {
 
     local l_strap_repo
     local l_yml_file
+    local l_url_regex
 
     l_strap_repo=$1
     l_yml_file=$2
+    l_url_regex=$3
 
     for strap in ${__straps}; do
         if [[ ${strap} = "strapped" ]]; then continue; fi
-        if [[ ${l_strap_repo} =~ ${__url_regex} ]]; then
+        if [[ ${l_strap_repo} =~ ${l_url_regex} ]]; then
             source /dev/stdin <<< "$(curl -s "${l_strap_repo}/${strap}.sh")"
         else
             source "${l_strap_repo}/${strap}.sh"

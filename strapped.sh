@@ -5,7 +5,7 @@ set -e
 custom_straps="0"
 auto_approve="0"
 yml_location="${HOME}/.strapped/strapped.yml"
-__url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 function usage {
     echo -e "\nUsage: strapped [flags]\n"
     echo "flags:"
@@ -93,5 +93,5 @@ verify_config
 load_strapped
 
 strapped_before "${yml_file}" "${custom_straps}" "${auto_approve}"
-strapped "${strap_repo}" "${yml_file}"
+strapped "${strap_repo}" "${yml_file}" "${url_regex}"
 strapped_after
