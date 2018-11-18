@@ -92,6 +92,6 @@ check_deps
 verify_config
 load_strapped
 
-strapped_before ${yml_file} ${custom_straps} ${auto_approve}
-strapped ${strap_repo} ${yml_file}
+strapped_before "${yml_file}" "${custom_straps}" "${auto_approve}"
+strapped "${strap_repo}" "${yml_file}"
 strapped_after
