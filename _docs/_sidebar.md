@@ -3,9 +3,9 @@
 - [Home](/)
 - [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
 
+- [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md ':include')
+
 - Straps
-  - [cinwell website](https://cinwell.com ':include :type=iframe width=100% height=400px')
-  - [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/straps/strapped/README.md)
   - [Brew](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew/README.md)
   - [Brew Cask](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_cask/README.md)
   - [Brew Tap](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_tap/README.md)
