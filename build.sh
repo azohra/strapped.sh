@@ -21,5 +21,3 @@ for dir in `ls straps/`; do
     echo "[$dir]($raw_strap_url/$dir/README.md \":include\")" > _docs/straps/$dir.md
     echo "  - [$dir](straps/$dir.md)" >> _docs/_sidebar.md
 done
-
-# Write the sidebar file
