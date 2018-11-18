@@ -1,0 +1,143 @@
+body {
+  background: #25313e;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+  padding-top: 2rem;
+}
+
+footer {
+  
+  text-align: center;
+}
+footer img {
+  width: 30px;
+  height: auto;
+  opacity: 0.35;
+}
+footer small {
+  color: #506479;
+  font-size: 0.9rem;
+}
+
+h1 {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 50;
+  text-align: center;
+  /* letter-spacing: 0.3rem; */
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.strapped {
+  margin-bottom: 1rem;
+  width: 40%;
+  color: black;
+  padding: 1em;
+  position: absolute;
+  justify-content: center;
+  top: 10%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%) }
+
+.window {
+  width: 60%;
+  margin: 125px auto 2rem;
+  box-shadow: 0 0.25rem 0.5rem #12181e;
+  border-radius: 0 0 0.1rem 0.1rem;
+}
+
+.bar {
+  background: #191919;
+  height: 36px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.btn, .btn::before, .btn::after {
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  display: block;
+}
+
+.btn {
+  background: #f6b73e;
+  position: relative;
+  margin-left: 38px;
+  top: 12px;
+}
+.btn::before, .btn::after {
+  content: " ";
+  position: absolute;
+}
+.btn::before {
+  background: #f55551;
+  margin-left: -20px;
+}
+.btn::after {
+  background: #32c146;
+  margin-left: 20px;
+}
+
+.body {
+  background: #232323;
+  padding: 18px;
+}
+.body pre {
+  margin: 0;
+}
+.body .pulse {
+  -webkit-animation: pulse 1s ease-in-out infinite;
+  -moz-animation: pulse 1s ease-in-out infinite;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-moz-keyframes pulse {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pulse {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.command {
+  color: #32c146;
+}
+
+.comment {
+  opacity: 0.5;
+}

@@ -1,0 +1,7 @@
+language: shell
+sudo: false
+script:
+ - bash -c 'shopt -s globstar; shellcheck strapped.sh'
+ - bash -c 'shopt -s globstar; shellcheck straps/*.sh'
+matrix:
+  fast_finish: true

@@ -1,0 +1,128 @@
+#strap_repo: https://raw.githubusercontent.com/azohra/strapped/master/straps
+strap_repo: ./straps
+
+git:
+  - { repo: git@github.com:kelseyhightower/nocode.git, folder: /Users/justin/Development/nocode }
+
+brew_tap:
+  - azohra/tools
+  - homebrew/cask
+  - homebrew/cask-drivers
+  - homebrew/cask-fonts
+  - homebrew/cask-versions
+  - homebrew/core
+
+brew:
+  - doctl
+  - openssh
+  - zsh
+  - bash
+  - lyra
+  - openssl
+  - ruby
+  - zsh-completions
+  - bash-completion
+  - htop
+  - jq
+  - mas	
+  - packer	
+  - python		
+  - wget	
+  - node		
+  - parallel
+  - dockutil	
+  - git		
+  - perl
+  - readline
+  - terraform	
+  - yq
+
+brew_cask: 
+  - 1password                          
+  - etcher                            
+  - google-cloud-sdk                   
+  - omniplan                           
+  - steam
+  - calibre                            
+  - firefox                            
+  - intellij-idea                      
+  - openemu                            
+  - visual-studio-code
+  - cleanmymac                         
+  - font-fauna-one                                                
+  - private-internet-access            
+  - discord                            
+  - font-hack-nerd-font                
+  - logitech-gaming-software                                       
+  - divvy                              
+  - font-sharetechmono-nerd-font-mono  
+  - microsoft-office                   
+  - slack
+  - docker                             
+  - google-chrome                      
+  - noun-project                       
+  - spotify
+  - omnifocus
+  - omniplan
+  - omnigraffle
+  - omnioutliner
+
+directories:
+  - /Users/justin/.strapped
+
+symlinks:
+  - { src: "/Users/justin/Development/personal/dotfiles/.gitignore", dest: "/Users/justin/.gitignore" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.gitconfig", dest: "/Users/justin/.gitconfig" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.ansible.cfg", dest: "/Users/justin/.ansible.cfg" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.bashrc", dest: "/Users/justin/.bashrc" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.zshrc", dest: "/Users/justin/.zshrc" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.ssh.config", dest: "/Users/justin/.ssh/config" }
+  - { src: "/Users/justin/Development/personal/dotfiles/id_rsa", dest: "/Users/justin/.ssh/id_rsa" }
+  - { src: "/Users/justin/Development/personal/dotfiles/id_rsa.pub", dest: "/Users/justin/.ssh/id_rsa.pub" }
+  - { src: "/Users/justin/Development/personal/dotfiles/id_ed25519", dest: "/Users/justin/.ssh/id_ed25519" }
+  - { src: "/Users/justin/Development/personal/dotfiles/id_ed25519.pub", dest: "/Users/justin/.ssh/id_ed25519.pub" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.inputrc", dest: "/Users/justin/.inputrc" }
+  - { src: "/Users/justin/Development/personal/dotfiles/.hushlogin", dest: "/Users/justin/.hushlogin" }
+  - { src: "/Users/justin/Development/personal/dotfiles/settings.json", dest: "/Users/justin/Library/Application\ Support/Code/User/settings.json" }
+
+
+osx_dock_apps:
+  - { name: Google Chrome,      pos: 1, path: "/Applications/Google Chrome.app"}
+  - { name: Slack,              pos: 2, path: "/Applications/Slack.app"}
+  - { name: Spotify,            pos: 3, path: "/Applications/Spotify.app"}
+  - { name: Terminal,           pos: 4, path: "/Applications/Utilities/Terminal.app"}
+  - { name: Visual Studio Code, pos: 5, path: "/Applications/Visual Studio Code.app"}
+  - { name: Microsoft Outlook,  pos: 6, path: "/Applications/Microsoft Outlook.app"}
+  - { name: OpenEmu,            pos: 8, path: "/Applications/OpenEmu.app"}
+
+osx_dock_directories:
+  - { path: "~/Downloads",   view: fan, display: stack, sort: dateadded }
+  - { path: "~/Documents",   view: fan, display: stack, sort: dateadded }
+  - { path: "~/Development", view: fan, display: stack, sort: dateadded }
+
+ruby_gems:
+  - bundler
+
+pip2:
+  - slack-cleaner
+  - ansible
+
+pip3:
+  - boto3
+
+npm:
+  - testcafe
+  - typescript
+
+visual_studio_code_extensions:
+    - zhuangtongfa.material-theme
+    - PKief.material-icon-theme 
+    - PeterJausovec.vscode-docker 
+    - formulahendry.code-runner 
+    - alefragnani.project-manager 
+    - eamodio.gitlens 
+    - humao.rest-client 
+    - rebornix.ruby 
+    - CoenraadS.bracket-pair-colorizer 
+    - cstuder.gitlab-ci-validator 
+    - mauve.terraform
