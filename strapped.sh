@@ -2,6 +2,10 @@
 # shellcheck source=/dev/null
 
 set -e
+custom_straps="0"
+auto_approve="0"
+yml_location="${HOME}/.strapped/strapped.yml"
+__url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 function usage {
     echo -e "\nUsage: strapped [flags]\n"
     echo "flags:"
@@ -27,15 +31,15 @@ while [ $# -gt 0 ] ; do
         upgrade
     ;;
     -y|--yml)
-        __yml_loc="$2"
+        yml_location="$2"
         shift # extra value 
     ;;
     -s|--straps)
-        __passed_straps="$2"
+        custom_straps="$2"
         shift # extra value 
     ;;
     -a|--auto)
-        __auto=yes
+        auto_approve="true"
     ;;
     -v|--version)
         echo 'v0.1' && exit 0
@@ -53,36 +57,41 @@ done
 C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
-__url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
-__yml_loc="${HOME}/.strapped/strapped.yml"
 
 
-verify_config () {
+
+
+check_deps () {
     if ! yq -V > /dev/null; then echo "😞 yq is required to run strapped.sh" && exit; fi 
     if ! jq -V > /dev/null; then echo "😞 jq required to run strapped.sh" && exit; fi 
-    if [[ ${__yml_loc} =~ ${__url_regex} ]]; then 
-        curl -s "${__yml_loc}" --output /tmp/strapped.yml > /dev/null
-        __config_file='/tmp/strapped.yml'
+}
+
+verify_config () {
+    if [[ ${yml_location} =~ ${__url_regex} ]]; then 
+        curl -s "${yml_location}" --output /tmp/strapped.yml
+        yml_file='/tmp/strapped.yml'
     else
-        __config_file=${__yml_loc}
+        yml_file=${yml_location}
     fi
-    if [ ! -f "${__config_file}" ]; then echo "Config Could Not Be Loaded!" && exit 2; fi
-    echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${__yml_loc}${C_REG}" 
+    if [ ! -f "${yml_file}" ]; then echo "Config Could Not Be Loaded!" && exit 2; fi
+    echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}" 
 }
 
 load_strapped () {
-    __strap_repo=$(yq read "${__config_file}" -j | jq -r '.strapped.repo')
-    if [[ "${__strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
-    if [[ ${__strap_repo} =~ ${__url_regex} ]]; then
-        source /dev/stdin <<< "$(curl -s "${__strap_repo}"/strapped.sh)"
+    strap_repo=$(yq read "${yml_file}" -j | jq -r '.strapped.repo')
+    if [[ "${strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
+    if [[ ${strap_repo} =~ ${__url_regex} ]]; then
+        source /dev/stdin <<< "$(curl -s "${strap_repo}"/strapped.sh)"
     else
-        source "${__strap_repo}/strapped.sh"
+        source "${strap_repo}/strapped.sh"
     fi
-    echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${__strap_repo}${C_REG}"
+    echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${strap_repo}${C_REG}"
 }
 
+check_deps 
 verify_config
 load_strapped
-strapped_before
-strapped 
+
+strapped_before ${yml_file} ${custom_straps} ${auto_approve}
+strapped ${strap_repo} ${yml_file}
 strapped_after
