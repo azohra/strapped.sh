@@ -55,7 +55,6 @@ load_straps () {
         __straps=$(yq read "${__config_file}" -j | jq -r 'keys[]')
     fi 
     for strap in ${__straps}; do
-        if [[ ${strap} = "strapped" ]]; then continue; fi
         if [[ ${__strap_repo} =~ ${__url_regex} ]]; then
             source /dev/stdin <<< "$(curl -s "${__strap_repo}/${strap}.sh")"
         else
@@ -67,7 +66,7 @@ load_straps () {
 
 execute_straps () {
     for strap in ${__straps}; do
-        if [[ "${strap}" = "strapped" ]]; then continue; fi
+        if [[ ${strap} = "strapped" ]]; then continue; fi
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
         strapped_"${strap}"_before "${__config_file}"
         strapped_"${strap}" "${__config_file}"

@@ -2,14 +2,21 @@
 
 | Attribute     | Value                                     |
 |--------------:|-------------------------------------------|
-| Namespace     | example                                   |
-| Emoji         | 😎                                        |
-| Description   | validates strapped.sh installed correctly |
-| Dependencies  | none                                      |
-| Compatability | Unix                                      |
+| Namespace     | strapped                                  |
+| Emoji         | 🔫                                        |
+| Description   | base configuration for strapped to run    |
+| Dependencies  | strapped.sh                               |
+| Compatability | Universal                                 |
 
 ### Configuration
 ```yml
-example:
-  - "#StayStrapped"
+# load from a remote URL
+strapped:
+  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/ 
+```
+
+```yml
+# load from a local file
+strapped:
+  repo: ~/.strapped/strapped.yml
 ```
