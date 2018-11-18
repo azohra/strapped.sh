@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/azohra/strapped/img/logo-black.png)
+![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)
 
 - [Home](/)
 - [Guide](https://raw.githubusercontent.com/azohra/strapped/README.md)
