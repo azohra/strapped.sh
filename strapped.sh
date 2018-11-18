@@ -43,7 +43,8 @@ verify_config () {
     if ! yq -V > /dev/null; then echo "😞 yq is required to run strapped.sh" && exit; fi 
     if ! jq -V > /dev/null; then echo "😞 jq required to run strapped.sh" && exit; fi 
     if [[ ${__yml_loc} =~ ${__url_regex} ]]; then 
-        wget -N -O /tmp/strapped.yml "${__yml_loc}"
+    mkdir -p ~/.strapped
+        curl -s "${__yml_loc}" --output /tmp/strapped.yml > /dev/null
         __config_file='/tmp/strapped.yml'
     else
         __config_file=${__yml_loc}
