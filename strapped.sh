@@ -67,7 +67,7 @@ check_deps () {
 }
 
 verify_config () {
-    if [[ ${yml_location} =~ ${__url_regex} ]]; then 
+    if [[ ${yml_location} =~ ${url_regex} ]]; then 
         curl -s "${yml_location}" --output /tmp/strapped.yml
         yml_file='/tmp/strapped.yml'
     else
@@ -80,7 +80,7 @@ verify_config () {
 load_strapped () {
     strap_repo=$(yq read "${yml_file}" -j | jq -r '.strapped.repo')
     if [[ "${strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
-    if [[ ${strap_repo} =~ ${__url_regex} ]]; then
+    if [[ ${strap_repo} =~ ${url_regex} ]]; then
         source /dev/stdin <<< "$(curl -s "${strap_repo}"/strapped.sh)"
     else
         source "${strap_repo}/strapped.sh"
