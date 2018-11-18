@@ -1,0 +1,21 @@
+![logo](https://raw.githubusercontent.com/azohra/strapped/img/logo-black.png)
+
+- [Home](/)
+- [Guide](https://raw.githubusercontent.com/azohra/strapped/README.md)
+
+- Straps
+  - [Strapped](https://raw.githubusercontent.com/azohra/strapped/straps/strapped/README.md)
+  - [Brew](https://raw.githubusercontent.com/azohra/strapped/straps/brew/README.md)
+	- [Brew Cask](https://raw.githubusercontent.com/azohra/strapped/straps/brew_cask/README.md)
+  - [Brew Tap](https://raw.githubusercontent.com/azohra/strapped/straps/brew_tap/README.md)
+  - [Directories](https://raw.githubusercontent.com/azohra/strapped/straps/directories/README.md)
+  - [Echo](https://raw.githubusercontent.com/azohra/strapped/straps/echo/README.md)
+  - [Git](https://raw.githubusercontent.com/azohra/strapped/straps/git/README.md)
+  - [Npm](https://raw.githubusercontent.com/azohra/strapped/straps/npm/README.md)
+  - [OSX Dock Apps](https://raw.githubusercontent.com/azohra/strapped/straps/osx_dock_apps/README.md)
+  - [OSX Dock Directories](https://raw.githubusercontent.com/azohra/strapped/straps/osx_dock_directories/README.md)
+  - [Pip2](https://raw.githubusercontent.com/azohra/strapped/straps/pip2/README.md)
+  - [Pip3](https://raw.githubusercontent.com/azohra/strapped/straps/pip3/README.md)
+  - [Ruby Gems](https://raw.githubusercontent.com/azohra/strapped/straps/ruby_gems/README.md)
+  - [Symlinks](https://raw.githubusercontent.com/azohra/strapped/straps/symlinks/README.md)
+  - [Visual Studio Code Extenstions](https://raw.githubusercontent.com/azohra/strapped/straps/visual_studio_code_extension/README.md)

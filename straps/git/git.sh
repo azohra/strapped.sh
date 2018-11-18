@@ -23,5 +23,3 @@ strapped_git () {
 strapped_git_after () { 
     return
 }
-
-

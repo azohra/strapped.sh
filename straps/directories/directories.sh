@@ -18,5 +18,3 @@ strapped_directories () {
 strapped_directories_after () { 
     return
 }
-
-
