@@ -5,7 +5,7 @@ strapped_before () {
     else
         __straps=$(yq read "${__config_file}" -j | jq -r 'keys[]' | tr '\n' ' ' ) 
     fi
-    echo -e "${C_GREEN}Requested Straps:${C_BLUE} ${__straps}${C_REG}"
+    echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${__straps}${C_REG}"
 
     if ! [ "${__auto}" ]; then 
         printf "Execute? Y/N: "
