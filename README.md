@@ -12,10 +12,9 @@ strapped --upgrade
 ```
 ### Use
 ```console
-Usage:
-  strapped [Flags]
+Usage: strapped [flags]
 
-Flags:
+flags:
   -u, --upgrade               upgrade strapped to the latest version
   -v, --version               print the current strapped version
   -a, --auto                  do not prompt for confirmation

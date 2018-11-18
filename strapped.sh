@@ -2,18 +2,29 @@
 # shellcheck source=/dev/null
 
 set -e
-C_GREEN="\\033[32m"
-C_BLUE="\\033[34m"
-C_REG="\\033[0;39m"
-__url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
-__yml_loc="${HOME}/.strapped/strapped.yml"
+function usage {
+    echo -e "\nUsage: strapped [flags]\n"
+    echo "flags:"
+    echo "  -u, --upgrade               upgrade strapped to the latest version"
+    echo "  -v, --version               print the current strapped version"
+    echo "  -a, --auto                  do not prompt for confirmation"
+    echo "  -y, --yml file/url          path to a valid strapped yml config"
+    echo "  -s, --straps string         run a subset of your config. Comma seperated."
+    echo "  -h, --help                  prints this message"
+    exit 1
+}
+
+function upgrade {
+    rm /usr/local/bin/strapped
+    curl -s https://stay.strapped.sh | sh
+    echo "🔫 Upgraded Successfully!"
+    exit 0
+}
 
 while [ $# -gt 0 ] ; do
     case "$1" in
     -u|--upgrade)
-        rm /usr/local/bin/strapped
-        curl -s https://stay.strapped.sh | sh
-        exit 0
+        upgrade
     ;;
     -y|--yml)
         __yml_loc="$2"
@@ -30,7 +41,7 @@ while [ $# -gt 0 ] ; do
         echo 'v0.1' && exit 0
     ;;
     -h|--help)
-        echo '🔫Print Help Here' && exit 0
+        usage
     ;;
     -*)
         "Unknown option: '$1'"
@@ -39,11 +50,17 @@ while [ $# -gt 0 ] ; do
     shift
 done
 
+C_GREEN="\\033[32m"
+C_BLUE="\\033[34m"
+C_REG="\\033[0;39m"
+__url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+__yml_loc="${HOME}/.strapped/strapped.yml"
+
+
 verify_config () {
     if ! yq -V > /dev/null; then echo "😞 yq is required to run strapped.sh" && exit; fi 
     if ! jq -V > /dev/null; then echo "😞 jq required to run strapped.sh" && exit; fi 
     if [[ ${__yml_loc} =~ ${__url_regex} ]]; then 
-    mkdir -p ~/.strapped
         curl -s "${__yml_loc}" --output /tmp/strapped.yml > /dev/null
         __config_file='/tmp/strapped.yml'
     else
@@ -54,7 +71,6 @@ verify_config () {
 }
 
 load_strapped () {
-
     __strap_repo=$(yq read "${__config_file}" -j | jq -r '.strapped.repo')
     if [[ "${__strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
     if [[ ${__strap_repo} =~ ${__url_regex} ]]; then
