@@ -1,13 +1,10 @@
 ![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)
 
 - [Home](/)
-- [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md)
-
-- [Some Other link](/)
-
-[Strapped](https://raw.githubusercontent.com/azohra/strapped/master/README.md ":include")
+- [Guide](https://raw.githubusercontent.com/azohra/strapped/master/README.md ":include")
 
 - Straps
+  - [Strapped](https://raw.githubusercontent.com/azohra/strapped/master/README.md ":include")
   - [Brew](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew/README.md)
   - [Brew Cask](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_cask/README.md)
   - [Brew Tap](https://raw.githubusercontent.com/azohra/strapped/master/straps/brew_tap/README.md)
