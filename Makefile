@@ -8,7 +8,7 @@ perms:
 
 test:
 	@shellcheck strapped.sh
-	@shopt -s globstar; shellcheck straps/**/*.sh
+	@shellcheck straps/**/*.sh
 
 docs:
 	@./build.sh
