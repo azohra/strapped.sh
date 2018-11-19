@@ -4,12 +4,13 @@ strapped_npm_before () {
 }
 
 strapped_npm () {
+    local npm_count
+    local pkg
     
-    local pkgs
-    
-    pkgs=$(yq read "${1}" -j | jq -r '.npm[]')
-    
-    for pkg in ${pkgs}; do
+    npm_count=$(yq read "${1}" -j | jq -r '.npm.packages | length')
+
+    for (( i=npm_count; i>0; i-- )); do
+        pkg=$(yq read "${1}" -j | jq -r ".npm.packages[${i}-1].name")
         echo "☕ installing ${pkg}"
         npm install -g "${pkg}"
     done

@@ -27,7 +27,7 @@ strapped_unix_utils () {
 
     mkdir_count=$(yq read "${1}" -j | jq -r '.unix_utils.mkdir | length')
     for (( i=mkdir_count; i>0; i-- )); do
-        folder=$(yq read "${1}" -j | jq -r ".unix_utils.mkdir[${i}].dir")
+        folder=$(yq read "${1}" -j | jq -r ".unix_utils.mkdir[${i}-1].dir")
         echo "📂 creating ${folder}"
         mkdir -p "${folder}"
     done

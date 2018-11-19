@@ -4,12 +4,13 @@ strapped_pip3_before () {
 }
 
 strapped_pip3 () {
+    local pip3_count
+    local pkg
+    
+    pip3_count=$(yq read "${1}" -j | jq -r '.pip3.packages | length')
 
-    local pkgs
-    
-    pkgs=$(yq read "${1}" -j | jq -r '.pip3[]')
-    
-    for pkg in ${pkgs}; do
+    for (( i=pip3_count; i>0; i-- )); do
+        pkg=$(yq read "${1}" -j | jq -r ".pip3.packages[${i}-1].name")
         echo "🐍 installing ${pkg}"
         pip3 install "${pkg}"
     done
