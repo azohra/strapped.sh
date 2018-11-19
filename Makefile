@@ -1,17 +1,18 @@
-.PHONY: all perms test docs strap
+.PHONY: all perms test build strap
 
-all: perms test docs
+all: perms test build
 
 perms:
 	@chmod u+x *.sh
+	@chmod u+x dev/*.sh
 	@chmod u+x straps/**/*.sh
 
 test:
 	@shellcheck ./strapped.sh
 	@shellcheck ./straps/**/*.sh
 
-docs:
-	@./build.sh
+build:
+	@./dev/build.sh
 
 strap:
-	@./generate_strap.sh $(name)
+	@./dev/generate_strap.sh $(name)
