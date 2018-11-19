@@ -36,7 +36,7 @@ strapped_$1 () {
 }
 
 # Hook that is called after the strap
-strapped_git_after () { 
+strapped_$1_after () { 
     
 }"
 
