@@ -9,9 +9,9 @@ strapped_brew () {
     local pkgs
     local casks
 
-    taps=$(yq read "${1}" -j | jq -r '.brew.taps[].name') 
-    pkgs=$(yq read "${1}" -j | jq -r '.brew.packages[].name')
-    casks=$(yq read "${1}" -j | jq -r '.brew.casks[].name')
+    taps=$(yq read "${1}" -j | jq -r '.brew.tap[].name') 
+    pkgs=$(yq read "${1}" -j | jq -r '.brew.package[].name')
+    casks=$(yq read "${1}" -j | jq -r '.brew.cask[].name')
 
     for tap in ${taps}; do
         echo "🚰 tapping ${tap}"

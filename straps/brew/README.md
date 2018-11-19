@@ -11,18 +11,15 @@
 ### Configuration
 ```yml
 brew:
-  
-  taps:
+  tap:
     - { name: azohra/tools } 
     - { name: homebrew/cask } 
     - { name: homebrew/cask-drivers } 
-
-  packages:
+  package:
     - { name: ruby, upgrade: true } 
     - { name: zsh,  upgrade: true } 
     - { name: lyra, upgrade: true } 
-
-  casks:
+  cask:
     - { name: 1password, upgrade: true }  
     - { name: firefox,   upgrade: true }                    
     - { name: slack,     upgrade: true } 

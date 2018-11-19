@@ -1,11 +1,11 @@
-# Symlinks
+# Unix Utils
 
 | Attribute     | Value                                     |
 |--------------:|-------------------------------------------|
-| Namespace     | symlinks                                  |
-| Emoji         | 💎                                        |
-| Description   | symlinks directories together             |
-| Dependencies  | ln                                        |
+| Namespace     | unix_utils                                |
+| Emoji         | 🔗                                        |
+| Description   | perform general unix command line tasks   |
+| Dependencies  | none                                      |
 | Compatability | Unix                                      |
 
 ### Configuration

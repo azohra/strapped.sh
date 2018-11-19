@@ -6,15 +6,13 @@ strapped_git_before () {
 
 strapped_git () {
 
-    local count
-    local repo
+    local repos
     local folder
     
-    count=$(yq read "${1}" -j | jq -r '.git | length')
+    repos=$(yq read "${1}" -j | jq -r '.git.clone[].repo')
 
-    for i in $(seq 1 "${count}"); do
-        repo=$(yq read "${1}" -j | jq -r ".git[${i}-1].repo")
-        folder=$(yq read "${1}" -j | jq -r ".git[${i}-1].folder")
+    for repo in ${repos}; do
+        folder=$(yq read "${1}" -j | jq -r ".git.clone[${i}-1].folder")
         echo "💾 cloning ${repo} into ${folder}"
         if [ ! -d "${folder}" ] ; then git clone "${repo}" "${folder}"; fi
     done
