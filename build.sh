@@ -6,7 +6,7 @@ raw_strap_url="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 # Make doc/straps folder if it doesn't exist
 mkdir -p _docs/straps
 
-base="![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)
+base="![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)](https://strapped.sh)
 
 - [Home](/)
 - [Guide](README.md)

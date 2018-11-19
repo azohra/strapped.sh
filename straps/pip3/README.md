@@ -4,7 +4,7 @@
 |--------------:|-------------------------------------------|
 | Namespace     | pip3                                      |
 | Emoji         | 🐍                                        |
-| Description   | installs python 2 packages globally       |
+| Description   | installs python 3 packages globally       |
 | Dependencies  | pip3, python3                             |
 | Compatability | universal                                 |
 
