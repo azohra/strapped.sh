@@ -1,0 +1,13 @@
+straps:
+  brew: "de4b38ebf64d23e96496a17b97b68c3e15fe5a1028c06adf91c73236e79a8577  straps/brew/brew.sh"
+  dockutils: "d47ec83950ed5f95ddfd5d94ad61818301519e2fe1e6ad6dff53c36032215e7b  straps/dockutils/dockutils.sh"
+  git: "7f25c4d5e6d47aa6c38790186fa8a7ee66f3647246907ab82ecb5670ef22a0a1  straps/git/git.sh"
+  mac_app_store: "246a753d3901b8813e30af879d24f579dc7d2a9b9046933e654f9a9c03a90209  straps/mac_app_store/mac_app_store.sh"
+  mac_utils: "f70c5df5bd329cb694a85d2e852bbbbd58ffd33d57e6842ba6782c7de58e1303  straps/mac_utils/mac_utils.sh"
+  npm: "1c9bc515dfdca5c4454caf6bea48669a3526b6bf1575632b9c955deade5fdf48  straps/npm/npm.sh"
+  pip2: "8b42f19576a03f0c183f768fe8402c638b411da0471f512940cca999b6b2304d  straps/pip2/pip2.sh"
+  pip3: "9005c5e0bfbefc3f778ee54759a8255ba3da0198486832c3824f35db116b0d42  straps/pip3/pip3.sh"
+  ruby_gems: "ef560e16546d48951fe70529eba368a1824e60ca8d68351e3211e93fd9b674e1  straps/ruby_gems/ruby_gems.sh"
+  strapped: "8368325f52bf85a4e69e03aa2a0cd1d8c6ca6bc58408d55c2a53ed427b64e9e6  straps/strapped/strapped.sh"
+  unix_utils: "399ca5abbacee2b7ad4e5690f1daa7ffd417e2ec6dd6462166dc3d79aa1a2e0e  straps/unix_utils/unix_utils.sh"
+  visual_studio_code: "41bf5a2c1c15170e9dfbd8a5ab4f99826a5d03b23009f6079f1435e4a56598c6  straps/visual_studio_code/visual_studio_code.sh"

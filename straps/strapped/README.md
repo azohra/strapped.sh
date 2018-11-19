@@ -13,7 +13,7 @@
 ```yml
 # load from a remote URL
 strapped:
-  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/ 
+  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
 ```
 
 ```yml

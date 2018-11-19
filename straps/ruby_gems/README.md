@@ -15,5 +15,4 @@ ruby_gems:
   gems:
     - { name: bundler }
     - { name: watir   }
-
 ```
