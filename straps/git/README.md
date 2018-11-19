@@ -4,13 +4,15 @@
 |--------------:|-------------------------------------------|
 | Namespace     | git                                       |
 | Emoji         | 💾                                        |
-| Description   | clones git repos to the specified path    |
+| Description   | clones git repos to the specified folder  |
 | Dependencies  | git                                       |
 | Compatability | universal                                 |
 
 ### Configuration
 ```yml
 git:
-  - { repo: git@github.com:kelseyhightower/nocode.git, folder: /repos/nocode }
+  clone:
+    - { repo: git@github.com:kelseyhightower/nocode.git, folder: /Users/justin/Development/nocode }
+    - { repo: git@github.com:azohra/lyra.git,            folder: /Users/justin/Development/lyra   }
 
 ```
