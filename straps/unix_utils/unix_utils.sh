@@ -18,7 +18,7 @@ strapped_unix_utils () {
     local file
 
     ln_count=$(yq read "${1}" -j | jq -r '.unix_utils.ln | length')
-    for i in $(seq 1 "${ln_count}"); do
+    for (( i=${ln_count}; i>0; i-- )); do
         dir=$(yq read "${1}" -j | jq -r ".unix_utils.ln[${i}-1].dir")
         link=$(yq read "${1}" -j | jq -r ".unix_utils.ln[${i}-1].link")
         echo "🔗 linking ${dir} to ${link}"
@@ -26,20 +26,20 @@ strapped_unix_utils () {
     done
 
     mkdir_count=$(yq read "${1}" -j | jq -r '.unix_utils.mkdir | length')
-    for i in $(seq 1 "${mkdir_count}"); do
-        folder=$(yq read "${1}" -j | jq -r ".unix_utils.mkdir[${i}-1].dir")
+    for (( i=${mkdir_count}; i>0; i-- )); do
+        folder=$(yq read "${1}" -j | jq -r ".unix_utils.mkdir[${i}].dir")
         echo "📂 creating ${folder}"
         mkdir -p "${folder}"
     done
 
     echo_count=$(yq read "${1}" -j | jq -r '.unix_utils.echo | length')
-    for i in $(seq 1 "${echo_count}"); do
+    for (( i=${echo_count}; i>0; i-- )); do
         phrase=$(yq read "${1}" -j | jq -r ".unix_utils.echo[${i}-1].phrase")
         echo -e "🗣️  ${phrase}"
     done
 
     source_count=$(yq read "${1}" -j | jq -r '.unix_utils.source | length')
-    for i in $(seq 1 "${source_count}"); do
+        for (( i=${source_count}; i>0; i-- )); do
         file=$(yq read "${1}" -j | jq -r ".unix_utils.source[${i}-1].file")
         echo "📤 sourcing ${file}"
         source "${file}"
