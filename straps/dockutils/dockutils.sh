@@ -15,21 +15,21 @@ strapped_dockutils () {
     dir_count=$(yq read "${1}" -j | jq -r '.dockutils.dirs | length')
 
     dockutil --remove all --no-restart
-    
-    for i in $(seq 1 "${app_count}"); do
+
+    for (( i=app_count; i>0; i-- )); do
         path=$(yq read "${1}" -j | jq -r ".dockutils.apps[${i}-1].path")
         echo "🛳️  adding ${path}"
         dockutil --add "${path}" --no-restart
     done
 
-    for i in $(seq 1 "${app_count}"); do
+    for (( i=app_count; i>0; i-- )); do
         name=$(yq read "${1}" -j | jq -r ".dockutils.apps[${i}-1].name")
         position=$(yq read "${1}" -j | jq -r ".dockutils.apps[${i}-1].pos")
         echo "🛳️  moving ${name} to position ${position}"
         dockutil --move "${name}" --position "${position}" --no-restart
     done
 
-    for i in $(seq 1 "${dir_count}"); do
+    for (( i=dir_count; i>0; i-- )); do
         path=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}-1].path")
         view=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}-1].view")
         display=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}-1].display")

@@ -5,7 +5,9 @@ strapped_mac_utils_before () {
 }
 
 strapped_mac_utils () {
+
   local m_u_count
+  
   m_u_count=$(yq read "${1}" -j | jq -r '.mac_utils.plist | length')
   for i in $(seq 1 "${m_u_count}"); do
       domain=$(yq read "${1}" -j | jq -r ".mac_utils.plist[${i}-1].domain")
