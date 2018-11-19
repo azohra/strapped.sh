@@ -1,4 +1,12 @@
-mkdir -p ~/.strapped
-curl -s https://raw.githubusercontent.com/azohra/strapped/master/strapped.sh --output /usr/local/bin/strapped 
-curl -s https://raw.githubusercontent.com/azohra/strapped/master/strapped.yml --output ~/.strapped/strapped.yml
-chmod u+x /usr/local/bin/strapped 
+if [ ! -f /usr/local/bin/strapped ]; then 
+    echo "Installing Strapped!"
+    curl -s https://raw.githubusercontent.com/azohra/strapped/master/strapped.sh --output /usr/local/bin/strapped
+    chmod u+x /usr/local/bin/strapped  
+fi
+
+if [ ! -f ~/.strapped/strapped.yml ]; then 
+    echo "Bootstrapping Config!"
+    mkdir -p ~/.strapped
+    curl -s https://raw.githubusercontent.com/azohra/strapped/master/strapped.yml --output ~/.strapped/strapped.yml
+fi
+
