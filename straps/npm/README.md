@@ -11,6 +11,8 @@
 ### Configuration
 ```yml
 npm:
-  - testcafe
-
+  packages: 
+    - { name: testcafe }
+    - { name: typescript }
+    - { name: docsify-cli }
 ```

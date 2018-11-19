@@ -11,6 +11,6 @@
 ### Configuration
 ```yml
 pip3:
-  - boto3
-
+  packages: 
+    - { name: boto3 }
 ```
