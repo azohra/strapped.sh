@@ -1,10 +1,10 @@
-# Example
+# Strapped
 
 | Attribute     | Value                                     |
 |--------------:|-------------------------------------------|
 | Namespace     | strapped                                  |
 | Emoji         | 🔫                                        |
-| Description   | base configuration for strapped to run    |
+| Description   | base configuration to run strapped.sh     |
 | Dependencies  | strapped.sh                               |
 | Compatability | Universal                                 |
 
