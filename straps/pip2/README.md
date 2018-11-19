@@ -11,7 +11,7 @@
 ### Configuration
 ```yml
 pip2:
-  - slack-cleaner
-  - ansible
-
+  packages: 
+    - { name: slack-cleaner }
+    - { name: ansible }
 ```
