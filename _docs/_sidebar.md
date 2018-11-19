@@ -5,8 +5,6 @@
 
 - Straps
   - [brew](straps/brew.md)
-  - [brew_cask](straps/brew_cask.md)
-  - [brew_tap](straps/brew_tap.md)
   - [directories](straps/directories.md)
   - [dockutils](straps/dockutils.md)
   - [echo](straps/echo.md)
