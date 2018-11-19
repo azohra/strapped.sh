@@ -25,7 +25,8 @@ ${1}:
 \`\`\`"
 
 # String containing the strap shell script template
-outline="# Hook that is called before the strap
+outline="#!/bin/bash
+# Hook that is called before the strap
 strapped_${1}_before () { 
   return
 }
