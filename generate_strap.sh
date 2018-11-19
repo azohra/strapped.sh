@@ -10,7 +10,7 @@ readme="# $1
 
 | Attribute     | Value                                     |
 |--------------:|-------------------------------------------|
-| Namespace     |  $1                                       |
+| Namespace     | $1                                        |
 | Emoji         | An emoji that best describes your strap   |
 | Description   | A description of your strap               |
 | Dependencies  | ex: Git                                   |

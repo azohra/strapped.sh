@@ -1,6 +1,7 @@
 strapped:
   repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
 
-echo:
-  - You have successfully installed strapped.sh
-  - Made with <3 by Azohra
+unix_utils:
+  echo:
+    - { phrase: "You have successfully installed strapped.sh" }
+    - { phrase: "Made with <3 by Azohra" }

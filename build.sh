@@ -7,7 +7,7 @@ raw_strap_url="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 rm -rf _docs/straps
 mkdir _docs/straps
 
-base="![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)
+base="[![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)](https://strapped.sh)
 
 - [Home](/)
 - [Guide](README.md)
