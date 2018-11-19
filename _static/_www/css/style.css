@@ -9,14 +9,19 @@ body {
 }
 
 footer {
-  
   text-align: center;
 }
+
+strapbox {
+  padding-bottom: 100px;
+}
+
 footer img {
   width: 30px;
   height: auto;
   opacity: 0.35;
 }
+
 footer small {
   color: #506479;
   font-size: 0.9rem;
@@ -47,7 +52,13 @@ p {
   top: 10%;
   left: 50%;
   margin-right: -50%;
-  transform: translate(-50%, -50%) }
+  transform: translate(-50%, -50%)
+}
+
+.spacer {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
 
 .window {
   width: 60%;
@@ -60,6 +71,7 @@ p {
   background: #191919;
   height: 36px;
   border-radius: 0.5rem 0.5rem 0 0;
+  overflow-wrap: break-word;
 }
 
 .btn, .btn::before, .btn::after {
@@ -75,14 +87,17 @@ p {
   margin-left: 38px;
   top: 12px;
 }
+
 .btn::before, .btn::after {
   content: " ";
   position: absolute;
 }
+
 .btn::before {
   background: #f55551;
   margin-left: -20px;
 }
+
 .btn::after {
   background: #32c146;
   margin-left: 20px;
@@ -92,9 +107,11 @@ p {
   background: #232323;
   padding: 18px;
 }
+
 .body pre {
   margin: 0;
 }
+
 .body .pulse {
   -webkit-animation: pulse 1s ease-in-out infinite;
   -moz-animation: pulse 1s ease-in-out infinite;
@@ -140,4 +157,12 @@ p {
 
 .comment {
   opacity: 0.5;
+}
+
+pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
