@@ -7,7 +7,7 @@ auto_approve="0"
 yml_location="${HOME}/.strapped/strapped.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 function usage {
-    echo -e "\nUsage: strapped [flags]\n"
+    echo -e "\\nUsage: strapped [flags]\\n"
     echo "flags:"
     echo "  -u, --upgrade               upgrade strapped to the latest version"
     echo "  -v, --version               print the current strapped version"
