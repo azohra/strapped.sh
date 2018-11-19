@@ -8,7 +8,8 @@
 | Dependencies  | none                                      |
 | Compatability | Unix                                      |
 
-### Configuration
+## Configuration
+
 ```yml
 unix_utils:
   mkdir:

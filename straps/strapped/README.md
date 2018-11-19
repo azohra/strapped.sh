@@ -8,7 +8,8 @@
 | Dependencies  | strapped.sh                               |
 | Compatability | Universal                                 |
 
-### Configuration
+## Configuration
+
 ```yml
 # load from a remote URL
 strapped:

@@ -8,10 +8,12 @@
 | Dependencies  | ruby                                      |
 | Compatability | universal                                 |
 
-### Configuration
+## Configuration
+
 ```yml
 ruby_gems:
-  - bundler
-  - watir
+  gems:
+    - { name: bundler }
+    - { name: watir   }
 
 ```

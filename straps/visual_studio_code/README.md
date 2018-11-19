@@ -8,7 +8,8 @@
 | Dependencies  | Visual Studio Code                        |
 | Compatability | universal                                 |
 
-### Configuration
+## Configuration
+
 ```yml
 visual_studio_code:
     extensions:
