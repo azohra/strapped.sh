@@ -8,6 +8,10 @@ strapped_unix_utils () {
     local ln_count
     local mkdir_count
     local echo_count
+    local dir
+    local link
+    local folder
+    local phrase
 
     ln_count=$(yq read "${1}" -j | jq -r '.unix_utils.ln | length')
     for i in $(seq 1 "${ln_count}"); do
