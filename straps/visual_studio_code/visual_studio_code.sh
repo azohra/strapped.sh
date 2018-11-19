@@ -4,13 +4,14 @@ strapped_visual_studio_code_before () {
 }
 
 strapped_visual_studio_code () {
+    local ext
+    local ext_count
 
-    local extensions
-    
-    extensions=$(yq read "${1}" -j | jq -r '.visual_studio_code.extensions[].name')
-    for extension in ${extensions}; do
-        echo "💻 adding extension ${extension}"
-        code --install-extension "${extension}"
+    ext_count=$(yq read "${1}" -j | jq -r '.visual_studio_code.extensions | length')
+    for (( i=ext_count; i>0; i-- )); do
+        ext=$(yq read "${1}" -j | jq -r ".visual_studio_code.extensions[${i}-1].name")
+        echo "💻 adding extension ${ext}"
+        code --install-extension "${ext}"
     done
 }
 
