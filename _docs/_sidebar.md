@@ -5,14 +5,12 @@
 
 - Straps
   - [brew](straps/brew.md)
-  - [directories](straps/directories.md)
   - [dockutils](straps/dockutils.md)
-  - [echo](straps/echo.md)
   - [git](straps/git.md)
   - [npm](straps/npm.md)
   - [pip2](straps/pip2.md)
   - [pip3](straps/pip3.md)
   - [ruby_gems](straps/ruby_gems.md)
   - [strapped](straps/strapped.md)
-  - [symlinks](straps/symlinks.md)
-  - [visual_studio_code_extensions](straps/visual_studio_code_extensions.md)
+  - [unix_utils](straps/unix_utils.md)
+  - [visual_studio_code](straps/visual_studio_code.md)

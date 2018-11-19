@@ -5,7 +5,6 @@ strapped_git_before () {
 }
 
 strapped_git () {
-
     local repos
     local folder
     
