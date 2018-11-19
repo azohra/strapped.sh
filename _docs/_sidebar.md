@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)](https://strapped.sh)
+[![logo](https://raw.githubusercontent.com/azohra/strapped/master/img/logo-black.png)](https://strapped.sh)
 
 - [Home](/)
 - [Guide](README.md)
