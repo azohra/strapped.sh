@@ -32,7 +32,7 @@ strapped_dockutils () {
         path=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].path")
         view=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].view")
         display=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].display")
-        sort=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}-.sort")
+        sort=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].sort")
         echo "🛳️  adding ${path}"
         dockutil --add "${path}" --view "${view}" --display "${display}" --sort "${sort}" --no-restart
     done
