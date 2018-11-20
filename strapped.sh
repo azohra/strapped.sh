@@ -5,6 +5,7 @@ set -e
 C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
+C_RED="\\033[31m"
 
 custom_straps=""
 auto_approve=""
@@ -72,6 +73,7 @@ verify_config () {
     # Check for YML
     if [[ ${yml_location} =~ ${url_regex} ]]; then 
         curl -s "${yml_location}" --output /tmp/strapped.yml
+
         yml_file='/tmp/strapped.yml'
     else
         yml_file=${yml_location}
@@ -83,6 +85,17 @@ verify_config () {
     strap_repo=$(yq read "${yml_file}" -j | jq -r '.strapped.repo')
     if [[ "${strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
     echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${strap_repo}${C_REG}"
+
+    echo -e "${C_GREEN}Using Integrity From: ${C_BLUE}${strap_repo}/integrity.lock${C_REG}"
+    if [[ ${strap_repo} =~ ${url_regex} ]]; then 
+        curl -s "${strap_repo}/integrity.lock" --output /tmp/strap_integrity.lock
+
+        integrity_file="/tmp/strap_integrity.lock"
+
+        echo $(cat ${integrity_file})
+    else
+        integrity_file="${strap_repo}/integrity.lock"
+    fi
 
     # Create Strap List
     if [[ "${custom_straps}" ]]; then
@@ -108,7 +121,19 @@ ask_permission () {
     fi
 }
 
+verify_integrity () {
+    # local sha
+    # sha=($(shasum -a 256 "${1}"))
+    # echo $sha
+    return
+    # echo `cat ${integrity_file}`
+}
+
 stay_strapped () {
+    local strap_code
+    local logged
+    local strap_sha
+    local locked_sha
     # parallel 'source /dev/stdin <<< "$(curl -s "${strap_repo}/{}/{}.sh")"' ::: ${straps}
     # parallel 'source "${strap_repo}/{}/{}.sh"' ::: ${straps}
     # parallel 'strapped_{} "${yml_file}"' ::: ${straps}
@@ -116,11 +141,40 @@ stay_strapped () {
     for strap in ${straps}; do
         if [[ ${strap} = "strapped" ]]; then continue; fi
         if [[ ${strap_repo} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${strap}.sh")"
+
+            curl -s "${strap_repo}/${strap}/${strap}.sh" -o "/tmp/${strap}_src.sh"
+
+            strap_code="/tmp/${strap}_src.sh"
+
         else
-            source "${strap_repo}/${strap}/${strap}.sh"
+            strap_code="${strap_repo}/${strap}/${strap}.sh"
         fi
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
+
+        # echo -e `cat ${integrity_file}`
+
+        # echo $integrity_file
+
+        locked_sha=$(yq read "${integrity_file}" -j | jq -r ".straps.${strap}")
+
+        strap_sha=($(shasum -a 256 "${strap_code}"))
+
+        echo "Lock file (${integrity_file}) vs Strap file (${strap_code})"
+        echo "${locked_sha}"
+        echo "${strap_sha}"
+
+        if [[ "${strap_sha}" != "${locked_sha}" ]]; then
+            echo -e "${C_RED}Integrity of strap ${C_BLUE}${strap} ${C_RED}does not match the value at the source.${C_REG}"
+            exit 1
+        fi
+        # echo $locked_sha
+        # if [[ !logged ]]; then
+        #     echo -e "${C_RED}Invalid integrity for: ${C_BLUE}${strap}${C_REG}"
+        #     exit 1
+        # fi
+
+        source $strap_code
+
         strapped_"${strap}"_before "${yml_file}"
         strapped_"${strap}" "${yml_file}"
         strapped_"${strap}"_after "${yml_file}"
