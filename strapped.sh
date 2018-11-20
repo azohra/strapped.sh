@@ -59,11 +59,13 @@ while [ $# -gt 0 ] ; do
     shift
 done
 
+#make this more awesome by asking to install missing deps and also making it OS specific
 check_deps () {
-    deps="yq jq brew"
+    deps="yq jq brew xcode-select"
     for dep in $deps; do
-        if ! $dep --version > /dev/null; then echo "😞 ${dep} is required to run strapped.sh" && exit; fi 
+        if ! $dep --version &> /dev/null; then echo "😞 ${dep} is required to run strapped.sh" && uh_oh=1; fi 
     done
+    if [[ "${uh_oh}" = "1" ]]; then exit 2; fi
 }
 
 verify_config () {
