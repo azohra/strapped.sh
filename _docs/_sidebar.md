@@ -4,8 +4,6 @@
 - [Guide](README.md)
 
 - Straps
-  - [apt_get](straps/apt_get.md)
-  - [baargav_tool](straps/baargav_tool.md)
   - [brew](straps/brew.md)
   - [dockutils](straps/dockutils.md)
   - [git](straps/git.md)
