@@ -4,10 +4,4 @@ if [ ! -f /usr/local/bin/strapped ]; then
     chmod u+x /usr/local/bin/strapped
 fi
 
-if [ ! -f ~/.strapped/strapped.yml ]; then 
-    echo "Bootstrapping Config!"
-    mkdir -p ~/.strapped
-    curl -s https://raw.githubusercontent.com/azohra/strapped/master/yml/strapped.yml --output ~/.strapped/strapped.yml
-fi
-
 echo "🔫 #StayStrapped"

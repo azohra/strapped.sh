@@ -1,7 +1,8 @@
 strapped:
   repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
-  
+
 unix_utils:
   echo:
-    - { phrase: "You have successfully installed strapped.sh" }
+    - { phrase: "woop woop! strapped.sh is ready to rock."}
+    - { phrase: "add the flag '--yml /path/to/strapped.yml' to #StayStrapped"}
     - { phrase: "Made with <3 by Azohra" }

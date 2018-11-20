@@ -8,7 +8,7 @@ C_REG="\\033[0;39m"
 
 custom_straps=""
 auto_approve=""
-yml_location="${HOME}/.strapped/strapped.yml"
+yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
 function usage {
