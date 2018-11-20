@@ -14,5 +14,6 @@
   - [pip3](straps/pip3.md)
   - [ruby_gems](straps/ruby_gems.md)
   - [strapped](straps/strapped.md)
+  - [testing](straps/testing.md)
   - [unix_utils](straps/unix_utils.md)
   - [visual_studio_code](straps/visual_studio_code.md)
