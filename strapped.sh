@@ -26,7 +26,7 @@ function usage {
 
 function upgrade {
     rm /usr/local/bin/strapped
-    curl -s https://stay.strapped.sh | sh
+    curl -s -L https://stay.strapped.sh | sh
     echo "🔫 Upgraded Successfully!"
     exit 0
 }
@@ -72,8 +72,7 @@ check_deps () {
 verify_config () {
     # Check for YML
     if [[ ${yml_location} =~ ${url_regex} ]]; then 
-        curl -s "${yml_location}" --output /tmp/strapped.yml
-
+        curl -s -L "${yml_location}" --output /tmp/strapped.yml
         yml_file='/tmp/strapped.yml'
     else
         yml_file=${yml_location}
