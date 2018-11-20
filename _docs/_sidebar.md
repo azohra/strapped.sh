@@ -6,7 +6,6 @@
 - Straps
   - [brew](straps/brew.md)
   - [dockutils](straps/dockutils.md)
-  - [gagan_is_awesome](straps/gagan_is_awesome.md)
   - [git](straps/git.md)
   - [mac_app_store](straps/mac_app_store.md)
   - [mac_utils](straps/mac_utils.md)

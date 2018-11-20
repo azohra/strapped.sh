@@ -1,7 +1,6 @@
 straps:
   brew: "42f5e64dbafec5c559cea6454bada49305374e28d5da8142347c115971ce4a90  straps/brew/brew.sh"
   dockutils: "e712976d7bc1c24a43786e353d56148b05ba2eea45ab9cba6bbb59b66fad7d47  straps/dockutils/dockutils.sh"
-  gagan_is_awesome: "7e32404aa8b626541bb4f4ce886677cc40abb13e96b2ced117cb8fc206dc4af8  straps/gagan_is_awesome/gagan_is_awesome.sh"
   git: "e7caf04f417808d76d7c5b3f88405145b6a10ea6702dc3f7854b1820c381dfc1  straps/git/git.sh"
   mac_app_store: "52483d29b34314337d95687304c8c6814e5c6318c22cba72f2b823e8ff00e7a7  straps/mac_app_store/mac_app_store.sh"
   mac_utils: "130bae289b66fa0f75b1feb31dca04954d75a1f7c651547dd36523d0a7c7e59e  straps/mac_utils/mac_utils.sh"
