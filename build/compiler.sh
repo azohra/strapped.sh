@@ -18,12 +18,12 @@ echo -e "strapped_${parent_name}_before () {\n\tif ! ${parent_name} -V > /dev/nu
 echo -e "strapped_${parent_name} () {" >> "_gen/${parent_name}/${parent_name}.sh"
 
 #local variable generator
-for (( i=parent_count; i>0; i-- )); do
-    sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${i}-1]")
+for (( i=0; i < parent_count; i++ )); do
+    sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${i}]")
     echo -e "\tlocal ${sub_parent_name}_count" >> "_gen/${parent_name}/${parent_name}.sh"
     property_count=$(yq read ${yml_file} -j | jq -r ".${parent_name}.${sub_parent_name}[0] | keys | length")
-    for (( j=property_count; j>0; j-- )); do
-        property_name=$(yq read ${yml_file} -j | jq -r ".${parent_name}.${sub_parent_name}[0] | keys[${j}-1]")
+    for (( j=0; j<property_count; j++ )); do
+        property_name=$(yq read ${yml_file} -j | jq -r ".${parent_name}.${sub_parent_name}[0] | keys[${j}]")
         echo -e "\tlocal ${property_name}" >> "_gen/${parent_name}/${parent_name}.sh"
     done
     
@@ -31,21 +31,21 @@ done
 echo -e "\t" >> "_gen/${parent_name}/${parent_name}.sh"
 
 #count variable generator
-for (( k=parent_count; k>0; k-- )); do
-    sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${k}-1]")
+for (( k=0; k < parent_count; k++ )); do
+    sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${k}]")
     echo -e "\t${sub_parent_name}_count=\$(yq read "\${1}" -j | jq -r \".${parent_name}.${sub_parent_name} | length\")" >> "_gen/${parent_name}/${parent_name}.sh"
 done
 echo -e "\t" >> "_gen/${parent_name}/${parent_name}.sh"
 
 #for loop generator
-for (( l=parent_count; l>0; l-- )); do
-  sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${l}-1]")
+for (( l=0; l < parent_count; l++ )); do
+  sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${l}]")
   property_count=$(yq read ${yml_file} -j | jq -r ".${parent_name}.${sub_parent_name}[0] | keys | length")
-  iterator=$(echo ${iterator_array[${l}-1]})
-  echo -e "\tfor (( ${iterator}=${sub_parent_name}_count; ${iterator}>0; ${iterator}-- )); do" >> "_gen/${parent_name}/${parent_name}.sh"
-  for (( m=property_count; m>0; m-- )); do
-    property_name=$(yq read ${yml_file} -j | jq -r ".${parent_name}.${sub_parent_name}[0] | keys[${m}-1]")
-    echo -e "\t\t${property_name}=\$(yq read \"\${1}\" -j | jq -r \".${parent_name}.${sub_parent_name}[\${i}-1].${property_name}\")" >> "_gen/${parent_name}/${parent_name}.sh"
+  iterator=$(echo ${iterator_array[${l}]})
+  echo -e "\tfor (( ${iterator}=0; ${iterator}<${sub_parent_name}_count; ${iterator}++ )); do" >> "_gen/${parent_name}/${parent_name}.sh"
+  for (( m=0; m < property_count; m++ )); do
+    property_name=$(yq read ${yml_file} -j | jq -r ".${parent_name}.${sub_parent_name}[0] | keys[${m}]")
+    echo -e "\t\t${property_name}=\$(yq read \"\${1}\" -j | jq -r \".${parent_name}.${sub_parent_name}[\${i}].${property_name}\")" >> "_gen/${parent_name}/${parent_name}.sh"
     echo -e "\t\techo \"#do shit with \${${property_name}}\"" >> "_gen/${parent_name}/${parent_name}.sh"
   done
 echo -e "\tdone" >> "_gen/${parent_name}/${parent_name}.sh"

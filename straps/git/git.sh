@@ -11,9 +11,9 @@ strapped_git () {
     
     clone_count=$(yq read "${1}" -j | jq -r '.git.clone | length')
     
-    for (( i=clone_count; i>0; i-- )); do
-        repo=$(yq read "${1}" -j | jq -r ".git.clone[${i}-1].repo")
-        folder=$(yq read "${1}" -j | jq -r ".git.clone[${i}-1].folder")
+    for (( i=0; i < clone_count; i++ )); do
+        repo=$(yq read "${1}" -j | jq -r ".git.clone[${i}].repo")
+        folder=$(yq read "${1}" -j | jq -r ".git.clone[${i}].folder")
         echo "💾 cloning ${repo} into ${folder}"
         if [ ! -d "${folder}" ] ; then git clone "${repo}" "${folder}"; fi
     done

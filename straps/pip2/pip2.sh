@@ -9,8 +9,8 @@ strapped_pip2 () {
     
     pip2_count=$(yq read "${1}" -j | jq -r '.pip2.packages | length')
 
-    for (( i=pip2_count; i>0; i-- )); do
-        pkg=$(yq read "${1}" -j | jq -r ".pip2.packages[${i}-1].name")
+    for (( i=0; i < pip2_count; i++ )); do
+        pkg=$(yq read "${1}" -j | jq -r ".pip2.packages[${i}].name")
         echo "🐍 installing ${pkg}"
         pip install "${pkg}"
     done

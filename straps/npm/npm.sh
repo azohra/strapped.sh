@@ -9,8 +9,8 @@ strapped_npm () {
     
     npm_count=$(yq read "${1}" -j | jq -r '.npm.packages | length')
 
-    for (( i=npm_count; i>0; i-- )); do
-        pkg=$(yq read "${1}" -j | jq -r ".npm.packages[${i}-1].name")
+    for (( i=0; i < npm_count; i++ )); do
+        pkg=$(yq read "${1}" -j | jq -r ".npm.packages[${i}].name")
         echo "☕ installing ${pkg}"
         npm install -g "${pkg}"
     done

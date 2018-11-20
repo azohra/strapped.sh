@@ -9,8 +9,8 @@ strapped_pip3 () {
     
     pip3_count=$(yq read "${1}" -j | jq -r '.pip3.packages | length')
 
-    for (( i=pip3_count; i>0; i-- )); do
-        pkg=$(yq read "${1}" -j | jq -r ".pip3.packages[${i}-1].name")
+    for (( i=0; i < pip3_count; i++ )); do
+        pkg=$(yq read "${1}" -j | jq -r ".pip3.packages[${i}].name")
         echo "🐍 installing ${pkg}"
         pip3 install "${pkg}"
     done

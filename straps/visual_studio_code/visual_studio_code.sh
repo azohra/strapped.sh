@@ -8,8 +8,9 @@ strapped_visual_studio_code () {
     local ext_count
 
     ext_count=$(yq read "${1}" -j | jq -r '.visual_studio_code.extensions | length')
-    for (( i=ext_count; i>0; i-- )); do
-        ext=$(yq read "${1}" -j | jq -r ".visual_studio_code.extensions[${i}-1].name")
+    
+    for (( i=0; i > ext_count; i++ )); do
+        ext=$(yq read "${1}" -j | jq -r ".visual_studio_code.extensions[${i}].name")
         echo "💻 adding extension ${ext}"
         code --install-extension "${ext}"
     done
