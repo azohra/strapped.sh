@@ -18,7 +18,7 @@ echo "$base" > _docs/_sidebar.md
 
 # Make each doc file and embed the source documentation
 for dir in `ls straps/`; do
-    # Documentation
+    if [[ ${dir} = "integrity.yml" ]]; then continue; fi
     echo "[Build] linking documentation for $dir"
     echo "[$dir]($raw_strap_url/$dir/README.md \":include\")" > _docs/straps/$dir.md
     echo "  - [$dir](straps/$dir.md)" >> _docs/_sidebar.md

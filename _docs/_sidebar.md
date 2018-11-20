@@ -7,7 +7,6 @@
   - [brew](straps/brew.md)
   - [dockutils](straps/dockutils.md)
   - [git](straps/git.md)
-  - [integrity.yml](straps/integrity.yml.md)
   - [mac_app_store](straps/mac_app_store.md)
   - [mac_utils](straps/mac_utils.md)
   - [npm](straps/npm.md)
