@@ -10,6 +10,7 @@ exec:
 test:
 	@shellcheck ./strapped.sh
 	@shellcheck ./straps/**/*.sh
+	#@shellcheck ./build/*.sh
 
 docs:
 	@./build/docs.sh

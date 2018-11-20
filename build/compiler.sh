@@ -33,7 +33,7 @@ echo -e "\t" >> "_gen/${parent_name}/${parent_name}.sh"
 #count variable generator
 for (( k=0; k < parent_count; k++ )); do
     sub_parent_name=$(yq read ${yml_file} -j | jq -r ".${parent_name} | keys[${k}]")
-    echo -e "\t${sub_parent_name}_count=\$(yq read "\${1}" -j | jq -r \".${parent_name}.${sub_parent_name} | length\")" >> "_gen/${parent_name}/${parent_name}.sh"
+    echo -e "\t${sub_parent_name}_count=\$(yq read \"\${1}\" -j | jq -r \".${parent_name}.${sub_parent_name} | length\")" >> "_gen/${parent_name}/${parent_name}.sh"
 done
 echo -e "\t" >> "_gen/${parent_name}/${parent_name}.sh"
 

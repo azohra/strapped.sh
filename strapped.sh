@@ -109,6 +109,10 @@ ask_permission () {
 }
 
 stay_strapped () {
+    # parallel 'source /dev/stdin <<< "$(curl -s "${strap_repo}/{}/{}.sh")"' ::: ${straps}
+    # parallel 'source "${strap_repo}/{}/{}.sh"' ::: ${straps}
+    # parallel 'strapped_{} "${yml_file}"' ::: ${straps}
+
     for strap in ${straps}; do
         if [[ ${strap} = "strapped" ]]; then continue; fi
         if [[ ${strap_repo} =~ ${url_regex} ]]; then
