@@ -8,7 +8,7 @@
 | Dependencies  | none                                      |
 | Compatability | OSX                                       |
 
-### Configuration
+## Configuration
 
 ```yml
 mac_utils:

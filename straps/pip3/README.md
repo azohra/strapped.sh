@@ -8,7 +8,7 @@
 | Dependencies  | pip3, python3                             |
 | Compatability | universal                                 |
 
-### Configuration
+## Configuration
 ```yml
 pip3:
   packages: 

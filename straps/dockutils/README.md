@@ -8,7 +8,7 @@
 | Dependencies  | dockutils                                 |
 | Compatability | OSX                                       |
 
-### Configuration
+## Configuration
 ```yml
 dockutils:
   apps:

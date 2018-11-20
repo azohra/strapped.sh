@@ -8,7 +8,7 @@
 | Dependencies  | git                                       |
 | Compatability | universal                                 |
 
-### Configuration
+## Configuration
 ```yml
 git:
   clone:

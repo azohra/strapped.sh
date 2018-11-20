@@ -8,7 +8,7 @@
 | Dependencies  | brew                                        |
 | Compatability | OSX                                         |
 
-### Configuration
+## Configuration
 ```yml
 brew:
   tap:

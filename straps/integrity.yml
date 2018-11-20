@@ -8,7 +8,6 @@ straps:
   pip2: "e0e3e8fcc34b4ceab6068124d8302ac282914c49252b624f16346e366671817b  straps/pip2/pip2.sh"
   pip3: "e9cb8f90b5feeee81ab0fce309e90aef16ccddb81f5941f3d832e70c8c689cf6  straps/pip3/pip3.sh"
   ruby_gems: "aeb2cf5caf8f8dd0aa05dcb6fab8702d21a4bb2a8e7a34752419e814e11e2402  straps/ruby_gems/ruby_gems.sh"
-  strapped: "8368325f52bf85a4e69e03aa2a0cd1d8c6ca6bc58408d55c2a53ed427b64e9e6  straps/strapped/strapped.sh"
-  testing: "86133c1c84b5c49020c455fc7d95429848eda8a04a3cebfbef0b759e76a7c577  straps/testing/testing.sh"
+  strapped: "49edb08e48d4a10f5a39ced7653459b7d947b79d1cc3d5f8b16da4414285c603  straps/strapped/strapped.sh"
   unix_utils: "04c8dc242b163c2a602a206bbba1b2455c95e3c27e36152bcf7a16ddeb3b9b17  straps/unix_utils/unix_utils.sh"
   visual_studio_code: "41bf5a2c1c15170e9dfbd8a5ab4f99826a5d03b23009f6079f1435e4a56598c6  straps/visual_studio_code/visual_studio_code.sh"

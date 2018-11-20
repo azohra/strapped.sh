@@ -8,7 +8,7 @@
 | Dependencies  | npm                                       |
 | Compatability | universal                                 |
 
-### Configuration
+## Configuration
 ```yml
 npm:
   packages: 

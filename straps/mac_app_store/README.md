@@ -8,7 +8,7 @@
 | Dependencies  | mas                                       |
 | Compatability | OSX                                       |
 
-### Configuration
+## Configuration
 
 ```yml
 mac_app_store:

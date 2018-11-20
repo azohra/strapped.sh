@@ -14,9 +14,7 @@
 # load from a remote URL
 strapped:
   repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
-```
 
-```yml
 # load from a local file
 strapped:
   repo: ~/.strapped/strapped.yml
