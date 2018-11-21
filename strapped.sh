@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck source=/dev/null
+# shellcheck disable=SC2068
 set -e
 
 C_GREEN="\\033[32m"
@@ -89,7 +90,6 @@ verify_config () {
     else
         straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' ' )
         straps=("${straps}")
-        #straps=$(${json} | jq -r 'keys[]' | tr '\n' ' ' ) 
     fi
     echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps[*]} ${C_REG}"
 }
@@ -120,7 +120,7 @@ stay_strapped () {
     #     echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
     # done
     
-    parallel --keep-order --line-buffer --no-notice 'echo -e "\\n\\033[32mStrap:\\033[34m {1}\\033[0;39m" && source "straps/{1}/{1}.sh" && strapped_{1}_before {2} && strapped_{1} {2} && strapped_{1}_after {2} ' ::: "${straps[@]}" ::: "${json}"
+    parallel --keep-order --line-buffer --no-notice 'echo -e "\\n\\033[32mStrap:\\033[34m {1}\\033[0;39m" && source "straps/{1}/{1}.sh" && strapped_{1}_before {2} && strapped_{1} {2} && strapped_{1}_after {2} ' ::: ${straps[@]} ::: "${json}"
     
     # for strap in ${straps}; do
     #     if [[ ${strap} = "strapped" ]]; then continue; fi
