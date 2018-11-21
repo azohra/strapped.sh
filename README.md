@@ -8,19 +8,19 @@
 
 ## Install
 
-```bash
+```console
 curl -s https://stay.strapped.sh | sh
 ```
 
 ## Upgrade
 
-```bash
+```console
 strapped --upgrade
 ```
 
 ## Use
 
-```bash
+```console
 Usage: strapped [flags]
 
 flags:
