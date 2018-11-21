@@ -79,18 +79,19 @@ verify_config () {
     echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}" 
 
     # Check for Repo
-    strap_repo=$(jq -r ".strapped.repo" <<< $json)
+    strap_repo=$(jq -r ".strapped.repo" <<< "${json}")
     if [[ "${strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
     echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${strap_repo}${C_REG}"
 
-    # Create Strap List
+    # Create Strap Array
     if [[ "${custom_straps}" ]]; then
         straps="${custom_straps//,/ }"
     else
-        straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' ' ) 
+        straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' ' )
+        straps=("${straps}")
         #straps=$(${json} | jq -r 'keys[]' | tr '\n' ' ' ) 
     fi
-    echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps}${C_REG}"
+    echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps[*]} ${C_REG}"
 }
 
 ask_permission () {    
@@ -119,7 +120,7 @@ stay_strapped () {
     #     echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
     # done
     
-    parallel --keep-order --line-buffer --no-notice 'echo -e "\\n\\033[32mStrap:\\033[34m {1}\\033[0;39m" && source "straps/{1}/{1}.sh" && strapped_{1}_before {2} && strapped_{1} {2} && strapped_{1}_after {2} ' ::: ${straps} ::: "${json}"
+    parallel --keep-order --line-buffer --no-notice 'echo -e "\\n\\033[32mStrap:\\033[34m {1}\\033[0;39m" && source "straps/{1}/{1}.sh" && strapped_{1}_before {2} && strapped_{1} {2} && strapped_{1}_after {2} ' ::: "${straps[@]}" ::: "${json}"
     
     # for strap in ${straps}; do
     #     if [[ ${strap} = "strapped" ]]; then continue; fi
