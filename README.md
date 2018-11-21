@@ -1,19 +1,26 @@
+# Strapped
+
 ![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)
 
 [![Build Status](https://travis-ci.org/azohra/strapped.svg?branch=master)](https://travis-ci.org/azohra/strapped)
 
 --- 
 
-### Install
-```console
+## Install
+
+```bash
 curl -s https://stay.strapped.sh | sh
 ```
-### Upgrade
-```console
+
+## Upgrade
+
+```bash
 strapped --upgrade
 ```
-### Use
-```console
+
+## Use
+
+```bash
 Usage: strapped [flags]
 
 flags:
