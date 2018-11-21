@@ -9,6 +9,7 @@ C_REG="\\033[0;39m"
 
 custom_straps=""
 auto_approve=""
+repo_location="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
@@ -38,6 +39,10 @@ while [ $# -gt 0 ] ; do
     ;;
     -y|--yml)
         yml_location="$2"
+        shift # extra value 
+    ;;
+    -r|--repo)
+        repo_location="$2"
         shift # extra value 
     ;;
     -s|--straps)
@@ -71,27 +76,17 @@ check_deps () {
 
 verify_config () {
     # Check for YML
-    if [[ ${yml_location} =~ ${url_regex} ]]; then 
-        json=$(curl -s "${yml_location}" | yq r - -j )
-    else
-        json=$(yq read "${yml_location}" -j) 
-    fi
-    if [ ! "${json}" ]; then echo "Config Could Not Be Loaded!" && exit 2; fi
-    echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}" 
-
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | yq r - -j); else json=$(yq r "${yml_location}" -j); fi
+    if [ ! "${json}" ]; then echo "Config not found" && exit 2;else echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}"; fi
+    
     # Check for Repo
-    strap_repo=$(jq -r ".strapped.repo" <<< "${json}")
-    if [[ "${strap_repo}" = "null" ]]; then echo "You must provide a strap repo" && exit 2; fi
-    echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${strap_repo}${C_REG}"
+    if [ "$(jq -r ".strapped.repo" <<< "${json}")" != "null" ]; then repo_location="$(jq -r ".strapped.repo" <<< "${json}")"; fi
+    if [ ! "${repo_location}" ]; then echo "Repo not found" && exit 2;else echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${repo_location}${C_REG}"; fi
 
     # Create Strap Array
-    if [[ "${custom_straps}" ]]; then
-        straps="${custom_straps//,/ }"
-    else
-        straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' ' )
-        straps=("${straps}")
-    fi
-    echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps[*]} ${C_REG}"
+    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' '); fi
+    if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
+    straps=("${straps}")
 }
 
 ask_permission () {    
@@ -109,31 +104,20 @@ ask_permission () {
     fi
 }
 
-stay_strapped () {
-    # for strap in ${straps}; do
-    #     if [[ ${strap} = "strapped" ]]; then continue; fi
-    #     if [[ ${strap_repo} =~ ${url_regex} ]]; then
-    #         source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${strap}.sh")"
-    #     else
-    #         source "${strap_repo}/${strap}/${strap}.sh"
-    #     fi
-    #     echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
-    # done
-    
-    parallel --keep-order --line-buffer --no-notice 'echo -e "\\n\\033[32mStrap:\\033[34m {1}\\033[0;39m" && source "straps/{1}/{1}.sh" && strapped_{1}_before {2} && strapped_{1} {2} && strapped_{1}_after {2} ' ::: ${straps[@]} ::: "${json}"
-    
-    # for strap in ${straps}; do
-    #     if [[ ${strap} = "strapped" ]]; then continue; fi
-    #     if [[ ${strap_repo} =~ ${url_regex} ]]; then
-    #         source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${strap}.sh")"
-    #     else
-    #         source "${strap_repo}/${strap}/${strap}.sh"
-    #     fi
-    #     echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
-    #     strapped_"${strap}"_before "${json}"
-    #     strapped_"${strap}" "${json}"
-    #     strapped_"${strap}"_after "${json}"
-    # done
+stay_strapped () {    
+    for strap in ${straps}; do
+        if [[ ${strap} = "strapped" ]]; then continue; fi
+        if [[ ${repo_location} =~ ${url_regex} ]]; then
+            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${strap}.sh")"
+        else
+            source "${repo_location}/${strap}/${strap}.sh"
+        fi
+        strap_json=$(jq -r ."${strap}" <<< "${json}")
+        echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
+        strapped_"${strap}"_before "${strap_json}"
+        strapped_"${strap}" "${strap_json}"
+        strapped_"${strap}"_after "${strap_json}"
+    done
 }
 
 check_deps

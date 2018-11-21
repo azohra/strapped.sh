@@ -7,10 +7,10 @@ strapped_pip3 () {
     local pip3_count
     local pkg
     
-    pip3_count=$(jq -r '.pip3.packages | length' <<< "${1}")
+    pip3_count=$(jq -r '.packages | length' <<< "${1}")
 
     for (( i=0; i < pip3_count; i++ )); do
-        pkg=$(jq -r ".pip3.packages[${i}].name" <<< "${1}")
+        pkg=$(jq -r ".packages[${i}].name" <<< "${1}")
         echo "🐍 installing ${pkg}"
         pip3 install "${pkg}"
     done
