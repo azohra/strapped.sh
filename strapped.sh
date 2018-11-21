@@ -61,7 +61,7 @@ done
 
 #make this more awesome by asking to install missing deps and also making it OS specific
 check_deps () {
-    deps="yq jq brew xcode-select"
+    deps="yq jq brew xcode-select parallel"
     for dep in $deps; do
         if ! $dep --version &> /dev/null; then echo "😞 ${dep} is required to run strapped.sh" && uh_oh=1; fi 
     done
@@ -88,7 +88,6 @@ verify_config () {
         straps="${custom_straps//,/ }"
     else
         straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' ' ) 
-        echo "HELLO ${straps}"
         #straps=$(${json} | jq -r 'keys[]' | tr '\n' ' ' ) 
     fi
     echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps}${C_REG}"
@@ -110,21 +109,30 @@ ask_permission () {
 }
 
 stay_strapped () {
-    # parallel 'source "${strap_repo}/{}/{}.sh"' ::: ${straps}
-    # parallel 'strapped_{} "${json}"' ::: ${straps}
-
-    for strap in ${straps}; do
-        if [[ ${strap} = "strapped" ]]; then continue; fi
-        if [[ ${strap_repo} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${strap}.sh")"
-        else
-            source "${strap_repo}/${strap}/${strap}.sh"
-        fi
-        echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
-        strapped_"${strap}"_before "${json}"
-        strapped_"${strap}" "${json}"
-        strapped_"${strap}"_after "${json}"
-    done
+    # for strap in ${straps}; do
+    #     if [[ ${strap} = "strapped" ]]; then continue; fi
+    #     if [[ ${strap_repo} =~ ${url_regex} ]]; then
+    #         source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${strap}.sh")"
+    #     else
+    #         source "${strap_repo}/${strap}/${strap}.sh"
+    #     fi
+    #     echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
+    # done
+    
+    parallel --keep-order --line-buffer --no-notice 'echo -e "\\n\\033[32mStrap:\\033[34m {1}\\033[0;39m" && source "straps/{1}/{1}.sh" && strapped_{1}_before {2} && strapped_{1} {2} && strapped_{1}_after {2} ' ::: ${straps} ::: "${json}"
+    
+    # for strap in ${straps}; do
+    #     if [[ ${strap} = "strapped" ]]; then continue; fi
+    #     if [[ ${strap_repo} =~ ${url_regex} ]]; then
+    #         source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${strap}.sh")"
+    #     else
+    #         source "${strap_repo}/${strap}/${strap}.sh"
+    #     fi
+    #     echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
+    #     strapped_"${strap}"_before "${json}"
+    #     strapped_"${strap}" "${json}"
+    #     strapped_"${strap}"_after "${json}"
+    # done
 }
 
 check_deps

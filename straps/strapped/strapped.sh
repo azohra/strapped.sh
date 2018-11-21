@@ -1,15 +1,15 @@
 #!/bin/bash
 # shellcheck source=/dev/null
 
-strapped_before () {
+strapped_strapped_before () {
     return
 }
 
-strapped () {
+strapped_strapped () {
     return
 }
 
-strapped_after () { 
+strapped_strapped_after () { 
     return 
 }
 
