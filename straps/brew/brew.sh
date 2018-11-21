@@ -10,25 +10,24 @@ strapped_brew () {
     local tap
     local pkg
     local cask
-
-    tap_count=$(yq read "${1}" -j | jq -r '.brew.tap | length')
-    pkg_count=$(yq read "${1}" -j | jq -r '.brew.package | length')
-    cask_count=$(yq read "${1}" -j | jq -r '.brew.cask | length')
+    tap_count=$(jq -r ".brew.taps | length" <<< ${1})
+    pkg_count=$(jq -r ".brew.packages | length" <<< ${1})
+    cask_count=$(jq -r ".brew.casks | length" <<< ${1})
 
     for (( i=0; i < tap_count; i++ )); do
-        tap=$(yq read "${1}" -j | jq -r ".brew.tap[${i}].name")
+        tap=$(jq -r ".brew.taps[${i}].name" <<< ${1})
         echo "🚰 tapping ${tap}"
         brew tap "${tap}"
     done
 
     for (( i=0; i < pkg_count; i++ )); do
-        pkg=$(yq read "${1}" -j | jq -r ".brew.package[${i}].name")
+        pkg=$(jq -r ".brew.packages[${i}].name" <<< ${1})
         echo "🍺 installing ${pkg}"
         brew list "${pkg}" &>/dev/null || brew install "${pkg}"
     done
 
     for (( i=0; i < cask_count; i++ )); do
-        pkg=$(yq read "${1}" -j | jq -r ".brew.cask[${i}].name")
+        cask=$(jq -r ".brew.casks[${i}].name" <<< ${1})
         echo "🍻 installing ${cask}"
         brew cask list "${cask}" &>/dev/null || brew cask install "${cask}"
     done

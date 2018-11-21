@@ -10,29 +10,29 @@ strapped_dockutils () {
     local name
     local position
 
-    app_count=$(yq read "${1}" -j | jq -r '.dockutils.apps | length')
-    dir_count=$(yq read "${1}" -j | jq -r '.dockutils.dirs | length')
+    app_count=$(jq -r '.dockutils.apps | length' <<< ${1})
+    dir_count=$(jq -r '.dockutils.dirs | length' <<< ${1})
 
     dockutil --remove all --no-restart
 
     for (( i=0; i < app_count; i++ )); do
-        path=$(yq read "${1}" -j | jq -r ".dockutils.apps[${i}].path")
+        path=$(jq -r ".dockutils.apps[${i}].path" <<< ${1})
         echo "🛳️  adding ${path}"
         dockutil --add "${path}" --no-restart
     done
 
     for (( i=0; i < app_count; i++ )); do
-        name=$(yq read "${1}" -j | jq -r ".dockutils.apps[${i}].name")
-        position=$(yq read "${1}" -j | jq -r ".dockutils.apps[${i}].pos")
+        name=$(jq -r ".dockutils.apps[${i}].name" <<< ${1})
+        position=$(jq -r ".dockutils.apps[${i}].pos" <<< ${1})
         echo "🛳️  moving ${name} to position ${position}"
         dockutil --move "${name}" --position "${position}" --no-restart
     done
 
     for (( i=0; i < dir_count; i++ )); do
-        path=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].path")
-        view=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].view")
-        display=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].display")
-        sort=$(yq read "${1}" -j | jq -r ".dockutils.dirs[${i}].sort")
+        path=$(jq -r ".dockutils.dirs[${i}].path" <<< ${1})
+        view=$(jq -r ".dockutils.dirs[${i}].view" <<< ${1})
+        display=$(jq -r ".dockutils.dirs[${i}].display" <<< ${1})
+        sort=$(jq -r ".dockutils.dirs[${i}].sort" <<< ${1})
         echo "🛳️  adding ${path}"
         dockutil --add "${path}" --view "${view}" --display "${display}" --sort "${sort}" --no-restart
     done

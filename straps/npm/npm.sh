@@ -7,10 +7,10 @@ strapped_npm () {
     local npm_count
     local pkg
     
-    npm_count=$(yq read "${1}" -j | jq -r '.npm.packages | length')
+    npm_count=$(jq -r '.npm.packages | length' <<< ${1})
 
     for (( i=0; i < npm_count; i++ )); do
-        pkg=$(yq read "${1}" -j | jq -r ".npm.packages[${i}].name")
+        pkg=$(jq -r ".npm.packages[${i}].name" <<< ${1})
         echo "☕ installing ${pkg}"
         npm install -g "${pkg}"
     done

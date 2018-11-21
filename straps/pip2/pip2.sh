@@ -7,10 +7,10 @@ strapped_pip2 () {
     local pip2_count
     local pkg
     
-    pip2_count=$(yq read "${1}" -j | jq -r '.pip2.packages | length')
+    pip2_count=$(jq -r '.pip2.packages | length' <<< ${1})
 
     for (( i=0; i < pip2_count; i++ )); do
-        pkg=$(yq read "${1}" -j | jq -r ".pip2.packages[${i}].name")
+        pkg=$(jq -r ".pip2.packages[${i}].name" <<< ${1})
         echo "🐍 installing ${pkg}"
         pip install "${pkg}"
     done

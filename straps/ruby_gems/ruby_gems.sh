@@ -7,10 +7,10 @@ strapped_ruby_gems () {
     local gem
     local gem_count
 
-    gem_count=$(yq read "${1}" -j | jq -r '.ruby_gems.gems | length')
+    gem_count=$(jq -r '.ruby_gems.packages | length' <<< ${1})
     
     for (( i=0; i < gem_count; i++ )); do
-        gem=$(yq read "${1}" -j | jq -r ".ruby_gems.gems[${i}].name")
+        gem=$(jq -r ".ruby_gems.packages[${i}].name" <<< ${1})
         echo "💎 installing ${gem}"
         gem install "${gem}"
     done
