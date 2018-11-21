@@ -87,7 +87,8 @@ verify_config () {
     if [[ "${custom_straps}" ]]; then
         straps="${custom_straps//,/ }"
     else
-        straps=$(jq -r "keys[]" <<< "${json}" | tr '\n' ' '  )
+        straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' ' ) 
+        echo "HELLO ${straps}"
         #straps=$(${json} | jq -r 'keys[]' | tr '\n' ' ' ) 
     fi
     echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps}${C_REG}"
@@ -109,7 +110,6 @@ ask_permission () {
 }
 
 stay_strapped () {
-    # parallel 'source /dev/stdin <<< "$(curl -s "${strap_repo}/{}/{}.sh")"' ::: ${straps}
     # parallel 'source "${strap_repo}/{}/{}.sh"' ::: ${straps}
     # parallel 'strapped_{} "${json}"' ::: ${straps}
 
