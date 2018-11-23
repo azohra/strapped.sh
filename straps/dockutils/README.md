@@ -16,7 +16,7 @@ dockutils:
     - { name: Google Chrome,      pos: 1, path: "/Applications/Google Chrome.app"}
     - { name: Slack,              pos: 2, path: "/Applications/Slack.app"}
     - { name: Spotify,            pos: 3, path: "/Applications/Spotify.app"}
-    
+
   dirs:
     - { path: "~/Downloads",      view: fan, display: stack, sort: dateadded }
     - { path: "~/Documents",      view: fan, display: stack, sort: dateadded }
