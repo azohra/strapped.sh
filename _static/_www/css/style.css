@@ -179,10 +179,8 @@ nav {
 .window {
   display: none;
   width: 100%;
-  height: 84vh;
   box-shadow: 0 0.25rem 0.5rem #12181e;
   border-radius: 0 0 0.1rem 0.1rem;
-  overflow-y: scroll;
 }
 
 .lead {
@@ -350,7 +348,7 @@ span {
 
 /* Media query for mobile screens */
 
-@media (max-width: 767px) {
+@media (max-width: 1000px) {
   .container {
     width: 80vw;
   }
