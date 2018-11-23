@@ -7,7 +7,6 @@ body {
   width: 100%;
   /* background: #25313e; */
   background: #fff;
-  color: #fff;
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   font-size: 14px;
@@ -18,19 +17,16 @@ footer {
   text-align: center;
 }
 
+footer .item{
+  margin: 0;
+  padding: 20px;
+  width: 20vw;
+  height: auto;
+  display: inline-block;
+}
+
 .strapbox {
   padding-bottom: 100px;
-}
-
-footer img {
-  width: 30px;
-  height: auto;
-  opacity: 0.35;
-}
-
-footer small {
-  color: #506479;
-  font-size: 0.9rem;
 }
 
 h1 {
@@ -44,7 +40,8 @@ h1 {
 }
 
 h2 {
-  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  color: #12181e;
   font-size: 2.4rem;
   font-weight: 50;
   text-align: center;
@@ -228,7 +225,6 @@ h2.nav {
 
 .tab {
     overflow: hidden;
-    border: 2px solid #292929;
     background: #191919;
 }
 
@@ -250,7 +246,7 @@ h2.nav {
 
 .tab button.active {
   
-  background-color: #292929;
+  background-color: #414040;
 }
 
 /* Text styling */
@@ -297,6 +293,7 @@ span {
 }
 
 .console .comment {
+  color: #fff;
   opacity: 0.5;
 }
 
