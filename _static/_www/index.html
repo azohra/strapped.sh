@@ -4,30 +4,131 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <title>strapped -</title>
+    <title>Strapped -</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <!-- <h1> strapped.sh </h1> -->
-    <div><img class="strapped spacer" src="logos/logo-white.png"></div>
-    <div class="window">
-        <div class="bar">
-            <div class="btn"></div>
+    <!-- Site header, include logo and possibly some text -->
+    <header>
+        <div class="banner">
+            <img class="block lead center" src="logos/logo-black.png">
         </div>
-        <div class="body">
-            <pre><div class="comment"># run this command:</div><div class="prompt">> <span class="command"> curl https://stay.strapped.sh | sh</span></div><div class="prompt">> <span class="command"> strapped --auto</span>
-                <span class="command"><br> Using Config From:</span> ~/strapped.yml <span class="command"><br> Using Straps From:</span> ./straps/ <span class="command"><br> Requested Straps :</span> unix_utils brew git
-                <span class="command"><br> Strap: mac_app_store</span><br>  🍏 installing AirMail 3
-                <span class="command"><br> Strap: brew</span><br>  🍻 installing google-chrome<br>  🍻 installing visual-studio-code
-                <span class="command"><br> Strap: git</span><br>  💾 cloning kelseyhightower/nocode.git into ~/repos
-                <span class="command"><br> Strap: visual_studio_code</span><br>  💻 adding extension PeterJausovec.vscode-docker
-            </div><div class="prompt">> <span class="pulse">_</span></div></pre>
+    </header>
+
+    <!-- Terminal window -->
+    <div class="container scale-up-center">
+        <div class="bar">
+            <div class="butt bg-red"></div>
+            <div class="butt bg-yellow"></div>
+            <div class="butt bg-green"></div>
+        </div>
+        <div class="tab">
+            <button id="initial" class="window-links" onclick="openTab(event, 'tab1')">~ - strapped</button>
+            <button class="window-links" onclick="openTab(event, 'tab2')">~ - vim strap_config.yml</button>
+        </div>
+
+        <div id="tab1" class="window">
+            <div class="block center">
+                <div class="console">
+                    <span class="prompt">> </span>
+                    <span class="command"> curl https://stay.strapped.sh | sh</span><br>
+                    <span class="prompt">🔫 #StayStrapped</span><br>
+                    <span class="prompt">> </span>
+                    <span class="command"> strapped --auto -y strap_config.yml</span><br><br>
+                    <span class="command">Using Config From: </span>
+                    <span class="accent">strap_config.yml</span><br>
+                    <span class="command">Using Straps From: </span>
+                    <span class="accent">https://raw.githubusercontent.com/azohra/strapped/master/straps</span><br>
+                    <span class="command">Requested Straps : </span>
+                    <span class="accent">strapped brew git visual_studio_code</span><br><br>
+                    <span class="command">Strap: </span>
+                    <span class="accent">Strapped</span><br><br>
+                    <span class="command">Strap: </span>
+                    <span class="accent">brew</span><br>
+                    <span class="prompt">🚰 tapping homebrew/core</span><br>
+                    <span class="prompt">🚰 tapping homebrew/cask-fonts</span><br>
+                    <span class="prompt">🍺 installing openssl</span><br>
+                    <span class="prompt">🍺 installing python</span><br>
+                    <span class="prompt">🍺 installing terraform</span><br>
+                    <span class="prompt">🍺 installing openssl</span><br>
+                    <span class="prompt">🍻 installing visual-studio-code</span><br>
+                    <span class="prompt">🍻 installing google-cloud-sdk</span><br><br>
+                    <span class="command">Strap: </span>
+                    <span class="accent">git</span><br>
+                    <span class="prompt">💾 cloning git@github.com:kelseyhightower/nocode.git into ~/repos</span><br><br>
+                    <span class="command">Strap: </span>
+                    <span class="accent">visual_studio_code</span><br>
+                    <span class="prompt">💻 adding extension zhuangtongfa.material-theme</span><br>
+                    <span class="prompt">💻 adding extension PKief.material-icon-theme</span><br><br>
+                    <span class="prompt pulse">></span>
+
+                </div>
+            </div>  
+        </div>
+
+        <div id="tab2" class="window">
+            <div class="block center">
+                <div class="body console">
+                    <span class="highlight pulse">#</span>
+                    <span class="comment m0">Where you wish to source your straps from</span><br>
+                    <span class="command">strapped:</span><br>
+                    <span class="command indent-1">repo:</span>
+                    <span class="prompt"> https://raw.githubusercontent.com/azohra/strapped/master/straps</span><br><br>
+                    <span class="comment"># Brew taps, casks and packages</span><br>
+                    <span class="command">brew:</span><br>
+                    <span class="command indent-1">taps:</span><br>
+                    <span class="prompt indent-2"> - { name: homebrew/core }</span><br>
+                    <span class="prompt indent-2"> - { name: homebrew/cask-fonts }</span><br>
+                    <span class="command indent-1">packages:</span><br>
+                    <span class="prompt indent-2">- { name: python, upgrade: true }</span><br>
+                    <span class="prompt indent-2">- { name: terraform, upgrade: true }</span><br>
+                    <span class="prompt indent-2">- { name: openssl, upgrade: true }</span><br>
+                    <span class="command indent-1">casks:</span><br>
+                    <span class="prompt indent-2">- { name: visual-studio-code, upgrade: true }</span><br>
+                    <span class="prompt indent-2">- { name: google-cloud-sdk, upgrade: true }</span><br><br>
+                    <span class="comment"># Clone any git repos you contribute to</span><br>
+                    <span class="command">git:</span><br>
+                    <span class="command indent-1">clone:</span><br>
+                    <span class="prompt indent-1">- { repo: git@github.com:kelseyhightower/nocode.git, folder: ~/repos }</span><br><br>
+                    <span class="comment"># Install any vscode plugins you use</span><br>
+                    <span class="command">visual_studio_code:</span><br>
+                    <span class="command indent-1">extensions:</span><br>
+                    <span class="prompt indent-2">- { name: zhuangtongfa.material-theme }</span><br>
+                    <span class="prompt indent-2">- { name: PKief.material-icon-theme }</span><br><br>
+                </div>
+            </div>
         </div>
     </div>
-    <footer>
-        <p> Made with ❤️by Azohra. #StayStrapped </p>
-    </footer>
+
+    <!-- <footer>
+        <p> Made with ❤️ by Azohra. #StayStrapped </p>
+    </footer> -->
 </body>
 
 </html>
+
+<script>
+function openTab(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("window");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("window-links");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+    document.getElementById("initial").click();
+</script>

@@ -9,6 +9,7 @@
 | Compatability | OSX                                       |
 
 ## Configuration
+
 ```yml
 dockutils:
   apps:
