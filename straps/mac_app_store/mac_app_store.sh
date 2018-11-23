@@ -7,11 +7,11 @@ strapped_mac_app_store_before () {
 strapped_mac_app_store () {
     local mas_count
 
-    mas_count=$(jq -r '.mac_app_store.apps | length' <<< "${1}")
+    mas_count=$(jq -r '.apps | length' <<< "${1}")
 
     for (( i=0; i < mas_count; i++ )); do
-        name=$(jq -r ".mac_app_store.apps[${i}].name" <<< "${1}")
-        id=$(jq -r ".mac_app_store.apps[${i}].id" <<< "${1}")
+        name=$(jq -r ".apps[${i}].name" <<< "${1}")
+        id=$(jq -r ".apps[${i}].id" <<< "${1}")
         echo "🍏 installing ${name}"
         mas install "${id}"
     done
