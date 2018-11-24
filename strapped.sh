@@ -7,6 +7,7 @@ C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
 
+uh_oh=""
 custom_straps=""
 auto_approve=""
 repo_location="https://raw.githubusercontent.com/azohra/strapped/master/straps"
@@ -67,11 +68,18 @@ done
 
 #make this more awesome by asking to install missing deps and also making it OS specific
 check_deps () {
-    deps="yq jq brew xcode-select parallel"
+    deps="brew yq jq"
     for dep in $deps; do
-        if ! $dep --version &> /dev/null; then echo "😞 ${dep} is required to run strapped.sh" && uh_oh=1; fi 
+        if ! $dep --version &> /dev/null; then   
+            if [[ ${dep} = "brew2" ]]; then
+                ask_permission "brew is required. Can I install it?"
+                ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+            else
+                ask_permission "${dep} is required. Can I install it via brew?"
+                brew install $dep
+            fi
+        fi
     done
-    if [[ "${uh_oh}" = "1" ]]; then exit 2; fi
 }
 
 verify_config () {
@@ -85,28 +93,28 @@ verify_config () {
 
     # Create Strap Array
     if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' '); fi
+    straps=${straps/strapped /}
     if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
-    straps=("${straps}")
 }
 
-ask_permission () {    
-    if ! [ "${auto_approve}" ]; then 
-        printf "Execute? Y/N: "
-        while true
-        do
-          read -r ans
-          case ${ans} in
-           [yY]* ) printf "\\n🔫 LETS DO THIS 🔫\\n" && break;;
-           [nN]* ) printf "\\n🔥 CRISIS AVERTED 🔥\\n" && exit;;
-           * )     printf "Y/N: ";;
-          esac
-        done
-    fi
+ask_permission () {  
+    local message
+    message=${1}
+    echo -e "\n${C_GREEN}Question:${C_BLUE} ${message} ${C_REG}"
+    printf "(Y/N): "
+    while true
+    do
+      if [ "${auto_approve}" ]; then ans="y" && printf "Y (auto)"; else read -r ans; fi
+      case ${ans} in
+       [yY]* ) break;;
+       [nN]* ) exit;;
+       * )     printf "Y/N: ";;
+      esac
+    done
 }
 
 stay_strapped () {    
     for strap in ${straps}; do
-        if [[ ${strap} = "strapped" ]]; then continue; fi
         if [[ ${repo_location} =~ ${url_regex} ]]; then
             source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${strap}.sh")"
         else
@@ -122,5 +130,5 @@ stay_strapped () {
 
 check_deps
 verify_config
-ask_permission
+ask_permission "Are you ready to get strapped?"
 stay_strapped
