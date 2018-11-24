@@ -7,7 +7,6 @@ C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
 
-uh_oh=""
 custom_straps=""
 auto_approve=""
 repo_location="https://raw.githubusercontent.com/azohra/strapped/master/straps"
@@ -68,23 +67,37 @@ done
 
 #make this more awesome by asking to install missing deps and also making it OS specific
 check_deps () {
-    deps="brew yq jq"
-    for dep in $deps; do
-        if ! $dep --version &> /dev/null; then   
-            if [[ ${dep} = "brew2" ]]; then
-                ask_permission "brew is required. Can I install it?"
-                ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-            else
-                ask_permission "${dep} is required. Can I install it via brew?"
-                brew install $dep
-            fi
-        fi
-    done
+
+    local not_supported
+    not_supported=""
+    
+    case "$OSTYPE" in
+      linux*)   not_supported="true";;
+      darwin*)   ;; 
+      win*)     not_supported="true" ;;
+      msys*)    not_supported="true" ;;
+      cygwin*)  not_supported="true" ;;
+      bsd*)     not_supported="true" ;;
+      solaris*) not_supported="true" ;;
+      *)        not_supported="true" ;;
+    esac
+
+    if [ "${not_supported}" ]; then echo "$OSTYPE not supported (yet!)" && exit 2; fi 
+    
+    if ! strapped-parser --version &> /dev/null; then
+        ask_permission "strapped-parser is required. Can I install it?"
+        curl -s -L "https://github.com/mikefarah/yq/releases/download/2.2.0/yq_darwin_amd64" --output /usr/local/bin/strapped-parser
+        chmod u+x /usr/local/bin/strapped-parser
+    elif ! jq --version &> /dev/null; then
+        ask_permission "jq is required. Can I install it?"
+        curl -s -L "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-osx-amd64" --output /usr/local/bin/jq
+        chmod u+x /usr/local/bin/jq
+    fi
 }
 
 verify_config () {
     # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | yq r - -j); else json=$(yq r "${yml_location}" -j); fi
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | strapped-parser r - -j); else json=$(strapped-parser r "${yml_location}" -j); fi
     if [ ! "${json}" ]; then echo "Config not found" && exit 2;else echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}"; fi
     
     # Check for Repo
