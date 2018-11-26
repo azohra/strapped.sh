@@ -6,11 +6,13 @@ strapped_pip2_before () {
 strapped_pip2 () {
     local pip2_count
     local pkg
-    
-    pip2_count=$(jq -r '.packages | length' <<< "${1}")
+    local user_json
+
+    user_json=$1   
+    pip2_count=$(jq -r '.packages | length' <<< "$user_json")
 
     for (( i=0; i < pip2_count; i++ )); do
-        pkg=$(jq -r ".packages[${i}].name" <<< "${1}")
+        pkg=$(jq -r ".packages[${i}].name" <<< "$user_json")
         echo "🐍 installing ${pkg}"
         pip install "${pkg}"
     done
