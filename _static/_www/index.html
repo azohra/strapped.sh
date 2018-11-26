@@ -14,7 +14,6 @@
         <div class="banner">
             <img class="block lead center" src="logos/logo-black.png">
         </div>
-        <h2>Don't get caught lacking, stay strapped!</h2>
     </header>
 
     <!-- Terminal window -->
@@ -46,21 +45,16 @@
                     <span class="command">Requested Straps : </span>
                     <span class="accent">strapped brew git visual_studio_code</span><br><br>
                     <span class="command">Strap: </span>
-                    <span class="accent">Strapped</span><br><br>
-                    <span class="command">Strap: </span>
                     <span class="accent">brew</span><br>
                     <span class="prompt">🚰 tapping homebrew/core</span><br>
                     <span class="prompt">🍺 installing terraform</span><br>
-                    <span class="prompt">🍺 installing openssl</span><br>
-                    <span class="prompt">🍻 installing visual-studio-code</span><br>
-                    <span class="prompt">🍻 installing google-cloud-sdk</span><br><br>
+                    <span class="prompt">🍻 installing visual-studio-code</span><br><br>
                     <span class="command">Strap: </span>
                     <span class="accent">git</span><br>
                     <span class="prompt">💾 cloning git@github.com:kelseyhightower/nocode.git into ~/repos</span><br><br>
                     <span class="command">Strap: </span>
                     <span class="accent">visual_studio_code</span><br>
-                    <span class="prompt">💻 adding extension zhuangtongfa.material-theme</span><br>
-                    <span class="prompt">💻 adding extension PKief.material-icon-theme</span><br><br>
+                    <span class="prompt">💻 adding extension PKief.material-icon-theme</span><br>
                     <span class="prompt pulse">></span>
                 </div>
             </div>
@@ -100,35 +94,41 @@
         </div>
     </div>
 
+    <div class="container">
+            <h2>Wn</h2>
+    </div>
+
     <footer>
-        <h2>Made with ❤️ by the developers at</h2>
-        <img class="item center" src="logos/black.png">
+        <h3>Made with ❤️ by the developers at</h3>
+        <div class="hidden">
+                <img class="item center" src="logos/black.png">
+        </div>
     </footer>
 </body>
 
 </html>
 
 <script>
-function openTab(evt, cityName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
+    function openTab(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("window");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("window");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("window-links");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
     }
-
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("window-links");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
 
     document.getElementById("initial").click();
 </script>
