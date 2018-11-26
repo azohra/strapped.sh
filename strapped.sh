@@ -84,10 +84,10 @@ check_deps () {
 
     if [ "${not_supported}" ]; then echo "$OSTYPE not supported (yet!)" && exit 2; fi 
     
-    if ! strapped-parser --version &> /dev/null; then
-        ask_permission "strapped-parser is required. Can I install it?"
-        curl -s -L "https://github.com/mikefarah/yq/releases/download/2.2.0/yq_darwin_amd64" --output /usr/local/bin/strapped-parser
-        chmod u+x /usr/local/bin/strapped-parser
+    if ! yq --version &> /dev/null; then
+        ask_permission "yq is required. Can I install it?"
+        curl -s -L "https://github.com/mikefarah/yq/releases/download/2.2.0/yq_darwin_amd64" --output /usr/local/bin/yq
+        chmod u+x /usr/local/bin/yq
     elif ! jq --version &> /dev/null; then
         ask_permission "jq is required. Can I install it?"
         curl -s -L "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-osx-amd64" --output /usr/local/bin/jq
@@ -97,7 +97,7 @@ check_deps () {
 
 verify_config () {
     # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | strapped-parser r - -j); else json=$(strapped-parser r "${yml_location}" -j); fi
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | yq r - -j); else json=$(yq r "${yml_location}" -j); fi
     if [ ! "${json}" ]; then echo "Config not found" && exit 2;else echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}"; fi
     
     # Check for Repo
@@ -113,7 +113,7 @@ verify_config () {
 ask_permission () {  
     local message
     message=${1}
-    echo -e "\n${C_GREEN}Question:${C_BLUE} ${message} ${C_REG}"
+    echo -e "\\n${C_GREEN}Question:${C_BLUE} ${message} ${C_REG}"
     printf "(Y/N): "
     while true
     do
