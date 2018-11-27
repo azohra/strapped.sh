@@ -24,6 +24,28 @@ function join_stack() {
     return val
 }
 
+function safe_split(input, output) {
+    split(input, chars, "")
+    in_quote = 1
+    acc = ""
+    count = 0
+    for (i=0; i < length(input); i++) {
+        c=chars[i]
+        if (c=="\"") {
+            in_quote = (in_quote + 1) % 2
+        }
+        if (c=="," && in_quote) {
+            output[count++] = acc
+            acc = ""
+        } else {
+            acc = acc c
+        }
+
+    }
+    output[count++] = acc
+
+}
+
 /^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*$/ {
     match($0, /^[[:space:]]*/)
     c_level = RLENGTH / 2
@@ -64,18 +86,23 @@ function join_stack() {
     sub(/^\{/, "")
     sub(/\}$/, "")
 
-    split($0, splitted, ",")
+
+    safe_split($0, splitted)
     for (v in splitted) {
         gsub(/^[[:space:]]/, "", splitted[v])
         gsub(/[[:space:]]$/, "", splitted[v])
 
-        split(splitted[v], vals, ":")
-        gsub(/^[[:space:]]/, "", vals[1])
-        gsub(/[[:space:]]$/, "", vlas[1])
-        gsub(/^[[:space:]]/, "", vals[2])
-        gsub(/[[:space:]]$/, "", vlas[2])
+        key=splitted[v]
+        val=splitted[v]
 
-        print stack "[" indx "]." vals[1] "=" vals[2]
+        sub(/^[[:space:]]*/, "", key)
+        sub(/:.*$/, "", key)
+
+        sub(/^[[:space:]]*[^[:space:]]+:[[:space:]]+\"?/, "", val) # "
+        sub(/\"?[[:space:]]*$/, "", val) #"
+
+        print stack "[" indx "]." key "=" val
     }
+    delete splitted
 }
 
