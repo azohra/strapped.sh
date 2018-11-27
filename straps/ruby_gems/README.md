@@ -12,7 +12,7 @@
 
 ```yml
 ruby_gems:
-  gems:
-    - { name: bundler }
-    - { name: watir   }
+  packages:
+  - { name: bundler }
+  - { name: watir   }
 ```
