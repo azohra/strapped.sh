@@ -5,6 +5,7 @@ function max(a, b) {
         a
     }
 }
+
 function push(v) {
     stk[stk_i++] = v
 }
@@ -23,26 +24,31 @@ function join_stack() {
     return val
 }
 
-/^[[:space:]]*[a-zA-Z0-9\_]+\:/ {
+/^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*$/ {
     match($0, /^[[:space:]]*/)
     c_level = RLENGTH / 2
-    pop(i_level - c_level)
-
-    sub(/:\w*$/, "")
+    diff = i_level - c_level
+    if (diff < -1) {
+        print "Yaml Syntax Error: Extra indentation on line", NR > "/dev/stderr"
+        exit 1
+    }
+    if (c_level == 0) {
+        pop(diff + 1)
+    } else {
+        pop(diff)
+    }
     sub(/^[[:space:]]*/, "")
+    sub(/:.*$/, "")
     push($0)
-
-    i_level = c_level
+    i_level -= (i_level - c_level)
 }
 
-/^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]+[^[:space:]]+.*/ {
+/^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*[^[:space:]]+[[:space:]]*$/ {
     sub(/^[[:space:]]*/, "")
-    sub(/\:[[:space:]]*/, "=")
-    gsub(/[[:space:]]$/, "")
+    sub(/:[[:space:]]+/, "=")
+    sub(/[[:space:]]*$/, "")
     print join_stack() $0
 }
-
-
 
 /^[[:space:]]*\-/ {
     stack = join_stack()
