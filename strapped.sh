@@ -105,19 +105,19 @@ q() {
 }
 
 q_sub() {
-    egrep "$2" <<< "$1" | sed 's/^'$1'//'
+    egrep "$2" <<< "$1" | sed 's/^'$2'//'
 }
 
 q_count() {
     q "$1" "$2" | wc -l
 }
 
-qconfig() {
-    egrep "$1" <<< "$json" | sed 's/^.*=//'
+q_config() {
+    q "$json" "$1" | sed 's/^.*=//'
 }
 
-qconfig_sub() {
-    egrep "$1" <<< "$json" | sed 's/'$1'//'
+q_config_sub() {
+    egrep "$1" <<< "$json" | sed 's/^'$1'//'
 }
 
 parse_config() {
@@ -128,13 +128,13 @@ parse_config() {
 
 parse_strapped_repo() {
     # Check for Repo
-    if [ "$(qconfig "strapped.repo")" != "null" ]; then repo_location="$(qconfig "strapped.repo")"; fi
+    if [ "$(q_config "strapped.repo")" != "null" ]; then repo_location="$(q_config "strapped.repo")"; fi
     if [ ! "${repo_location}" ]; then echo "Repo not found" && exit 2;else echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${repo_location}${C_REG}"; fi
 }
 
 create_strap_array() {
     # Create Strap Array
-    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(qconfig_sub "^" | sed "s/\..*$//" | uniq); fi
+    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\..*$//" | uniq); fi
     straps=${straps/strapped /}
     if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
 }
@@ -177,7 +177,7 @@ stay_strapped () {
         else
             source "${repo_location}/${strap}/${strap}.sh"
         fi
-        strap_json=$(qconfig_sub "${strap}\.")
+        strap_json=$(q_config_sub "${strap}\.")
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
         strapped_"${strap}"_before "${strap_json}"
         strapped_"${strap}" "${strap_json}"
@@ -203,5 +203,5 @@ stay_strapped
 # init_parser
 # json=$(cat yml/first_run.yml | awk "$parser")
 # # lookup "strapped.repo"
-# qconfig_sub "^" | sed "s/\..*$//" | uniq
-# # qconfig_sub "unix_utils.echo."
+# q_config_sub "^" | sed "s/\..*$//" | uniq
+# # q_config_sub "unix_utils.echo."
