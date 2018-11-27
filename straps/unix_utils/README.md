@@ -13,14 +13,14 @@
 ```yml
 unix_utils:
   mkdir:
-    - { dir: ~/photos }
-    - { dir: /www/_static }
+  - { dir: ~/photos }
+  - { dir: /www/_static }
   ln:
-    - { dir: "/dotfiles/.gitignore", link: "~/.gitignore" }
-    - { dir: "/dotfiles/.gitconfig", link: "~/.gitconfig" }
+  - { dir: "/dotfiles/.gitignore", link: "~/.gitignore" }
+  - { dir: "/dotfiles/.gitconfig", link: "~/.gitconfig" }
   source:
-    - { dir: ~/.bashrc }
+  - { dir: ~/.bashrc }
   echo:
-    - { phrase: "You have successfully installed strapped.sh" }
-    - { phrase: "Made with <3 by Azohra" }
+  - { phrase: "You have successfully installed strapped.sh" }
+  - { phrase: "Made with <3 by Azohra" }
 ```
