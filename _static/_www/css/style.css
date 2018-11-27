@@ -313,6 +313,24 @@ span {
   margin: 0;
 }
 
+/* Style for flexbox divs */
+
+.row { 
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.row-img-small {
+  width: 16vw;
+  height: auto;
+  margin: auto;
+}
+
+a {
+  margin: auto;
+}
+
 /* Pulse animation */
 
 @-webkit-keyframes pulse {
