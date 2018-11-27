@@ -18,32 +18,31 @@ strapped_unix_utils () {
     local user_json
 
     user_json=$1
-    echo $user_json
     ln_count=$(q_count "$user_json" "ln")
     mkdir_count=$(q_count "$user_json" "mkdir")
     echo_count=$(q_count "$user_json" "echo")
     source_count=$(q_count "$user_json" "source")
 
     for (( i=0; i <ln_count; i++ )); do
-        dir=$(q "$user_json" "ln.\[${i}\].dir")
-        link=$(q "$user_json" "ln.\[${i}\].link")
+        dir=$(q "$user_json" "ln.\\[${i}\\].dir")
+        link=$(q "$user_json" "ln.\\[${i}\\].link")
         echo "🔗 linking ${dir} to ${link}"
         ln -snf "${dir}" "${link}"
     done
 
     for (( i=0; i <mkdir_count; i++ )); do
-        folder=$(q "$user_json" "mkdir.\[${i}\].dir")
+        folder=$(q "$user_json" "mkdir.\\[${i}\\].dir")
         echo "📂 creating ${folder}"
         mkdir -p "${folder}"
     done
 
     for (( i=0; i <echo_count; i++ )); do
-        phrase=$(q "$user_json" "echo.\[$i\].phrase")
+        phrase=$(q "$user_json" "echo.\\[$i\\].phrase")
         echo "🗣️  ${phrase}"
     done
 
     for (( i=0; i <source_count; i++ )); do
-        file=$(q "$user_json" "source.\[${i}\].file")
+        file=$(q "$user_json" "source.\\[${i}\\].file")
         echo "📤 sourcing ${file}"
         source "${file}"
     done

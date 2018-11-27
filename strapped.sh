@@ -92,11 +92,11 @@ init_parser() {
 
 # Query API
 q() {
-    egrep "$2" <<< "$1" | sed 's/^.*=//'
+    grep -E "$2" <<< "$1" | sed 's/^.*=//'
 }
 
 q_sub() {
-    egrep "$2" <<< "$1" | sed 's/^'$2'//'
+    grep -E "$2" <<< "$1" | sed "s/^$2//"
 }
 
 q_count() {
@@ -109,7 +109,7 @@ q_config() {
 }
 
 q_config_sub() {
-    egrep "$1" <<< "$json" | sed 's/^'$1'//'
+    grep -E "$1" <<< "$json" | sed "s/^$1//"
 }
 
 parse_config() {
@@ -126,7 +126,7 @@ parse_strapped_repo() {
 
 create_strap_array() {
     # Create Strap Array
-    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\..*$//" | uniq); fi
+    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\\..*$//" | uniq); fi
     straps=${straps/strapped /}
     if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
 }
@@ -155,7 +155,7 @@ stay_strapped () {
         else
             source "${repo_location}/${strap}/${strap}.sh"
         fi
-        strap_json=$(q_config_sub "${strap}\.")
+        strap_json=$(q_config_sub "${strap}\\.")
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
         strapped_"${strap}"_before "${strap_json}"
         strapped_"${strap}" "${strap_json}"
