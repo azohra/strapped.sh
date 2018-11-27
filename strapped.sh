@@ -95,6 +95,50 @@ check_deps () {
     fi
 }
 
+# TODO: Load the parser from raw github url
+init_parser() {
+    parser=$(cat parser.awk)
+}
+
+q() {
+    egrep "$2" <<< "$1" | sed 's/^.*=//'
+}
+
+q_sub() {
+    egrep "$2" <<< "$1" | sed 's/^'$1'//'
+}
+
+q_count() {
+    q "$1" "$2" | wc -l
+}
+
+qconfig() {
+    egrep "$1" <<< "$json" | sed 's/^.*=//'
+}
+
+qconfig_sub() {
+    egrep "$1" <<< "$json" | sed 's/'$1'//'
+}
+
+parse_config() {
+    # Check for YML
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | awk "$parser"); else json=$(awk "$parser" "${yml_location}"); fi
+    if [ ! "${json}" ]; then echo "Config not found" && exit 2;else echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}"; fi
+}
+
+parse_strapped_repo() {
+    # Check for Repo
+    if [ "$(qconfig "strapped.repo")" != "null" ]; then repo_location="$(qconfig "strapped.repo")"; fi
+    if [ ! "${repo_location}" ]; then echo "Repo not found" && exit 2;else echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${repo_location}${C_REG}"; fi
+}
+
+create_strap_array() {
+    # Create Strap Array
+    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(qconfig_sub "^" | sed "s/\..*$//" | uniq); fi
+    straps=${straps/strapped /}
+    if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
+}
+
 verify_config () {
     # Check for YML
     if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | yq r - -j); else json=$(yq r "${yml_location}" -j); fi
@@ -133,7 +177,7 @@ stay_strapped () {
         else
             source "${repo_location}/${strap}/${strap}.sh"
         fi
-        strap_json=$(jq -r ."${strap}" <<< "${json}")
+        strap_json=$(qconfig_sub "${strap}\.")
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
         strapped_"${strap}"_before "${strap_json}"
         strapped_"${strap}" "${strap_json}"
@@ -141,7 +185,23 @@ stay_strapped () {
     done
 }
 
-check_deps
-verify_config
+# check_deps
+# verify_config
+# ask_permission "Are you ready to get strapped?"
+# stay_strapped
+
+
+
+init_parser
+parse_config
+parse_strapped_repo
+create_strap_array
 ask_permission "Are you ready to get strapped?"
 stay_strapped
+
+
+# init_parser
+# json=$(cat yml/first_run.yml | awk "$parser")
+# # lookup "strapped.repo"
+# qconfig_sub "^" | sed "s/\..*$//" | uniq
+# # qconfig_sub "unix_utils.echo."
