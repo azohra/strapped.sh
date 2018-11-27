@@ -100,6 +100,7 @@ init_parser() {
     parser=$(cat parser.awk)
 }
 
+# Query API
 q() {
     egrep "$2" <<< "$1" | sed 's/^.*=//'
 }
@@ -112,6 +113,7 @@ q_count() {
     q "$1" "$2" | wc -l
 }
 
+# Helper for config
 q_config() {
     q "$json" "$1" | sed 's/^.*=//'
 }
