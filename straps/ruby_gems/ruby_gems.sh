@@ -13,7 +13,7 @@ strapped_ruby_gems () {
     for (( i=0; i < gem_count; i++ )); do
         gem=$(q "$user_config" "packages.\\[${i}\\].name")
         echo "💎 installing ${gem}"
-        gem install "${gem}"
+        gem install "${gem}" >/dev/null
     done
 }
 
