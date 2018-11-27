@@ -6,13 +6,12 @@ strapped_visual_studio_code_before () {
 strapped_visual_studio_code () {
     local ext
     local ext_count
-    local user_json
+    local user_config=$1
 
-    user_json=$1
-    ext_count=$(jq -r '.extensions | length' <<< "$user_json" )
-    
+    ext_count=$(q_count "$user_config" "extensions.\\[[0-9]+\\].name")
+
     for (( i=0; i <ext_count; i++ )); do
-        ext=$(jq -r ".extensions[${i}].name" <<< "$user_json")
+        ext=$(q "$user_config" "extensions.\\[${i}\\].name")
         echo "💻 adding extension ${ext}"
         code --install-extension "${ext}"
     done
@@ -21,5 +20,3 @@ strapped_visual_studio_code () {
 strapped_visual_studio_code_after () { 
     return
 }
-
-
