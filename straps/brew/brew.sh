@@ -1,6 +1,6 @@
 #!/bin/bash
-strapped_brew_before () { 
-    if ! brew -v > /dev/null; then echo "🍺 brew missing. Would you like to install it?" && exit; fi 
+strapped_brew_before () {
+    if ! brew -v > /dev/null; then echo "🍺 brew missing. Would you like to install it?" && exit; fi
 }
 
 strapped_brew () {
@@ -11,34 +11,31 @@ strapped_brew () {
     local tap
     local pkg
     local cask
-    local user_json
+    local user_config=$1
 
-    user_json=$1
-    tap_count=$(jq -r ".taps | length" <<< "$user_json")
-    pkg_count=$(jq -r ".packages | length" <<< "$user_json")
-    cask_count=$(jq -r ".casks | length" <<< "$user_json")
+    tap_count=$(q_count "$user_config" "taps.\\[[0-9]+\\].name")
+    pkg_count=$(q_count "$user_config" "packages.\\[[0-9]+\\].name")
+    cask_count=$(q_count "$user_config" "casks.\\[[0-9]+\\].name")
 
     for (( i=0; i < tap_count; i++ )); do
-        tap=$(jq -r ".taps[${i}].name" <<< "$user_json")
+        tap=$(q "$user_config" "taps.\\[${i}\\].name")
         echo "🚰 tapping ${tap}"
         brew tap "${tap}"
     done
 
     for (( i=0; i < pkg_count; i++ )); do
-        pkg=$(jq -r ".packages[${i}].name" <<< "$user_json")
+        pkg=$(q "$user_config" "packages.\\[${i}\\].name")
         echo "🍺 installing ${pkg}"
         brew list "${pkg}" &>/dev/null || brew install "${pkg}"
     done
 
     for (( i=0; i < cask_count; i++ )); do
-        cask=$(jq -r ".casks[${i}].name" <<< "$user_json")
+        cask=$(q "$user_config" "casks.\\[${i}\\].name")
         echo "🍻 installing ${cask}"
         brew cask list "${cask}" &>/dev/null || brew cask install "${cask}"
     done
 }
 
-strapped_brew_after () { 
-    return 
+strapped_brew_after () {
+    return
 }
-
-

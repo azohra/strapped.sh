@@ -9,18 +9,19 @@
 | Compatability | OSX                                         |
 
 ## Configuration
+
 ```yml
 brew:
-  tap:
-    - { name: azohra/tools } 
-    - { name: homebrew/cask } 
-    - { name: homebrew/cask-drivers } 
-  package:
-    - { name: ruby, upgrade: true } 
-    - { name: zsh,  upgrade: true } 
-    - { name: lyra, upgrade: true } 
-  cask:
-    - { name: 1password, upgrade: true }  
-    - { name: firefox,   upgrade: true }                    
-    - { name: slack,     upgrade: true } 
+  taps:
+  - { name: azohra/tools }
+  - { name: homebrew/cask }
+  - { name: homebrew/cask-drivers }
+  packages:
+  - { name: ruby, upgrade: true }
+  - { name: zsh,  upgrade: true }
+  - { name: lyra, upgrade: true }
+  casks:
+  - { name: 1password, upgrade: true }  
+  - { name: firefox,   upgrade: true }
+  - { name: slack,     upgrade: true }
 ```
