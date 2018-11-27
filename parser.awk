@@ -6,6 +6,15 @@ function max(a, b) {
     }
 }
 
+function report(error) {
+    print "Yaml Error:", error > "/dev/stderr"
+    if (force_complete) {
+        linter_status=1
+    } else {
+        exit 1
+    }
+}
+
 function push(v) {
     stk[stk_i++] = v
 }
@@ -51,8 +60,7 @@ function safe_split(input, output) {
     c_level = RLENGTH / 2
     diff = i_level - c_level
     if (diff < -1) {
-        print "Yaml Syntax Error: Extra indentation on line", NR > "/dev/stderr"
-        exit 1
+        report("Extra indentation on line "NR)
     }
     if (c_level == 0) {
         pop(diff + 1)
@@ -62,10 +70,16 @@ function safe_split(input, output) {
     sub(/^[[:space:]]*/, "")
     sub(/:.*$/, "")
     push($0)
-    i_level -= (i_level - c_level)
+    i_level -= diff
 }
 
 /^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*[^[:space:]]+[[:space:]]*$/ {
+    match($0, /^[[:space:]]*/)
+    c_level = RLENGTH / 2
+    diff = i_level - c_level
+    if (diff < -1) {
+        report("Extra indentation on line "NR)
+    }
     sub(/^[[:space:]]*/, "")
     sub(/:[[:space:]]+/, "=")
     sub(/[[:space:]]*$/, "")
@@ -83,8 +97,8 @@ function safe_split(input, output) {
 
     sub(/^[[:space:]]*\- /, "")
 
-    sub(/^\{/, "")
-    sub(/\}$/, "")
+    sub(/^[[:space:]]*\{/, "")
+    sub(/\}[[:space:]]*$/, "")
 
 
     safe_split($0, splitted)
@@ -104,5 +118,11 @@ function safe_split(input, output) {
         print stack "[" indx "]." key "=" val
     }
     delete splitted
+}
+
+END	{
+    if (force_complete) {
+        exit linter_status
+    }
 }
 

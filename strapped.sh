@@ -27,6 +27,7 @@ function usage {
     echo "  -v, --version               print the current strapped version"
     echo "  -a, --auto                  do not prompt for confirmation"
     echo "  -y, --yml file/url          path to a valid strapped yml config"
+    echo "  -l, --lint                  exits after reading config file"
     echo "  -s, --straps string         run a subset of your config. Comma seperated."
     echo "  -h, --help                  prints this message"
     exit 1
@@ -39,6 +40,11 @@ function upgrade {
     exit 0
 }
 
+# TODO: Load the parser from raw github url
+init_parser() {
+    parser=$(cat parser.awk)
+}
+
 while [ $# -gt 0 ] ; do
     case "$1" in
     -u|--upgrade)
@@ -47,6 +53,11 @@ while [ $# -gt 0 ] ; do
     -y|--yml)
         yml_location="$2"
         shift # extra value 
+    ;;
+    -l|--lint)
+        init_parser
+        awk -v force_complete=1 "$parser" $2 > /dev/null
+        exit $?
     ;;
     -r|--repo)
         repo_location="$2"
@@ -72,10 +83,6 @@ while [ $# -gt 0 ] ; do
     shift
 done
 
-# TODO: Load the parser from raw github url
-init_parser() {
-    parser=$(cat parser.awk)
-}
 
 # Query API
 q() {
@@ -154,3 +161,4 @@ parse_strapped_repo
 create_strap_array
 ask_permission "Are you ready to get strapped?"
 stay_strapped
+
