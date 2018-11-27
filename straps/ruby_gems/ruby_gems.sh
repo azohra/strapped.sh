@@ -8,7 +8,7 @@ strapped_ruby_gems () {
     local gem_count
     local user_config=$1
 
-    gem_count=$(q_count "$user_config" "packages")
+    gem_count=$(q_count "$user_config" "packages.\\[[0-9]+\\].name")
 
     for (( i=0; i < gem_count; i++ )); do
         gem=$(q "$user_config" "packages.\\[${i}\\].name")
