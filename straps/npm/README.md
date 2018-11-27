@@ -9,10 +9,11 @@
 | Compatability | universal                                 |
 
 ## Configuration
+
 ```yml
 npm:
-  packages: 
-    - { name: testcafe }
-    - { name: typescript }
-    - { name: docsify-cli }
+  packages:
+  - { name: request }
+  - { name: express }
+  - { name: typescript }
 ```
