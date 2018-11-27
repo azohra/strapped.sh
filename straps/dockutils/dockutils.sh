@@ -28,7 +28,7 @@ strapped_dockutils () {
 
     for (( i=0; i < app_count; i++ )); do
         name=$(q "$user_config" "apps.\\[${i}\\].name")
-        position=$(q "$user_config" "apps.\\[${i}\\].position")
+        position=$(q "$user_config" "apps.\\[${i}\\].pos")
         echo "🛳️  moving ${name} to position ${position}"
         dockutil --move "${name}" --position "${position}" --no-restart
     done
