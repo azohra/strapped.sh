@@ -1,23 +1,26 @@
 #!/bin/bash
-
 strapped_mac_utils_before () { 
   return
 }
 
 strapped_mac_utils () {
   local m_u_count
-  local user_json
+  local user_config=$1
+  local dom
+  local key
+  local typ
+  local val
 
-  user_json=$1
-  m_u_count=$(jq -r '.plists | length' <<< "$user_json")
+  m_u_count=$(q_count "$user_config" "plists")
 
   for (( i=0; i < m_u_count; i++ )); do
-      domain=$(jq -r ".plists[${i}].domain" <<< "$user_json")
-      key=$(jq -r ".plists[${i}].key" <<< "$user_json")
-      type=$(jq -r ".plists[${i}].type" <<< "$user_json")
-      value=$(jq -r ".plists[${i}].value" <<< "$user_json")
-      echo "🛠️ Updating ${domain} ${key} to ${value}"
-      plutil -replace "${key}" -"${type}" "${value}" ~/Library/Preferences/"${domain}".plist
+    dom=$(q "$user_config" "plists.\\[${i}\\].domain")
+    key=$(q "$user_config" "plists.\\[${i}\\].key")
+    typ=$(q "$user_config" "plists.\\[${i}\\].type")
+    val=$(q "$user_config" "plists.\\[${i}\\].value")
+
+    echo "🛠️ Updating ${dom} ${key} to ${val}"
+    # plutil -replace "${key}" -"${typ}" "${val}" ~/Library/Preferences/"${dom}".plist >/dev/null
   done
 }
 
