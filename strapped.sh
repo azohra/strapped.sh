@@ -1,6 +1,6 @@
 #!/bin/bash
 # shellcheck source=/dev/null
-# shellcheck disable=SC2068
+
 set -e
 
 C_GREEN="\\033[32m"
@@ -14,11 +14,10 @@ yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
 pretty_print () {  
-    local key
-    local value
-    key=${1}
-    value=${2}
-    echo -e "\\n${C_GREEN}${key}:${C_BLUE} ${value} ${C_REG}"
+    local key=${1}
+    local value=${2}
+
+    echo -e "${C_GREEN}${key}:${C_BLUE} ${value} ${C_REG}"
 }
 
 function usage {
@@ -119,10 +118,8 @@ create_strap_array() {
     if [ ! "${straps}" ]; then pretty_print "Strapped:" "Straps not found" && exit 2;else pretty_print "Requested Straps: " "${straps}"; fi
 }
 
-
 ask_permission () {  
-    local message
-    message=${1}
+    local message=${1}
     pretty_print "Question:" "${message}"
     printf "(Y/N): "
     while true
