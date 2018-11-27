@@ -6,15 +6,14 @@ strapped_pip3_before () {
 strapped_pip3 () {
     local pip3_count
     local pkg
-    local user_json
+    local user_config=$1
 
-    user_json=$1    
-    pip3_count=$(jq -r '.packages | length' <<< "$user_json")
+    pip3_count=$(q_count "$user_config" "packages")
 
     for (( i=0; i < pip3_count; i++ )); do
-        pkg=$(jq -r ".packages[${i}].name" <<< "$user_json")
-        echo "🐍 installing ${pkg}"
-        pip3 install "${pkg}"
+        pkg=$(q "$user_config" "packages.\\[${i}\\].name")
+        echo "🐍 (3.x.x) installing ${pkg}"
+        pip3 install "${pkg}" >/dev/null
     done
 }
 
