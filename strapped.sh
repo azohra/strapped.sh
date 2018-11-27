@@ -13,6 +13,14 @@ repo_location="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
+pretty_print () {  
+    local key
+    local value
+    key=${1}
+    value=${2}
+    echo -e "\\n${C_GREEN}${key}:${C_BLUE} ${value} ${C_REG}"
+}
+
 function usage {
     echo -e "\\nUsage: strapped [flags]\\n"
     echo "flags:"
@@ -28,7 +36,7 @@ function usage {
 function upgrade {
     rm /usr/local/bin/strapped
     curl -s https://stay.strapped.sh | sh
-    echo "🔫 Upgraded Successfully!"
+    pretty_print "Strapped: " "🔫 Upgraded Successfully!"
     exit 0
 }
 
@@ -65,26 +73,6 @@ while [ $# -gt 0 ] ; do
     shift
 done
 
-#make this more awesome by asking to install missing deps and also making it OS specific
-check_os () {
-
-    local not_supported
-    not_supported=""
-    
-    case "$OSTYPE" in
-      linux*)   not_supported="true";;
-      darwin*)   ;; 
-      win*)     not_supported="true" ;;
-      msys*)    not_supported="true" ;;
-      cygwin*)  not_supported="true" ;;
-      bsd*)     not_supported="true" ;;
-      solaris*) not_supported="true" ;;
-      *)        not_supported="true" ;;
-    esac
-
-    if [ "${not_supported}" ]; then echo "$OSTYPE not supported (yet!)" && exit 2; fi 
-}
-
 # TODO: Load the parser from raw github url
 init_parser() {
     parser=$(cat parser.awk)
@@ -115,27 +103,27 @@ q_config_sub() {
 parse_config() {
     # Check for YML
     if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | awk "$parser"); else json=$(awk "$parser" "${yml_location}"); fi
-    if [ ! "${json}" ]; then echo "Config not found" && exit 2;else echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}"; fi
+    if [ ! "${json}" ]; then pretty_print "Strapped:" "Config not found" && exit 2;else pretty_print "Using Config From:" "${yml_location}"; fi
 }
 
 parse_strapped_repo() {
     # Check for Repo
     if [ "$(q_config "strapped.repo")" != "null" ]; then repo_location="$(q_config "strapped.repo")"; fi
-    if [ ! "${repo_location}" ]; then echo "Repo not found" && exit 2;else echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${repo_location}${C_REG}"; fi
+    if [ ! "${repo_location}" ]; then pretty_print "Strapped:" "Repo not found" && exit 2;else pretty_print "Using Straps From:" "${repo_location}"; fi
 }
 
 create_strap_array() {
     # Create Strap Array
     if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\\..*$//" | uniq); fi
     straps=${straps/strapped /}
-    if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
+    if [ ! "${straps}" ]; then pretty_print "Strapped:" "Straps not found" && exit 2;else pretty_print "Requested Straps: " "${straps}"; fi
 }
 
 
 ask_permission () {  
     local message
     message=${1}
-    echo -e "\\n${C_GREEN}Question:${C_BLUE} ${message} ${C_REG}"
+    pretty_print "Question:" "${message}"
     printf "(Y/N): "
     while true
     do
@@ -163,7 +151,6 @@ stay_strapped () {
     done
 }
 
-check_os
 init_parser
 parse_config
 parse_strapped_repo
