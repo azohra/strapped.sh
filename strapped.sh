@@ -66,7 +66,7 @@ while [ $# -gt 0 ] ; do
 done
 
 #make this more awesome by asking to install missing deps and also making it OS specific
-check_deps () {
+check_os () {
 
     local not_supported
     not_supported=""
@@ -83,16 +83,6 @@ check_deps () {
     esac
 
     if [ "${not_supported}" ]; then echo "$OSTYPE not supported (yet!)" && exit 2; fi 
-    
-    if ! yq --version &> /dev/null; then
-        ask_permission "yq is required. Can I install it?"
-        curl -s -L "https://github.com/mikefarah/yq/releases/download/2.2.0/yq_darwin_amd64" --output /usr/local/bin/yq
-        chmod u+x /usr/local/bin/yq
-    elif ! jq --version &> /dev/null; then
-        ask_permission "jq is required. Can I install it?"
-        curl -s -L "https://github.com/stedolan/jq/releases/download/jq-1.6/jq-osx-amd64" --output /usr/local/bin/jq
-        chmod u+x /usr/local/bin/jq
-    fi
 }
 
 # TODO: Load the parser from raw github url
@@ -141,20 +131,6 @@ create_strap_array() {
     if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
 }
 
-verify_config () {
-    # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | yq r - -j); else json=$(yq r "${yml_location}" -j); fi
-    if [ ! "${json}" ]; then echo "Config not found" && exit 2;else echo -e "\\n${C_GREEN}Using Config From: ${C_BLUE}${yml_location}${C_REG}"; fi
-    
-    # Check for Repo
-    if [ "$(jq -r ".strapped.repo" <<< "${json}")" != "null" ]; then repo_location="$(jq -r ".strapped.repo" <<< "${json}")"; fi
-    if [ ! "${repo_location}" ]; then echo "Repo not found" && exit 2;else echo -e "${C_GREEN}Using Straps From: ${C_BLUE}${repo_location}${C_REG}"; fi
-
-    # Create Strap Array
-    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(yq r "${yml_location}" | grep -v ' .*' | sed 's/.$//' | tr '\n' ' '); fi
-    straps=${straps/strapped /}
-    if [ ! "${straps}" ]; then echo "Straps not found" && exit 2;else echo -e "${C_GREEN}Requested Straps :${C_BLUE} ${straps} ${C_REG}"; fi
-}
 
 ask_permission () {  
     local message
@@ -187,23 +163,10 @@ stay_strapped () {
     done
 }
 
-# check_deps
-# verify_config
-# ask_permission "Are you ready to get strapped?"
-# stay_strapped
-
-
-
+check_os
 init_parser
 parse_config
 parse_strapped_repo
 create_strap_array
 ask_permission "Are you ready to get strapped?"
 stay_strapped
-
-
-# init_parser
-# json=$(cat yml/first_run.yml | awk "$parser")
-# # lookup "strapped.repo"
-# q_config_sub "^" | sed "s/\..*$//" | uniq
-# # q_config_sub "unix_utils.echo."
