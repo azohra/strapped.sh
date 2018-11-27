@@ -6,13 +6,12 @@ strapped_ruby_gems_before () {
 strapped_ruby_gems () {
     local gem
     local gem_count
-    local user_json
+    local user_config=$1
 
-    user_json=$1
-    gem_count=$(jq -r '.packages | length' <<< "$user_json")
-    
+    gem_count=$(q_count "$user_config" "packages")
+
     for (( i=0; i < gem_count; i++ )); do
-        gem=$(jq -r ".packages[${i}].name" <<< "$user_json")
+        gem=$(q "$user_config" "packages.\\[${i}\\].name")
         echo "💎 installing ${gem}"
         gem install "${gem}"
     done
