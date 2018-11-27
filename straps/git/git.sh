@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-strapped_git_before () { 
+strapped_git_before () {
     if ! git --version > /dev/null; then echo "💾 git is missing" && exit; fi 
 }
 
@@ -8,19 +8,18 @@ strapped_git () {
     local clone_count
     local folder
     local repo
-    local user_json
+    local user_config=$1
 
-    user_json=$1
-    clone_count=$(jq -r '.clone | length' <<< "$user_json")
-    
+    clone_count=$(q_count "$user_config" "clone.\\[[0-9]+\\].repo")
+
     for (( i=0; i < clone_count; i++ )); do
-        repo=$(jq -r ".clone[${i}].repo" <<< "$user_json")
-        folder=$(jq -r ".clone[${i}].folder" <<< "$user_json")
+        repo=$(q "$user_config" "clone.\\[${i}\\].repo")
+        folder=$(q "$user_config" "clone.\\[${i}\\].folder")
         echo "💾 cloning ${repo} into ${folder}"
         if [ ! -d "${folder}" ] ; then git clone "${repo}" "${folder}"; fi
     done
 }
 
-strapped_git_after () { 
+strapped_git_after () {
     return
 }

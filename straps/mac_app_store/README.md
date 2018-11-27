@@ -13,6 +13,6 @@
 ```yml
 mac_app_store:
   apps:
-    - { name: Blackmagic Disk Speed Test, id: 425264550 }
-    - { name: DaisyDisk,                  id: 918858936 }
+  - { name: Blackmagic Disk Speed Test, id: 425264550 }
+  - { name: DaisyDisk,                  id: 918858936 }
 ```
