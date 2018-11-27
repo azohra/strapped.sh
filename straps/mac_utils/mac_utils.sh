@@ -11,7 +11,7 @@ strapped_mac_utils () {
   local typ
   local val
 
-  m_u_count=$(q_count "$user_config" "plists")
+  m_u_count=$(q_count "$user_config" "plists.\\[[0-9]+\\].domain")
 
   for (( i=0; i < m_u_count; i++ )); do
     dom=$(q "$user_config" "plists.\\[${i}\\].domain")
@@ -19,8 +19,8 @@ strapped_mac_utils () {
     typ=$(q "$user_config" "plists.\\[${i}\\].type")
     val=$(q "$user_config" "plists.\\[${i}\\].value")
 
-    echo "🛠️ Updating ${dom} ${key} to ${val}"
-    # plutil -replace "${key}" -"${typ}" "${val}" ~/Library/Preferences/"${dom}".plist >/dev/null
+    echo "🛠️  Updating ${dom} ${key} to ${val}"
+    plutil -replace "${key}" -"${typ}" "${val}" ~/Library/Preferences/"${dom}".plist
   done
 }
 
