@@ -1,10 +1,17 @@
+function max(a, b) {
+    if (a < b) {
+        b
+    } else {
+        a
+    }
+}
 function push(v) {
     stk[stk_i++] = v
 }
 
 function pop(lvls) {
-    for (i = 0; i < lvls; i++){
-        stk[stk_i--]
+    if (lvls > 0) {
+        stk_i = max(stk_i - lvls, 0)
     }
 }
 
@@ -28,16 +35,14 @@ function join_stack() {
     i_level = c_level
 }
 
-/^[[:space:]]*[a-zA-Z0-9\_]+\:.*/ {
-    match($0, /^[[:space:]]*/)
-    c_level = RLENGTH / 2
-    pop(i_level - c_level)
-
+/^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]+[^[:space:]]+.*/ {
     sub(/^[[:space:]]*/, "")
     sub(/\:[[:space:]]*/, "=")
     gsub(/[[:space:]]$/, "")
     print join_stack() $0
 }
+
+
 
 /^[[:space:]]*\-/ {
     stack = join_stack()
