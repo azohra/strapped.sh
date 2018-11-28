@@ -4,13 +4,11 @@ strapped_npm_before () {
 }
 
 strapped_npm () {
-    local npm_count
     local pkg
     local user_config=$1
+    
 
-    npm_count=$(q_count "$user_config" "packages")
-
-    for (( i=0; i < npm_count; i++ )); do
+    for (( i=0; i < $(q_count "$user_config" "packages"); i++ )); do
         pkg=$(q "$user_config" "packages.\\[${i}\\].name")
         echo "☕ installing ${pkg}"
         npm install -g "${pkg}" >/dev/null

@@ -54,7 +54,7 @@ for (( l=0; l < parent_count; l++ )); do
   update_file "\\tfor (( ${iterator}=0; ${iterator} < ${sub_parent_name}_count; ${iterator}++ )); do" "_gen/${parent_name}/${parent_name}.sh"
   for (( m=0; m < property_count; m++ )); do
     property_name=$(jq -r ".${parent_name}.${sub_parent_name}[0] | keys[${m}]" <<< "${json}")
-    update_file "\\t\\t${property_name}=\$(q \"\${user_config}\" \"${sub_parent_name}.[\${${iterator}}].${property_name}\")" "_gen/${parent_name}/${parent_name}.sh"
+    update_file "\\t\\t${property_name}=\$(q \"\${user_config}\" \"${sub_parent_name}.\\\\\[\${${iterator}}\\\\\].${property_name}\")" "_gen/${parent_name}/${parent_name}.sh"
     update_file "\\t\\techo \"#do a thing with \${${property_name}}\"" "_gen/${parent_name}/${parent_name}.sh"
   done
   update_file "\\tdone\\t" "_gen/${parent_name}/${parent_name}.sh"
