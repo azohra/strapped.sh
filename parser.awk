@@ -1,36 +1,27 @@
-function max(a, b) {
-    if (a < b) {
-        b
-    } else {
-        a
-    }
-}
-
-function report(error) {
-    print "Yaml Error:", error > "/dev/stderr"
+function raise(msg) {
+    print msg > "/dev/stderr"
     if (force_complete) {
-        linter_status=1
+        exit_status = 1
     } else {
         exit 1
     }
 }
 
-function push(v) {
-    stk[stk_i++] = v
+function level() {
+    match($0, /^[[:space:]]*/)
+    if (RLENGTH % 2 != 0) {
+        raise("Bad indentation on line "NR". Number of spaces uneven.")
+    }
+    return RLENGTH / 2
 }
 
-function pop(lvls) {
-    if (lvls > 0) {
-        stk_i = max(stk_i - lvls, 0)
+function join_stack(depth) {
+    r = ""
+    for (i = 0; i <= depth; i++) {
+        r = r "." stack[i]
     }
-}
-
-function join_stack() {
-    val = ""
-    for (k = stk_i - 1; k >= 0; k--) {
-        val = stk[k] "." val
-    }
-    return val
+    sub(/^\./, "", r)
+    return r
 }
 
 function safe_split(input, output) {
@@ -53,70 +44,88 @@ function safe_split(input, output) {
     output[count++] = acc
 }
 
-/^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*$/ {
-    match($0, /^[[:space:]]*/)
-    c_level = RLENGTH / 2
-    diff = i_level - c_level
-    if (diff < -1) {
-        report("Extra indentation on line "NR)
-    }
-    if (c_level == 0) {
-        pop(diff + 1)
-    } else {
-        pop(diff)
-    }
-    sub(/^[[:space:]]*/, "")
-    sub(/:.*$/, "")
-    push($0)
-    i_level -= diff
+function remove_sur_quotes(target) {
+    sub(/^[[:space:]]*\"/, "", target) #"
+    sub(/\"[[:space:]]*$/, "", target) #"
+    return target
 }
 
-/^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*[^[:space:]]+[[:space:]]*$/ {
-    match($0, /^[[:space:]]*/)
-    c_level = RLENGTH / 2
-    diff = i_level - c_level
-    if (diff < -1) {
-        report("Extra indentation on line "NR)
-    }
-    sub(/^[[:space:]]*/, "")
-    sub(/:[[:space:]]+/, "=")
-    sub(/[[:space:]]*$/, "")
-    print join_stack() $0
+/^[[:space:]]*[^[:space:]]+:/ {
+    depth=level()
+    key=$1
+    sub(/:.*$/, "", key)
+    stack[depth] = key
+}
+
+/^[[:space:]]*[^[:space:]]+:[[:space:]]+[^[:space:]]+/ {
+    depth=level()
+    val=$0
+    sub(/^[[:space:]]*[^[:space:]]+:[[:space:]]+/, "", val)
+    val = remove_sur_quotes(val)
+    print join_stack(depth) "=" val
+    next
 }
 
 /^[[:space:]]*\-/ {
-    stack = join_stack()
-    indx = list_counter[stack]++
+    depth=level()
+    stack_key=join_stack(depth)
+    key=stack[depth]
+    sub(/\.\[[0-9]+\]$/, "", stack_key)
+    sub(/\.\[[0-9]+\]$/, "", key)
+    indx=list_counter[stack_key]++
+    stack[depth]=key".[" indx "]"
+}
 
-    match($0, /^ */)
-    i_level = RLENGTH / 2
+/^[[:space:]]*-[[:space:]]+\{.*\}[[:space:]]*$/ {
+    depth=level()
+    line=$0
+    sub(/^[[:space:]]*-[[:space:]]+\{/, "", line)
+    sub(/\}[[:space:]]*$/, "", line)
 
-    if (indx == 0); i_level++
-
-    sub(/^[[:space:]]*\- /, "")
-
-    sub(/^[[:space:]]*\{/, "")
-    sub(/[[:space:]]?\}[[:space:]]*$/, "")
-
-    safe_split($0, splitted)
-    for (v in splitted) {
-        key=splitted[v]
-        val=splitted[v]
+    safe_split(line, entries)
+    for (i in entries) {
+        key=entries[i]
+        val=entries[i]
 
         sub(/^[[:space:]]*/, "", key)
         sub(/:.*$/, "", key)
 
         sub(/^[[:space:]]*[^[:space:]]+:[[:space:]]+\"?/, "", val) # "
         sub(/\"?[[:space:]]*$/, "", val) #"
+        val = remove_sur_quotes(val)
 
-        print stack "[" indx "]." key "=" val
+        print join_stack(depth) "." key "=" val
     }
-    delete splitted
+    delete entries
+    next
+}
+
+/^[[:space:]]*-[[:space:]][^[:space:]]+:/ {
+    depth=level() + 1
+    key=$0
+    sub(/^[[:space:]]*-[[:space:]]/, "", key)
+    sub(/:.*$/, "", key)
+    stack[depth]=key
+}
+
+/^[[:space:]]*-[[:space:]][^[:space:]]+:[[:space:]]+[^[:space:]]+/ {
+    depth=level() + 1
+    val=$0
+    sub(/^[[:space:]]*-[[:space:]][^[:space:]]+:[[:space:]]+/, "", val)
+    val = remove_sur_quotes(val)
+    print join_stack(depth) "=" val
+    next
+}
+
+/^[[:space:]]*[^[:space:]]+:[[:space:]]*$/ {next}
+/^[[:space:]]*-[[:space:]]+[^[:space:]]+:[[:space:]]*$/ {next}
+/^[[:space:]]*$/ { next }
+/^[[:space:]]*\#/ { next }
+
+{
+    raise("Unkown syntax on line "NR)
 }
 
 END	{
-    if (force_complete) {
-        exit linter_status
-    }
+    exit exit_status
 }
-
