@@ -86,15 +86,15 @@ done
 
 # Query API
 q() {
-    grep -E "$2" <<< "$1" | sed 's/^.*=//'
+    grep -E "^$2" <<< "$1" | sed 's/^.*=//'
 }
 
 q_sub() {
-    grep -E "$2" <<< "$1" | sed "s/^$2//"
+    grep -E "^$2" <<< "$1" | sed "s/^$2//"
 }
 
 q_count() {
-    q "$1" "$2" | wc -l
+    q_sub "$1" "$2" | grep -oE "^\\.\\[[0-9]+\\]" | uniq | wc -l
 }
 
 # Helper for config
@@ -161,4 +161,3 @@ parse_strapped_repo
 create_strap_array
 ask_permission "Are you ready to get strapped?"
 stay_strapped
-

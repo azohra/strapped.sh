@@ -3,6 +3,6 @@ strapped:
 
 unix_utils:
   echo:
-    - { phrase: "Woop woop! strapped.sh is ready to rock."}
-    - { phrase: "use flag '--yml /path/to/strapped.yml' to #StayStrapped"}
-    - { phrase: "Made with <3 by Azohra" }
+  - { phrase: "Woop woop! strapped.sh is ready to rock."}
+  - { phrase: "use flag '--yml /path/to/strapped.yml' to #StayStrapped"}
+  - { phrase: "Made with <3 by Azohra" }
