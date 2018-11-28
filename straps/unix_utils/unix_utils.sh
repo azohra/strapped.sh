@@ -24,25 +24,25 @@ strapped_unix_utils () {
     source_count=$(q_count "$user_config" "source")
 
     for (( i=0; i <ln_count; i++ )); do
-        dir=$(q "$user_config" "ln.[${i}].dir")
-        link=$(q "$user_config" "ln.[${i}].link")
+        dir=$(q "$user_config" "ln.\\[${i}\\].dir")
+        link=$(q "$user_config" "ln.\\[${i}\\].link")
         echo "🔗 linking ${dir} to ${link}"
         ln -snf "${dir}" "${link}"
     done
 
     for (( i=0; i <mkdir_count; i++ )); do
-        folder=$(q "$user_config" "mkdir.[${i}].dir")
+        folder=$(q "$user_config" "mkdir.\\[${i}\\].dir")
         echo "📂 creating ${folder}"
         mkdir -p "${folder}"
     done
 
     for (( i=0; i <echo_count; i++ )); do
-        phrase=$(q "$user_config" "echo.[$i].phrase")
+        phrase=$(q "$user_config" "echo.\\[$i\\]")
         echo "🗣️  ${phrase}"
     done
 
     for (( i=0; i <source_count; i++ )); do
-        file=$(q "$user_config" "source.[${i}].file")
+        file=$(q "$user_config" "source.\\[${i}\\].file")
         echo "📤 sourcing ${file}"
         source "${file}"
     done

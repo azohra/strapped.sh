@@ -68,12 +68,9 @@ function remove_sur_quotes(target) {
 
 /^[[:space:]]*\-/ {
     depth=level()
-    stack_key=join_stack(depth)
-    key=stack[depth]
-    sub(/\.\[[0-9]+\]$/, "", stack_key)
-    sub(/\.\[[0-9]+\]$/, "", key)
+    stack_key=join_stack(depth-1)
     indx=list_counter[stack_key]++
-    stack[depth]=key".[" indx "]"
+    stack[depth]="[" indx "]"
 }
 
 /^[[:space:]]*-[[:space:]]+\{.*\}[[:space:]]*$/ {
