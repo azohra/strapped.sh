@@ -56,7 +56,7 @@ while [ $# -gt 0 ] ; do
     ;;
     -l|--lint)
         init_parser
-        awk -v force_complete=1 "$parser" $2 > /dev/null
+        awk -v force_complete=1 "${parser}" "${2}" > /dev/null
         exit $?
     ;;
     -r|--repo)

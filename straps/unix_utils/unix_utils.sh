@@ -15,34 +15,34 @@ strapped_unix_utils () {
     local folder
     local phrase
     local file
-    local user_json
+    local user_config
 
-    user_json=$1
-    ln_count=$(q_count "$user_json" "ln")
-    mkdir_count=$(q_count "$user_json" "mkdir")
-    echo_count=$(q_count "$user_json" "echo")
-    source_count=$(q_count "$user_json" "source")
+    user_config=$1
+    ln_count=$(q_count "$user_config" "ln")
+    mkdir_count=$(q_count "$user_config" "mkdir")
+    echo_count=$(q_count "$user_config" "echo")
+    source_count=$(q_count "$user_config" "source")
 
     for (( i=0; i <ln_count; i++ )); do
-        dir=$(q "$user_json" "ln.\\[${i}\\].dir")
-        link=$(q "$user_json" "ln.\\[${i}\\].link")
+        dir=$(q "$user_config" "ln.\\[${i}\\].dir")
+        link=$(q "$user_config" "ln.\\[${i}\\].link")
         echo "🔗 linking ${dir} to ${link}"
         ln -snf "${dir}" "${link}"
     done
 
     for (( i=0; i <mkdir_count; i++ )); do
-        folder=$(q "$user_json" "mkdir.\\[${i}\\].dir")
+        folder=$(q "$user_config" "mkdir.\\[${i}\\].dir")
         echo "📂 creating ${folder}"
         mkdir -p "${folder}"
     done
 
     for (( i=0; i <echo_count; i++ )); do
-        phrase=$(q "$user_json" "echo.\\[$i\\].phrase")
+        phrase=$(q "$user_config" "echo.\\[$i\\].phrase")
         echo "🗣️  ${phrase}"
     done
 
     for (( i=0; i <source_count; i++ )); do
-        file=$(q "$user_json" "source.\\[${i}\\].file")
+        file=$(q "$user_config" "source.\\[${i}\\].file")
         echo "📤 sourcing ${file}"
         source "${file}"
     done
