@@ -117,6 +117,16 @@ function remove_sur_quotes(target) {
     next
 }
 
+/^[[:space:]]*-[[:space:]][^[:space:]]+/ {
+    depth=level()
+    val=$0
+    sub(/^[[:space:]]*-[[:space:]]+/, "", val)
+    sub(/[[:space:]]*$/, "", val)
+    val = remove_sur_quotes(val)
+    print join_stack(depth) "=" val
+    next
+}
+
 /^[[:space:]]*[^[:space:]]+:[[:space:]]*$/ {next}
 /^[[:space:]]*-[[:space:]]+[^[:space:]]+:[[:space:]]*$/ {next}
 /^[[:space:]]*$/ { next }
