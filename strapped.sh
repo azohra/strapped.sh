@@ -122,7 +122,7 @@ create_strap_array() {
     # Create Strap Array
     if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\\..*$//" | uniq); fi
     straps=${straps/strapped /}
-    if [ ! "${straps}" ]; then pretty_print "Strapped:" "Straps not found" && exit 2;else pretty_print "Requested Straps: " "${straps}"; fi
+    if [ ! "${straps}" ]; then pretty_print "Strapped:" "Straps not found" && exit 2;else pretty_print "Requested Straps: " "${straps//$'\n'/, }"; fi
 }
 
 ask_permission () {  
