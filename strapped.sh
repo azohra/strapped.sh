@@ -127,7 +127,7 @@ create_strap_array() {
 
 ask_permission () {  
     local message=${1}
-    pretty_print "\n🔫" "${message}"
+    pretty_print "\\n🔫" "${message}"
     printf "(Y/N): "
     while true
     do
