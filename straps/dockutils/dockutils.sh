@@ -15,8 +15,8 @@ strapped_dockutils () {
     local sort
     local view
 
-    app_count=$(q_count "$user_config" "apps.\\[[0-9]+\\].name")
-    dir_count=$(q_count "$user_config" "dirs.\\[[0-9]+\\].path")
+    app_count=$(q_count "$user_config" "apps")
+    dir_count=$(q_count "$user_config" "dirs")
 
     dockutil --remove all --no-restart
     
