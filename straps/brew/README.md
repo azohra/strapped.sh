@@ -13,15 +13,15 @@
 ```yml
 brew:
   taps:
-  - { name: azohra/tools }
-  - { name: homebrew/cask }
-  - { name: homebrew/cask-drivers }
+    - { name: azohra/tools }
+    - { name: homebrew/cask }
+    - { name: homebrew/cask-drivers }
   packages:
-  - { name: ruby, upgrade: true }
-  - { name: zsh,  upgrade: true }
-  - { name: lyra, upgrade: true }
+    - { name: ruby, upgrade: true }
+    - { name: zsh,  upgrade: true }
+    - { name: lyra, upgrade: true }
   casks:
-  - { name: 1password, upgrade: true }  
-  - { name: firefox,   upgrade: true }
-  - { name: slack,     upgrade: true }
+    - { name: 1password, upgrade: true }  
+    - { name: firefox,   upgrade: true }
+    - { name: slack,     upgrade: true }
 ```

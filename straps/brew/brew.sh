@@ -13,9 +13,9 @@ strapped_brew () {
     local cask
     local user_config=$1
 
-    tap_count=$(q_count "$user_config" "taps.\\[[0-9]+\\].name")
-    pkg_count=$(q_count "$user_config" "packages.\\[[0-9]+\\].name")
-    cask_count=$(q_count "$user_config" "casks.\\[[0-9]+\\].name")
+    tap_count=$(q_count "$user_config" "taps")
+    pkg_count=$(q_count "$user_config" "packages")
+    cask_count=$(q_count "$user_config" "casks")
 
     for (( i=0; i < tap_count; i++ )); do
         tap=$(q "$user_config" "taps.\\[${i}\\].name")
