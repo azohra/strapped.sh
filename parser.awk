@@ -38,7 +38,7 @@ function safe_split(input, output) {
     in_quote = 1
     acc = ""
     count = 0
-    for (i=0; i < length(input); i++) {
+    for (i=0; i <= length(input); i++) {
         c=chars[i]
         if (c=="\"") {
             in_quote = (in_quote + 1) % 2
@@ -49,10 +49,8 @@ function safe_split(input, output) {
         } else {
             acc = acc c
         }
-
     }
     output[count++] = acc
-
 }
 
 /^[[:space:]]*[a-zA-Z0-9\_]+\:[[:space:]]*$/ {
@@ -98,14 +96,10 @@ function safe_split(input, output) {
     sub(/^[[:space:]]*\- /, "")
 
     sub(/^[[:space:]]*\{/, "")
-    sub(/\}[[:space:]]*$/, "")
-
+    sub(/[[:space:]]?\}[[:space:]]*$/, "")
 
     safe_split($0, splitted)
     for (v in splitted) {
-        gsub(/^[[:space:]]/, "", splitted[v])
-        gsub(/[[:space:]]$/, "", splitted[v])
-
         key=splitted[v]
         val=splitted[v]
 
