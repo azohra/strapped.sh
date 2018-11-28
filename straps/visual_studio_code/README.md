@@ -13,6 +13,6 @@
 ```yml
 visual_studio_code:
     extensions:
-    - { name: zhuangtongfa.material-theme }
-    - { name: PeterJausovec.vscode-docker }
+        - { name: zhuangtongfa.material-theme }
+        - { name: PeterJausovec.vscode-docker }
 ```

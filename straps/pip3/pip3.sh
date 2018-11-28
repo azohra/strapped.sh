@@ -8,7 +8,7 @@ strapped_pip3 () {
     local pkg
     local user_config=$1
 
-    pip3_count=$(q_count "$user_config" "packages.\\[[0-9]+\\].name")
+    pip3_count=$(q_count "$user_config" "packages")
 
     for (( i=0; i < pip3_count; i++ )); do
         pkg=$(q "$user_config" "packages.\\[${i}\\].name")

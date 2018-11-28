@@ -13,6 +13,6 @@
 ```yml
 ruby_gems:
   packages:
-  - { name: bundler }
-  - { name: watir   }
+    - { name: bundler }
+    - { name: watir   }
 ```

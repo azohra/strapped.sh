@@ -11,7 +11,7 @@ strapped_mac_utils () {
   local typ
   local val
 
-  m_u_count=$(q_count "$user_config" "plists.\\[[0-9]+\\].domain")
+  m_u_count=$(q_count "$user_config" "plists")
 
   for (( i=0; i < m_u_count; i++ )); do
     dom=$(q "$user_config" "plists.\\[${i}\\].domain")

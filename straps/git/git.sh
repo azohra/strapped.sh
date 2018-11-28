@@ -10,7 +10,7 @@ strapped_git () {
     local repo
     local user_config=$1
 
-    clone_count=$(q_count "$user_config" "clone.\\[[0-9]+\\].repo")
+    clone_count=$(q_count "$user_config" "clone")
 
     for (( i=0; i < clone_count; i++ )); do
         repo=$(q "$user_config" "clone.\\[${i}\\].repo")

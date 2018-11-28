@@ -13,7 +13,7 @@
 ```yml
 npm:
   packages:
-  - { name: request }
-  - { name: express }
-  - { name: typescript }
+    - { name: request }
+    - { name: express }
+    - { name: typescript }
 ```

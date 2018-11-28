@@ -13,5 +13,5 @@
 ```yml
 pip3:
   packages:
-  - { name: boto3 }
+    - { name: boto3 }
 ```

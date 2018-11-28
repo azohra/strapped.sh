@@ -13,6 +13,6 @@
 ```yml
 pip2:
   packages:
-  - { name: numpy }
-  - { name: flask }
+    - { name: numpy }
+    - { name: flask }
 ```
