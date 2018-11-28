@@ -2,7 +2,7 @@
 # shellcheck source=/dev/null
 
 set -e
-
+echo ""
 C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
@@ -109,25 +109,25 @@ q_config_sub() {
 parse_config() {
     # Check for YML
     if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | awk "$parser"); else json=$(awk "$parser" "${yml_location}"); fi
-    if [ ! "${json}" ]; then pretty_print "Strapped:" "Config not found" && exit 2;else pretty_print "Using Config From:" "${yml_location}"; fi
+    if [ ! "${json}" ]; then pretty_print "Strapped:" "Config not found" && exit 2;else pretty_print "Config" "${yml_location}"; fi
 }
 
 parse_strapped_repo() {
     # Check for Repo
     if [ "$(q_config "strapped.repo")" != "null" ]; then repo_location="$(q_config "strapped.repo")"; fi
-    if [ ! "${repo_location}" ]; then pretty_print "Strapped:" "Repo not found" && exit 2;else pretty_print "Using Straps From:" "${repo_location}"; fi
+    if [ ! "${repo_location}" ]; then pretty_print "Strapped:" "Repo not found" && exit 2;else pretty_print "Repo" "${repo_location}"; fi
 }
 
 create_strap_array() {
     # Create Strap Array
     if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\\..*$//" | uniq); fi
     straps=${straps/strapped /}
-    if [ ! "${straps}" ]; then pretty_print "Strapped:" "Straps not found" && exit 2;else pretty_print "Requested Straps: " "${straps//$'\n'/, }"; fi
+    if [ ! "${straps}" ]; then pretty_print "Strapped:" "Straps not found" && exit 2;else pretty_print "Straps" "${straps//$'\n'/, }"; fi
 }
 
 ask_permission () {  
     local message=${1}
-    pretty_print "Question:" "${message}"
+    pretty_print "\n🔫" "${message}"
     printf "(Y/N): "
     while true
     do
