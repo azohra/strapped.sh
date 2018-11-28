@@ -3,24 +3,24 @@ source ./build/helpers.sh
 
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
-if [ ! -f "${1}" ]; then pretty_print "Strap Compiler: " "You must pass a YML file to parse!" && exit 2; fi
+if [ ! -f "${1}" ]; then pretty_print "🔫" "You must pass a YML file to parse!" && exit 2; fi
 if [[ "${1}" =~ $url_regex ]]; then 
   json=$(curl -s "${1}" | yq r - -j); 
 else 
   json=$(yq r "${1}" -j); 
 fi
-if [ ! "${json}" ]; then pretty_print "Strap Compiler: " "File appears empty" && exit 2; fi
+if [ ! "${json}" ]; then pretty_print "🔫" "File appears empty" && exit 2; fi
     
 parent_name=$(jq -r "keys[0]"  <<< "${json}")
 parent_count=$(jq -r ".${parent_name} | length" <<< "${json}")
 iterator_array=(i j k l m n o p q r s t u v w x y z)
 
 # Make doc/straps folder if it doesn't exist
-pretty_print "Strap Compiler: " "creating strap for ${parent_name} in _gen/${parent_name}"
+pretty_print "🔫" "creating strap for ${parent_name} in _gen/${parent_name}"
 mkdir -p "_gen/"
 mkdir -p "_gen/${parent_name}"
 
-pretty_print "Strap Compiler: " "compiling strap"
+pretty_print "🔫" "compiling strap"
 overwrite_file "#!/bin/bash" "_gen/${parent_name}/${parent_name}.sh"
 update_file "strapped_${parent_name}_before () {\\n\\tif ! ${parent_name} -V > /dev/null; then echo \":${parent_name}: ${parent_name} is missing\" && exit; fi\\n}\\n" "_gen/${parent_name}/${parent_name}.sh"
 
@@ -80,6 +80,6 @@ $(cat "${1}")
 \`\`\`"
 
 # Write README file for the new strap
-pretty_print "Strap Compiler: " "gererating docs"
+pretty_print "🔫" "gererating docs"
 overwrite_file "${readme}" "_gen/${parent_name}/README.md"
-pretty_print "Strap Compiler: " "Success!"
+pretty_print "🔫" "Success!"
