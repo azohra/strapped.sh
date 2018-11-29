@@ -1,6 +1,6 @@
 .PHONY: all perms test build strap docs integrity
 
-all: exec test build docs integrity
+all: exec test docs integrity
 
 exec:
 	@chmod u+x *.sh
