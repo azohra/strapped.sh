@@ -11,7 +11,6 @@ strap:
     - dockutil --remove all --no-restart
   after: 
     - killall -KILL Dock
-  
 
   routines:
     apps:
