@@ -1,0 +1,31 @@
+strap:
+  namespace: unix_utils
+
+  version: 0.1.0
+
+  description: "performs unix commands"
+
+  compatability: OSX
+
+  deps:
+    - echo
+
+  vars:
+    - HOME
+
+  routines:
+    mkdir:
+      exec:
+        - mkdir${dir}
+        - mkdir${aah}
+      message: "making ${dir}"
+      emoji: 📂
+      input:
+        - { dir: ~/photos }
+        - { dir: /www/_static }
+    touch:
+      exec: "touch ${file}"
+      message: "making ${file}"
+      emoji: 👉
+      input:
+        - { file: .bashrc }
