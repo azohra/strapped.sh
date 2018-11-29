@@ -64,6 +64,14 @@ function get_deps() {
   q "${file}" "deps" | tr '\n' ' '
 }
 
+function get_before_commands() {
+  q "${file}" "before"
+}
+
+function get_after_commands() {
+  q "${file}" "after"
+}
+
 function get_emoji() {
   q "${file}" "routines.${1}.emoji"
 }
@@ -183,7 +191,7 @@ function generate_local_vars() {
   local fields
 
   vars=$( q "${file}" "vars" )
-
+  echo "\\t# Declaring local variables"
   # Iterate over top_level vars
   for var in ${vars}; do
     echo "\\tlocal ${var}"
@@ -204,7 +212,6 @@ function generate_local_vars() {
 }
 
 function generate_routines() {
-# $(q_count "$input" "ln")
   local routines
   local fields
   local cmd
@@ -216,19 +223,26 @@ function generate_routines() {
 
   for routine in ${routines}; do
     
-
-    echo "\\tfor (i=0, i<\$( q_count \"\${input}\" \"${routine}\" ); do"
+    echo "\\t# performing functionality for ${routine}"
+    echo "\\tfor (i=0, i<\$( q_count \"\${input}\" \"${routine}\"), i++); do"
 
     fields=$( get_inputs "${routine}" )
     emoji=$( get_emoji ${routine} )
     msg=$( get_message ${routine} )
     commands=$( get_commands ${routine} )
 
+    echo "\\t\\t# Getting fields"
+
     for field in ${fields}; do
       echo "\\t\\t${field}=\$(q \"\${input}\" \"${routine}.\\\\\[\${i}\\\\\].${field}\")"
     done
 
-    echo "\\t\\techo -e \"${emoji} ${msg}\""
+    if [[ ${message} ]]; then
+      echo "\\t\\t# Writing message"
+      echo "\\t\\techo -e \"${emoji} ${msg}\""
+    fi
+
+    echo "\\t\\t# Executing the command(s)"
 
     while read -r cmd; do
       echo -e "\\t\\t${cmd}"
@@ -250,18 +264,50 @@ function generate_deps_check() {
 
   deps=$( get_deps )
 
+  echo "\\t# Variables to hold the deps and corresponding checks"
   echo "\\tlocal __deps=\"${deps}\""
   echo "\\tlocal __checks=\"${checks}\""
   echo "\\tlocal __woo=\"\"\\n"
 
+  echo "\\t# Performing each check for each dep"
   echo "\\tfor dep in \${__deps}; do"
   echo "\\t\\tfor check in \${__checks}; do"
   echo "\\t\\t\\tif \${dep} \${check} &> /dev/null; then __woo=1; fi"
   echo "\\t\\tdone"
-  echo "\\tdone"
+  echo "\\tdone\\n"
 
+  echo "\\t# Deciding if the dependancy has been satisfied"
   echo "\\tif [[ ! \"\${__woo}\" = \"1\"]]; then echo \"deps not met\" && exit 2; fi\\n"
+}
 
+function generate_before_tasks() {
+  local commands
+
+  commands=$( get_before_commands )
+
+  if [[ "${commands}" ]]; then 
+    echo "\\t# Commands that run before the routines start"
+
+    while read -r cmd; do
+      echo -e "\\t${cmd}"
+    done <<< "${commands}"
+
+    echo "\\n"
+  fi
+}
+
+function generate_after_tasks() {
+  local commands
+
+  commands=$( get_after_commands )
+
+  if [[ "${commands}" ]]; then 
+    echo "\\t# Commands that run after the routines finish"
+
+    while read -r cmd; do
+      echo -e "\\t${cmd}"
+    done <<< "${commands}"
+  fi
 }
 
 function generate_func_start() {
@@ -285,5 +331,7 @@ overwrite_file "$( generate_func_start )" "straps/${namespace}/latest/${namespac
 
 update_file "$( generate_deps_check )" "straps/${namespace}/latest/${namespace}.sh"
 update_file "$( generate_local_vars )" "straps/${namespace}/latest/${namespace}.sh"
+update_file "$( generate_before_tasks )" "straps/${namespace}/latest/${namespace}.sh"
 update_file "$( generate_routines )" "straps/${namespace}/latest/${namespace}.sh"
+update_file "$( generate_after_tasks )" "straps/${namespace}/latest/${namespace}.sh"
 update_file "$( generate_func_end )" "straps/${namespace}/latest/${namespace}.sh"
