@@ -18,5 +18,8 @@ docs:
 integrity:
 	@./build/integrity.sh
 
+build:
+	@./build/build_strap.sh ${yml}
+
 strap:
 	@./build/compiler.sh $(yml)
