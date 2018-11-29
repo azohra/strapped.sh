@@ -2,7 +2,7 @@
 
 | Attribute     | Value                                     |
 |--------------:|-------------------------------------------|
-| Namespace     | dockutils                                 |
+| Namespace     | dockutil                                  |
 | Emoji         | 🚢                                        |
 | Description   | adds, removes, and sorts the osx dock     |
 | Dependencies  | dockutils                                 |

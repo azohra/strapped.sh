@@ -1,0 +1,16 @@
+strap:
+  namespace: ruby_gems
+  version: latest
+  description: "installs ruby gems globally"
+  compatability: universal
+
+  deps:
+    - ruby
+
+  routines:
+    packages:
+      exec: "gem install "${name}""
+      message: "installing ${name}"
+      emoji: 💎
+      input:
+        - { name: bundler }

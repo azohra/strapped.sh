@@ -1,0 +1,31 @@
+strap:
+  namespace: dockutil
+  version: latest
+  description: "adds, removes, and sorts items in the osx dock"
+  compatability: OSX
+
+  deps:
+    - dockutil
+
+  before:
+    - dockutil --remove all --no-restart
+
+  routines:
+    apps:
+      exec: "dockutil --add "${path}" --no-restart"
+      message: "adding ${path}"
+      emoji: 🚢
+      input:
+        - { path: "/Applications/Google Chrome.app"}
+    dirs:
+      exec: "dockutil --add "${path}" --view "${view}" --display "${display}" --sort "${sort}" --no-restart"
+      message: "adding ${path}"
+      emoji: 🚢
+      input:
+        - { path: "~/Downloads", view: fan, display: stack, sort: dateadded }
+    position:
+      exec: "dockutil --move "${name}" --position "${position}" --no-restart"
+      message: "moving ${name} to position ${position}"
+      emoji: 🚢
+      input:
+        - { name: Spotify, position: 1 }

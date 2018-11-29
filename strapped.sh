@@ -143,15 +143,13 @@ ask_permission () {
 stay_strapped () {    
     for strap in ${straps}; do
         if [[ ${repo_location} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${strap}.sh")"
+            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/latest/${strap}.sh")"
         else
-            source "${repo_location}/${strap}/${strap}.sh"
+            source "${repo_location}/${strap}/latest/${strap}.sh"
         fi
         strap_json=$(q_config_sub "${strap}\\.")
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
-        strapped_"${strap}"_before "${strap_json}"
         strapped_"${strap}" "${strap_json}"
-        strapped_"${strap}"_after "${strap_json}"
     done
 }
 

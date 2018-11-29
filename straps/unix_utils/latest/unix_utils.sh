@@ -14,8 +14,8 @@ function strapped_unix_utils() {
 	done
 
 	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi
-	# Declaring local variables
+	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
+
 	local HOME
 	local dir
 	local file
@@ -50,5 +50,4 @@ function strapped_unix_utils() {
 		# Executing the command(s)
 		echo "${msg}"
 	done
-
 }

@@ -1,0 +1,19 @@
+strap:
+  namespace: visual_studio_code
+
+  version: latest
+
+  description: "manages settings for visual studio code"
+
+  compatability: universal
+
+  deps:
+    - code
+
+  routines:
+    extensions:
+      exec: "code --install-extension "${name}""
+      message: "adding extension ${name}"
+      emoji: 💻
+      input:
+        - { name: zhuangtongfa.material-theme }

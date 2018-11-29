@@ -1,0 +1,6 @@
+strap:
+  namespace: strapped
+  version: latest
+  description: "base configuration to run strapped.sh"
+  compatability: universal
+

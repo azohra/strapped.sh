@@ -1,0 +1,28 @@
+strap:
+  namespace: brew
+  version: latest
+  description: "installs packages, casks, and taps via brew"
+  compatability: OSX
+
+  deps:
+    - brew
+
+  routines:
+    packages:
+      exec: "brew list "${name}" &>/dev/null || brew install "${name}""
+      message: "installing ${name}"
+      emoji: 🍺
+      input:
+        - { name: ruby }
+    taps:
+      exec: "brew tap "${name}""
+      message: "tapping ${name}"
+      emoji: 🚰
+      input:
+        - { name: azohra/tools }
+    casks:
+      exec: "brew cask list "${name}" &>/dev/null || brew cask install "${name}""
+      message: "installing ${name}"
+      emoji: 🍻
+      input:
+        - { name: 1password }

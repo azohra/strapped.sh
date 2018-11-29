@@ -5,13 +5,13 @@
 
 - Straps
   - [brew](straps/brew.md)
-  - [dockutils](straps/dockutils.md)
+  - [dockutil](straps/dockutil.md)
   - [git](straps/git.md)
   - [mac_app_store](straps/mac_app_store.md)
-  - [mac_utils](straps/mac_utils.md)
   - [npm](straps/npm.md)
   - [pip2](straps/pip2.md)
   - [pip3](straps/pip3.md)
+  - [plutil](straps/plutil.md)
   - [ruby_gems](straps/ruby_gems.md)
   - [strapped](straps/strapped.md)
   - [unix_utils](straps/unix_utils.md)

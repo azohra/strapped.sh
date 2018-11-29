@@ -1,0 +1,16 @@
+strap:
+  namespace: git
+  version: latest
+  description: "clones git repos to the specified folder"
+  compatability: universal
+
+  deps:
+    - git
+
+  routines:
+    clone:
+      exec: "git clone "${repo}" "${folder}""
+      message: "cloning ${repo} into ${folder}"
+      emoji: 💾
+      input:
+        - { repo: git@github.com:kelseyhightower/nocode.git, folder: /Users/justin/Development/nocode }

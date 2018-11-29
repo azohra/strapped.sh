@@ -1,6 +1,6 @@
-.PHONY: all perms test build strap docs integrity
+.PHONY: all exec test strap straps docs integrity
 
-all: exec test docs integrity
+all: exec straps integrity docs test   
 
 exec:
 	@chmod u+x *.sh
@@ -19,8 +19,8 @@ docs:
 integrity:
 	@./build/integrity.sh
 
-build:
-	@./build/build_strap.sh ${yml}
-
 strap:
-	@./build/compiler.sh $(yml)
+	@./build/compiler.sh ${yml}
+
+straps:
+	@./build/straps.sh

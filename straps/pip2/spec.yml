@@ -1,0 +1,16 @@
+strap:
+  namespace: pip2
+  version: latest
+  description: "installs python packages globally"
+  compatability: universal
+
+  deps:
+    - pip
+
+  routines:
+    packages:
+      exec: "pip install "${name}""
+      message: "(2.x.x) installing ${name}"
+      emoji: 🐍
+      input:
+        - { name: slack-cleaner }

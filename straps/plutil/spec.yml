@@ -1,0 +1,16 @@
+strap:
+  namespace: plutil
+  version: latest
+  description: "edit plists"
+  compatability: OSX
+
+  deps:
+    - plutil
+
+  routines:
+    plists:
+      exec: "plutil -replace "${key}" -"${var_type}" "${value}" ~/Library/Preferences/"${domain}".plist"
+      message: "Updating ${domain} ${key} to ${value}"
+      emoji: ️🛠️
+      input:
+        - { domain: com.microsoft.Excel, key: kSubUIAppCompletedFirstRunSetup1507, var_type: bool, value: true }

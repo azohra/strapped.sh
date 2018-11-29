@@ -1,0 +1,16 @@
+strap:
+  namespace: pip3
+  version: latest
+  description: "installs python3 packages globally"
+  compatability: universal
+
+  deps:
+    - pip3
+
+  routines:
+    packages:
+      exec: "pip3 install "${name}""
+      message: "(3.x.x) installing ${name}"
+      emoji: 🐍
+      input:
+        - { name: boto3 }

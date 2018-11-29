@@ -1,0 +1,16 @@
+strap:
+  namespace: npm
+  version: latest
+  description: "installs node.js packages globally"
+  compatability: universal
+
+  deps:
+    - npm
+
+  routines:
+    packages:
+      exec: "npm install -g "${name}""
+      message: "installing ${name}"
+      emoji: ☕
+      input:
+        - { name: testcafe }

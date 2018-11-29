@@ -1,12 +1,7 @@
 #!/bin/bash
+set -e 
 
 # Helpers
-set -e
-
-C_GREEN="\\033[32m"
-C_BLUE="\\033[34m"
-C_REG="\\033[0;39m"
-
 pretty_print () {  
     local key=${1}
     local value=${2}
@@ -20,8 +15,11 @@ create_file () {
 }
 
 update_file () {
+  if [[ ${1} ]]; then
     echo -e "${1}" >> "${2}"
-
+  else
+    true
+  fi 
 }
 
 # Query stuff
@@ -40,12 +38,6 @@ q_count() {
 q_children() {
   q_sub "$1" "$2" | sed "s/\\..*$//" | sed "s/=.*$//"| uniq
 }
-
-# Read the config file, and get data under the strap heading
-file=$( awk -f parser.awk "$1")
-file=$( q_sub "${file}" "strap" )
-
-version=$( q "${file}" "version" )
 
 # Helper functions
 function get_routines() {
@@ -108,7 +100,7 @@ function generate_chart() {
   local desc
   local comp
   local deps
-  local chart="| Attribute | Value |\\n|----:|----|\\n"
+  local chart="| Attribute     | Value |\\n|--------------:|----|\\n"
 
   emoji=$( generate_emoji_string )
   desc=$( q "${file}" "description" )
@@ -173,7 +165,7 @@ function generate_example() {
 function generate_docs() {
   echo -e "# ${namespace}\\n"
 
-  echo -e "$( generate_chart )"
+  echo -e "$( generate_chart )\\n"
 
   echo -e "## Configuration\\n"
 
@@ -191,7 +183,7 @@ function generate_local_vars() {
   local fields
 
   vars=$( q "${file}" "vars" )
-  echo -e "\\t# Declaring local variables"
+  
   # Iterate over top_level vars
   for var in ${vars}; do
     echo -e "\\tlocal ${var}"
@@ -207,8 +199,6 @@ function generate_local_vars() {
     done
 
   done
-  echo -e "\\tlocal i=0"
-  echo -e "\\tlocal input=\${1}\\n"
 }
 
 function generate_routines() {
@@ -220,6 +210,13 @@ function generate_routines() {
   local commands
 
   routines=$( get_routines "${file}" )
+
+  if [[ ${routines} ]]; then
+    echo -e "\\tlocal i=0"
+    echo -e "\\tlocal input=\${1}\\n"
+  else
+    echo -e "\\ttrue"
+  fi 
 
   for routine in ${routines}; do
     
@@ -264,20 +261,22 @@ function generate_deps_check() {
 
   deps=$( get_deps )
 
-  echo -e "\\t# Variables to hold the deps and corresponding checks"
-  echo -e "\\tlocal __deps=\"${deps}\""
-  echo -e "\\tlocal __checks=\"${checks}\""
-  echo -e "\\tlocal __woo=\"\"\\n"
- 
-  echo -e "\\t# Performing each check for each dep"
-  echo -e "\\tfor dep in \${__deps}; do"
-  echo -e "\\t\\tfor check in \${__checks}; do"
-  echo -e "\\t\\t\\tif \"\${dep} \${check}\" &> /dev/null; then __woo=1; fi"
-  echo -e "\\t\\tdone"
-  echo -e "\\tdone\\n"
- 
-  echo -e "\\t# Deciding if the dependancy has been satisfied"
-  echo -e "\\tif [[ ! \"\${__woo}\" = \"1\" ]]; then echo \"deps not met\" && exit 2; fi\\n"
+  if [[ "${deps}" ]]; then 
+    echo -e "\\t# Variables to hold the deps and corresponding checks"
+    echo -e "\\tlocal __deps=\"${deps}\""
+    echo -e "\\tlocal __checks=\"${checks}\""
+    echo -e "\\tlocal __woo=\"\"\\n"
+  
+    echo -e "\\t# Performing each check for each dep"
+    echo -e "\\tfor dep in \${__deps}; do"
+    echo -e "\\t\\tfor check in \${__checks}; do"
+    echo -e "\\t\\t\\tif \"\${dep} \${check}\" &> /dev/null; then __woo=1; fi"
+    echo -e "\\t\\tdone"
+    echo -e "\\tdone\\n"
+
+    echo -e "\\t# Deciding if the dependancy has been satisfied"
+    echo -e "\\tif [[ ! \"\${__woo}\" = \"1\" ]]; then echo \"deps not met\" && exit 2; fi \\\\n"
+  fi
 }
 
 function generate_before_tasks() {
@@ -292,7 +291,7 @@ function generate_before_tasks() {
       echo -e "\\t${cmd}"
     done <<< "${commands}"
 
-    echo -e "\\n"
+    echo -e "\\\\n"
   fi
 }
 
@@ -319,20 +318,33 @@ function generate_func_end() {
   echo -e "}"
 }
 
+
+
+# Read the config file, and get data under the strap heading
+if [ ! -f "${1}" ]; then
+  echo "spec not found!" && exit 2
+fi
+
+C_GREEN="\\033[32m"
+C_BLUE="\\033[34m"
+C_REG="\\033[0;39m"
+
+file=$( awk -f parser.awk "$1")
+file=$( q_sub "${file}" "strap" )
+version=$( q "${file}" "version" )
 namespace=$( q "${file}" "namespace" )
-
-
 strap_location="straps/${namespace}/${version}"
 
 mkdir -p "straps/${namespace}"
 mkdir -p "${strap_location}"
 
+
 create_file "$( generate_docs )" "${strap_location}/README.md"
 create_file "$( generate_func_start )" "${strap_location}/${namespace}.sh"
 
 update_file "$( generate_deps_check )" "${strap_location}/${namespace}.sh"
-update_file "$( generate_local_vars )" "${strap_location}/${namespace}.sh"
 update_file "$( generate_before_tasks )" "${strap_location}/${namespace}.sh"
+update_file "$( generate_local_vars )" "${strap_location}/${namespace}.sh"
 update_file "$( generate_routines )" "${strap_location}/${namespace}.sh"
 update_file "$( generate_after_tasks )" "${strap_location}/${namespace}.sh"
 update_file "$( generate_func_end )" "${strap_location}/${namespace}.sh"
