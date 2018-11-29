@@ -26,8 +26,3 @@ strap:
       emoji: 🚢
       input:
         - { path: "~/Downloads", view: fan, display: stack, sort: dateadded }
-    # position:
-    #   exec: "dockutil --move "${name}" --position "${position}" --no-restart"
-    #   message: "moving ${name} to position ${position}"
-    #   input:
-    #     - { name: Spotify, position: 1 }
