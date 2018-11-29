@@ -140,14 +140,19 @@ ask_permission () {
     done
 }
 
-stay_strapped () {    
+stay_strapped () {
+    local version
     for strap in ${straps}; do
         strap_config=$(q_config_sub "${strap}\\.")
-        version=$(q "${strap_config}" "${strap}\\.version")
+
+        # Get strapped version
+        version=$(q_config "${strap}.version")
+        version=${version:="latest"}
+        
         if [[ ${repo_location} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${version:-latest}/${strap}.sh")"
+            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${version}/${strap}.sh")"
         else
-            source "${repo_location}/${strap}/${version:-latest}/${strap}.sh"
+            source "${repo_location}/${strap}/${version}/${strap}.sh"
         fi
         strap_config=$(q_config_sub "${strap}\\.")
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
