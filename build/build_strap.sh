@@ -224,7 +224,7 @@ function generate_routines() {
   for routine in ${routines}; do
     
     echo -e "\\t# performing functionality for ${routine}"
-    echo -e "\\tfor (i=0, i<\$( q_count \"\${input}\" \"${routine}\"), i++); do"
+    echo -e "\\tfor ((i=0; i<\$( q_count \"\${input}\" \"${routine}\"); i++)); do"
 
     fields=$( get_inputs "${routine}" )
     emoji=$( get_emoji "${routine}" )
@@ -234,7 +234,7 @@ function generate_routines() {
     echo -e "\\t\\t# Getting fields"
 
     for field in ${fields}; do
-      echo -e "\\t\\t${field}=\$(q \"\${input}\" \"${routine}.\\\\\\[\${i}\\\\].${field}\")"
+      echo -e "\\t\\t${field}=\$(q \"\${input}\" \"${routine}.\\\\\\\\\\[\${i}\\\\\\\\\\].${field}\")"
     done
 
     if [[ ${msg} ]]; then
@@ -272,12 +272,12 @@ function generate_deps_check() {
   echo -e "\\t# Performing each check for each dep"
   echo -e "\\tfor dep in \${__deps}; do"
   echo -e "\\t\\tfor check in \${__checks}; do"
-  echo -e "\\t\\t\\tif \${dep} \${check} &> /dev/null; then __woo=1; fi"
+  echo -e "\\t\\t\\tif \"\${dep} \${check}\" &> /dev/null; then __woo=1; fi"
   echo -e "\\t\\tdone"
   echo -e "\\tdone\\n"
  
   echo -e "\\t# Deciding if the dependancy has been satisfied"
-  echo -e "\\tif [[ ! \"\${__woo}\" = \"1\"]]; then echo \"deps not met\" && exit 2; fi\\n"
+  echo -e "\\tif [[ ! \"\${__woo}\" = \"1\" ]]; then echo \"deps not met\" && exit 2; fi\\n"
 }
 
 function generate_before_tasks() {
@@ -311,6 +311,7 @@ function generate_after_tasks() {
 }
 
 function generate_func_start() {
+  echo -e "#!/bin/bash \\n"
   echo -e "function strapped_${namespace}() {"
 }
 

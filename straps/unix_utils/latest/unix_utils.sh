@@ -1,3 +1,5 @@
+#!/bin/bash 
+
 function strapped_unix_utils() {
 	# Variables to hold the deps and corresponding checks
 	local __deps="echo "
@@ -7,13 +9,12 @@ function strapped_unix_utils() {
 	# Performing each check for each dep
 	for dep in ${__deps}; do
 		for check in ${__checks}; do
-			if ${dep} ${check} &> /dev/null; then __woo=1; fi
+			if "${dep} ${check}" &> /dev/null; then __woo=1; fi
 		done
 	done
 
 	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1"]]; then echo "deps not met" && exit 2; fi
-
+	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi
 	# Declaring local variables
 	local HOME
 	local dir
@@ -22,30 +23,32 @@ function strapped_unix_utils() {
 	local i=0
 	local input=${1}
 
-
 	# performing functionality for mkdir
-	for (i=0, i<$( q_count "${input}" "mkdir"), i++); do
+	for ((i=0; i<$( q_count "${input}" "mkdir"); i++)); do
 		# Getting fields
 		dir=$(q "${input}" "mkdir.\\[${i}\\].dir")
+		# Writing message
+		echo -e "📂 making ${dir}"
 		# Executing the command(s)
-		mkdir ${dir}
+		mkdir "${dir}"
 	done
 
 	# performing functionality for touch
-	for (i=0, i<$( q_count "${input}" "touch"), i++); do
+	for ((i=0; i<$( q_count "${input}" "touch"); i++)); do
 		# Getting fields
 		file=$(q "${input}" "touch.\\[${i}\\].file")
+		# Writing message
+		echo -e "👉 making ${file}"
 		# Executing the command(s)
-		touch ${file}
+		touch "${file}"
 	done
 
 	# performing functionality for echo
-	for (i=0, i<$( q_count "${input}" "echo"), i++); do
+	for ((i=0; i<$( q_count "${input}" "echo"); i++)); do
 		# Getting fields
 		msg=$(q "${input}" "echo.\\[${i}\\].msg")
 		# Executing the command(s)
-		echo ${msg}
+		echo "${msg}"
 	done
-
 
 }

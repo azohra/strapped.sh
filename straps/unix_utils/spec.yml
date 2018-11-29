@@ -1,7 +1,7 @@
 strap:
   namespace: unix_utils
 
-  version: 0.1.0
+  version: latest
 
   description: "performs unix commands"
 
@@ -15,21 +15,20 @@ strap:
 
   routines:
     mkdir:
-      exec:
-        - mkdir ${dir}
+      exec: "mkdir "${dir}""
       message: "making ${dir}"
       emoji: 📂
       input:
         - { dir: ~/photos }
         - { dir: /www/_static }
     touch:
-      exec: "touch ${file}"
+      exec: "touch "${file}""
       message: "making ${file}"
       emoji: 👉
       input:
         - { file: .bashrc }
     echo:
-      exec: echo ${msg}
+      exec: "echo "${msg}""
       emoji: 🗣
       input:
         - { msg: "Hello world" }
