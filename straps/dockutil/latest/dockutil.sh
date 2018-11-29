@@ -9,7 +9,7 @@ function strapped_dockutil() {
 	# Performing each check for each dep
 	for dep in ${__deps}; do
 		for check in ${__checks}; do
-			if "${dep} ${check}" &> /dev/null; then __woo=1; fi
+			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
 	done
 
@@ -21,12 +21,11 @@ function strapped_dockutil() {
 
 
 	local path
+	local pos
 	local display
 	local sort
 	local path
 	local view
-	local name
-	local position
 	local i=0
 	local input=${1}
 
@@ -34,10 +33,11 @@ function strapped_dockutil() {
 	for ((i=0; i<$( q_count "${input}" "apps"); i++)); do
 		# Getting fields
 		path=$(q "${input}" "apps.\\[${i}\\].path")
+		pos=$(q "${input}" "apps.\\[${i}\\].pos")
 		# Writing message
 		echo -e "🚢 adding ${path}"
 		# Executing the command(s)
-		dockutil --add "${path}" --no-restart
+		dockutil --add "${path}" --position "${pos}" --no-restart
 	done
 
 	# performing functionality for dirs
@@ -52,15 +52,6 @@ function strapped_dockutil() {
 		# Executing the command(s)
 		dockutil --add "${path}" --view "${view}" --display "${display}" --sort "${sort}" --no-restart
 	done
-
-	# performing functionality for position
-	for ((i=0; i<$( q_count "${input}" "position"); i++)); do
-		# Getting fields
-		name=$(q "${input}" "position.\\[${i}\\].name")
-		position=$(q "${input}" "position.\\[${i}\\].position")
-		# Writing message
-		echo -e "🚢 moving ${name} to position ${position}"
-		# Executing the command(s)
-		dockutil --move "${name}" --position "${position}" --no-restart
-	done
+	# Commands that run after the routines finish
+	killall -KILL Dock
 }

@@ -9,7 +9,7 @@ function strapped_npm() {
 	# Performing each check for each dep
 	for dep in ${__deps}; do
 		for check in ${__checks}; do
-			if "${dep} ${check}" &> /dev/null; then __woo=1; fi
+			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
 	done
 

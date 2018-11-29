@@ -3,7 +3,7 @@
 | Attribute     | Value |
 |--------------:|----|
 | Namespace     | dockutil |
-| Emoji         | 🚢 [apps] 🚢 [dirs] 🚢 [position]  |
+| Emoji         | 🚢 [apps] 🚢 [dirs]  |
 | Description   | adds, removes, and sorts items in the osx dock |
 | Dependencies  | dockutil  |
 | Compatability | OSX  |
@@ -13,9 +13,7 @@
 ```yml
 dockutil:
   apps:
-    - { path: /Applications/Google Chrome.app }
+    - { path: /Applications/Google Chrome.app, pos: 2 }
   dirs:
     - { display: stack, sort: dateadded, path: ~/Downloads, view: fan }
-  position:
-    - { name: Spotify, position: 1 }
 ```

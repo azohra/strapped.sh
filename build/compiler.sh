@@ -270,7 +270,7 @@ function generate_deps_check() {
     echo -e "\\t# Performing each check for each dep"
     echo -e "\\tfor dep in \${__deps}; do"
     echo -e "\\t\\tfor check in \${__checks}; do"
-    echo -e "\\t\\t\\tif \"\${dep} \${check}\" &> /dev/null; then __woo=1; fi"
+    echo -e "\\t\\t\\tif \"\${dep}\" \"\${check}\" &> /dev/null; then __woo=1; fi"
     echo -e "\\t\\tdone"
     echo -e "\\tdone\\n"
 

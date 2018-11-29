@@ -9,7 +9,7 @@ strap:
 
   routines:
     clone:
-      exec: "git clone "${repo}" "${folder}""
+      exec: "if [ ! -d "${folder}" ] ; then git clone "${repo}" "${folder}"; fi"
       message: "cloning ${repo} into ${folder}"
       emoji: 💾
       input:

@@ -9,7 +9,7 @@ function strapped_git() {
 	# Performing each check for each dep
 	for dep in ${__deps}; do
 		for check in ${__checks}; do
-			if "${dep} ${check}" &> /dev/null; then __woo=1; fi
+			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
 	done
 
@@ -29,6 +29,6 @@ function strapped_git() {
 		# Writing message
 		echo -e "💾 cloning ${repo} into ${folder}"
 		# Executing the command(s)
-		git clone "${repo}" "${folder}"
+		if [ ! -d "${folder}" ] ; then git clone "${repo}" "${folder}"; fi
 	done
 }

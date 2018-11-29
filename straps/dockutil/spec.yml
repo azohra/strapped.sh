@@ -5,27 +5,29 @@ strap:
   compatability: OSX
 
   deps:
-    - dockutil
+    - dockutil 
 
   before:
     - dockutil --remove all --no-restart
+  after: 
+    - killall -KILL Dock
+  
 
   routines:
     apps:
-      exec: "dockutil --add "${path}" --no-restart"
+      exec: "dockutil --add "${path}" --position "${pos}" --no-restart"
       message: "adding ${path}"
       emoji: 🚢
       input:
-        - { path: "/Applications/Google Chrome.app"}
+        - { path: "/Applications/Google Chrome.app", pos: 2}
     dirs:
       exec: "dockutil --add "${path}" --view "${view}" --display "${display}" --sort "${sort}" --no-restart"
       message: "adding ${path}"
       emoji: 🚢
       input:
         - { path: "~/Downloads", view: fan, display: stack, sort: dateadded }
-    position:
-      exec: "dockutil --move "${name}" --position "${position}" --no-restart"
-      message: "moving ${name} to position ${position}"
-      emoji: 🚢
-      input:
-        - { name: Spotify, position: 1 }
+    # position:
+    #   exec: "dockutil --move "${name}" --position "${position}" --no-restart"
+    #   message: "moving ${name} to position ${position}"
+    #   input:
+    #     - { name: Spotify, position: 1 }
