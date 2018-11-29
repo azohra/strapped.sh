@@ -14,7 +14,7 @@ pretty_print () {
     echo -e "${C_GREEN}${key}:${C_BLUE} ${value} ${C_REG}"
 }
 
-overwrite_file () {
+create_file () {
     echo -e "${1}" > "${2}"
 
 }
@@ -77,7 +77,7 @@ function get_value_for_routine_input() {
 }
 
 function len() {
-  echo "$1" | wc -w 
+  echo -e "$1" | wc -w 
 }
 
 function generate_emoji_string() {
@@ -91,7 +91,7 @@ function generate_emoji_string() {
     emoji_string+="$emoji [${routine}] "
   done
 
-  echo "${emoji_string}"
+  echo -e "${emoji_string}"
 }
 
 # Generate the chart in the documentation
@@ -107,13 +107,13 @@ function generate_chart() {
   comp=$( q "${file}" "compatability" | tr '\n' ' ')
   deps=$( get_deps )
 
-  chart+="| Namespace | ${namespace} |\\n"
-  chart+="| Emoji | ${emoji} |\\n"
-  chart+="| Description | ${desc} |\\n"
-  chart+="| Dependencies | ${deps} |\\n"
+  chart+="| Namespace     | ${namespace} |\\n"
+  chart+="| Emoji         | ${emoji} |\\n"
+  chart+="| Description   | ${desc} |\\n"
+  chart+="| Dependencies  | ${deps} |\\n"
   chart+="| Compatability | ${comp} |\\n"
 
-  echo "${chart}"
+  echo -e "${chart}"
 }
 
 # Generate the example data strucutre in the documentation
@@ -159,7 +159,7 @@ function generate_example() {
 
   ex+="\`\`\`"
 
-  echo "${ex}"
+  echo -e "${ex}"
 }
 
 function generate_docs() {
@@ -186,7 +186,7 @@ function generate_local_vars() {
 
   # Iterate over top_level vars
   for var in ${vars}; do
-    echo "\\tlocal ${var}"
+    echo -e "\\tlocal ${var}"
   done
 
   routines=$( get_routines "${file}" )
@@ -195,12 +195,12 @@ function generate_local_vars() {
     fields=$( get_inputs "${routine}" )
 
     for field in ${fields}; do
-      echo "\\tlocal ${field}"
+      echo -e "\\tlocal ${field}"
     done
 
   done
-  echo "\\tlocal i=0"
-  echo "\\tlocal input=\${1}\\n"
+  echo -e "\\tlocal i=0"
+  echo -e "\\tlocal input=\${1}\\n"
 }
 
 function generate_routines() {
@@ -217,31 +217,31 @@ function generate_routines() {
   for routine in ${routines}; do
     
 
-    echo "\\tfor (i=0, i<\$( q_count \"\${input}\" \"${routine}\" ); do"
+    echo -e "\\tfor (i=0, i<\$( q_count \"\${input}\" \"${routine}\" ); do"
 
     fields=$( get_inputs "${routine}" )
-    emoji=$( get_emoji ${routine} )
-    msg=$( get_message ${routine} )
-    commands=$( get_commands ${routine} )
+    emoji=$( get_emoji "${routine}" )
+    msg=$( get_message "${routine}" )
+    commands=$( get_commands "${routine}" )
 
     for field in ${fields}; do
-      echo "\\t\\t${field}=\$(q \"\${input}\" \"${routine}.\\\\\[\${i}\\\\\].${field}\")"
+      echo -e "\\t\\t${field}=\$(q \"\${input}\" \"${routine}.\\\\\\[\${i}\\\\].${field}\")"
     done
 
-    echo "\\t\\techo -e \"${emoji} ${msg}\""
+    echo -e "\\t\\techo -e -e \"${emoji} ${msg}\""
 
     while read -r cmd; do
       echo -e "\\t\\t${cmd}"
     done <<< "${commands}"
 
-    echo "\\tdone\\n"
+    echo -e "\\tdone\\n"
 
   done
   
 }
 
 function dep_check_string() {
-  echo "if ! ${1} ${2} > /dev/null; then echo \"ERROR ${1} is missing\" && exit; fi"
+  echo -e "if ! ${1} ${2} > /dev/null; then echo -e \"ERROR ${1} is missing\" && exit; fi"
 }
 
 function generate_deps_check() {
@@ -250,40 +250,40 @@ function generate_deps_check() {
 
   deps=$( get_deps )
 
-  echo "\\tlocal __deps=\"${deps}\""
-  echo "\\tlocal __checks=\"${checks}\""
-  echo "\\tlocal __woo=\"\"\\n"
+  echo -e "\\tlocal __deps=\"${deps}\""
+  echo -e "\\tlocal __checks=\"${checks}\""
+  echo -e "\\tlocal __woo=\"\"\\n"
 
-  echo "\\tfor dep in \${__deps}; do"
-  echo "\\t\\tfor check in \${__checks}; do"
-  echo "\\t\\t\\tif \${dep} \${check} &> /dev/null; then __woo=1; fi"
-  echo "\\t\\tdone"
-  echo "\\tdone"
+  echo -e "\\tfor dep in \${__deps}; do"
+  echo -e "\\t\\tfor check in \${__checks}; do"
+  echo -e "\\t\\t\\tif \${dep} \${check} &> /dev/null; then __woo=1; fi"
+  echo -e "\\t\\tdone"
+  echo -e "\\tdone"
 
-  echo "\\tif [[ ! \"\${__woo}\" = \"1\"]]; then echo \"deps not met\" && exit 2; fi\\n"
+  echo -e "\\tif [[ ! \"\${__woo}\" = \"1\"]]; then echo -e \"deps not met\" && exit 2; fi\\n"
 
 }
 
 function generate_func_start() {
-  echo "function strapped_${namespace}() {"
+  echo -e "function strapped_${namespace}() {"
 }
 
 function generate_func_end() {
-  echo "}"
+  echo -e "}"
 }
 
 namespace=$( q "${file}" "namespace" )
 
-# See if the version exists. If not, build it.
 
-mkdir -p straps/${namespace}
-mkdir -p straps/${namespace}/latest
+strap_location="straps/${namespace}/${version}"
 
-overwrite_file "$( generate_docs )" "straps/${namespace}/latest/README.md"
+mkdir -p "straps/${namespace}"
+mkdir -p "${strap_location}"
 
-overwrite_file "$( generate_func_start )" "straps/${namespace}/latest/${namespace}.sh"
+create_file "$( generate_docs )" "${strap_location}/README.md"
+create_file "$( generate_func_start )" "${strap_location}/${namespace}.sh"
 
-update_file "$( generate_deps_check )" "straps/${namespace}/latest/${namespace}.sh"
-update_file "$( generate_local_vars )" "straps/${namespace}/latest/${namespace}.sh"
-update_file "$( generate_routines )" "straps/${namespace}/latest/${namespace}.sh"
-update_file "$( generate_func_end )" "straps/${namespace}/latest/${namespace}.sh"
+update_file "$( generate_deps_check )" "${strap_location}/${namespace}.sh"
+update_file "$( generate_local_vars )" "${strap_location}/${namespace}.sh"
+update_file "$( generate_routines )" "${strap_location}/${namespace}.sh"
+update_file "$( generate_func_end )" "${strap_location}/${namespace}.sh"
