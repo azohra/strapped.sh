@@ -4,8 +4,8 @@ raw_strap_url="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 docs_location="_static/_docs"
 
 # Delete and make a new _docs/straps folder
-rm -rf "${docs_location}/_straps"
-mkdir "${docs_location}/_straps"
+rm -rf "${docs_location}/straps"
+mkdir "${docs_location}/straps"
 
 base="[![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)](https://strapped.sh)
 
