@@ -99,17 +99,17 @@ q_count() {
 
 # Helper for config
 q_config() {
-    q "$json" "$1" | sed 's/^.*=//'
+    q "$config" "$1" | sed 's/^.*=//'
 }
 
 q_config_sub() {
-    grep -E "$1" <<< "$json" | sed "s/^$1//"
+    grep -E "$1" <<< "$config" | sed "s/^$1//"
 }
 
 parse_config() {
     # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then json=$(curl -s "${yml_location}" | awk "$parser"); else json=$(awk "$parser" "${yml_location}"); fi
-    if [ ! "${json}" ]; then pretty_print "Strapped:" "Config not found" && exit 2;else pretty_print "Config" "${yml_location}"; fi
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -s "${yml_location}" | awk "$parser"); else config=$(awk "$parser" "${yml_location}"); fi
+    if [ ! "${config}" ]; then pretty_print "Strapped:" "Config not found" && exit 2;else pretty_print "Config" "${yml_location}"; fi
 }
 
 parse_strapped_repo() {
@@ -142,14 +142,16 @@ ask_permission () {
 
 stay_strapped () {    
     for strap in ${straps}; do
+        strap_config=$(q_config_sub "${strap}\\.")
+        version=$(q "${strap_config}" "${strap}\\.version")
         if [[ ${repo_location} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/latest/${strap}.sh")"
+            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${version:-latest}/${strap}.sh")"
         else
-            source "${repo_location}/${strap}/latest/${strap}.sh"
+            source "${repo_location}/${strap}/${version:-latest}/${strap}.sh"
         fi
-        strap_json=$(q_config_sub "${strap}\\.")
+        strap_config=$(q_config_sub "${strap}\\.")
         echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
-        strapped_"${strap}" "${strap_json}"
+        strapped_"${strap}" "${strap_config}"
     done
 }
 
