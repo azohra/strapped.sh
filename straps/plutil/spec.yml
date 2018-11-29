@@ -9,7 +9,7 @@ strap:
 
   routines:
     plists:
-      exec: "plutil -replace "${key}" -"${var_type}" "${value}" ~/Library/Preferences/"${domain}".plist"
+      exec: "plutil -replace ${key} -${var_type} ${value} ~/Library/Preferences/${domain}.plist"
       message: "Updating ${domain} ${key} to ${value}"
       emoji: ️🛠️
       input:

@@ -28,9 +28,9 @@ function strapped_unix_utils() {
 		# Getting fields
 		dir=$(q "${input}" "mkdir.\\[${i}\\].dir")
 		# Writing message
-		echo -e "📂 making ${dir}"
+		pretty_print ":info:" "📂 making ${dir}"
 		# Executing the command(s)
-		mkdir "${dir}"
+		run_command "mkdir ${dir}"
 	done
 
 	# performing functionality for touch
@@ -38,9 +38,9 @@ function strapped_unix_utils() {
 		# Getting fields
 		file=$(q "${input}" "touch.\\[${i}\\].file")
 		# Writing message
-		echo -e "👉 making ${file}"
+		pretty_print ":info:" "👉 making ${file}"
 		# Executing the command(s)
-		touch "${file}"
+		run_command "touch ${file}"
 	done
 
 	# performing functionality for echo
@@ -48,7 +48,6 @@ function strapped_unix_utils() {
 		# Getting fields
 		msg=$(q "${input}" "echo.\\[${i}\\].msg")
 		# Executing the command(s)
-		echo "🗣 ${msg}"
-		echo "🗣 ${msg}"
+		run_command "echo \"🗣 ${msg}\""
 	done
 }

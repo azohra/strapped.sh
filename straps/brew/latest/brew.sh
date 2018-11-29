@@ -27,9 +27,9 @@ function strapped_brew() {
 		# Getting fields
 		name=$(q "${input}" "packages.\\[${i}\\].name")
 		# Writing message
-		echo -e "🍺 installing ${name}"
+		pretty_print ":info:" "🍺 installing ${name}"
 		# Executing the command(s)
-		brew list "${name}" &>/dev/null || brew install "${name}"
+		run_command "brew list ${name} || brew install ${name}"
 	done
 
 	# performing functionality for taps
@@ -37,9 +37,9 @@ function strapped_brew() {
 		# Getting fields
 		name=$(q "${input}" "taps.\\[${i}\\].name")
 		# Writing message
-		echo -e "🚰 tapping ${name}"
+		pretty_print ":info:" "🚰 tapping ${name}"
 		# Executing the command(s)
-		brew tap "${name}"
+		run_command "brew tap ${name}"
 	done
 
 	# performing functionality for casks
@@ -47,8 +47,8 @@ function strapped_brew() {
 		# Getting fields
 		name=$(q "${input}" "casks.\\[${i}\\].name")
 		# Writing message
-		echo -e "🍻 installing ${name}"
+		pretty_print ":info:" "🍻 installing ${name}"
 		# Executing the command(s)
-		brew cask list "${name}" &>/dev/null || brew cask install "${name}"
+		run_command "brew cask list ${name} || brew cask install ${name}"
 	done
 }

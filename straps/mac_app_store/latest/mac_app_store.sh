@@ -27,8 +27,8 @@ function strapped_mac_app_store() {
 		name=$(q "${input}" "apps.\\[${i}\\].name")
 		id=$(q "${input}" "apps.\\[${i}\\].id")
 		# Writing message
-		echo -e "🍏 installing installing ${name}"
+		pretty_print ":info:" "🍏 installing installing ${name}"
 		# Executing the command(s)
-		mas install "${id}"
+		run_command "mas install ${id}"
 	done
 }

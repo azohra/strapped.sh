@@ -15,7 +15,7 @@ function strapped_say() {
 		voice=$(q "${input}" "phrase.\\[${i}\\].voice")
 		text=$(q "${input}" "phrase.\\[${i}\\].text")
 		# Executing the command(s)
-		say -v "${voice}" "${text}"
+		run_command "say -v ${voice} ${text}"
 	done
 
 	# performing functionality for file
@@ -24,6 +24,6 @@ function strapped_say() {
 		voice=$(q "${input}" "file.\\[${i}\\].voice")
 		file=$(q "${input}" "file.\\[${i}\\].file")
 		# Executing the command(s)
-		say -v "${voice}" -f "${file}"
+		run_command "say -v ${voice} -f ${file}"
 	done
 }

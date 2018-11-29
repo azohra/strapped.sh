@@ -9,7 +9,7 @@ strap:
 
   routines:
     packages:
-      exec: "gem install "${name}""
+      exec: "gem install ${name}"
       message: "installing ${name}"
       emoji: 💎
       input:

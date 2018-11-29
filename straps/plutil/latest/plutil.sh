@@ -31,8 +31,8 @@ function strapped_plutil() {
 		domain=$(q "${input}" "plists.\\[${i}\\].domain")
 		key=$(q "${input}" "plists.\\[${i}\\].key")
 		# Writing message
-		echo -e "️🛠️ Updating ${domain} ${key} to ${value}"
+		pretty_print ":info:" "️🛠️ Updating ${domain} ${key} to ${value}"
 		# Executing the command(s)
-		plutil -replace "${key}" -"${var_type}" "${value}" ~/Library/Preferences/"${domain}".plist
+		run_command "plutil -replace ${key} -${var_type} ${value} ~/Library/Preferences/${domain}.plist"
 	done
 }

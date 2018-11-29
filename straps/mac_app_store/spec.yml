@@ -9,7 +9,7 @@ strap:
 
   routines:
     apps:
-      exec: "mas install "${id}""
+      exec: "mas install ${id}"
       message: "installing installing ${name}"
       emoji: 🍏
       input:

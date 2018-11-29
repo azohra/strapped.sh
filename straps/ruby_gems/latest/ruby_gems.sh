@@ -25,8 +25,8 @@ function strapped_ruby_gems() {
 		# Getting fields
 		name=$(q "${input}" "packages.\\[${i}\\].name")
 		# Writing message
-		echo -e "💎 installing ${name}"
+		pretty_print ":info:" "💎 installing ${name}"
 		# Executing the command(s)
-		gem install "${name}"
+		run_command "gem install ${name}"
 	done
 }

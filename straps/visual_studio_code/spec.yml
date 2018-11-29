@@ -12,7 +12,7 @@ strap:
 
   routines:
     extensions:
-      exec: "code --install-extension "${name}""
+      exec: "code --install-extension ${name}"
       message: "adding extension ${name}"
       emoji: 💻
       input:

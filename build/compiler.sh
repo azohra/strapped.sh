@@ -236,13 +236,13 @@ function generate_routines() {
 
     if [[ ${msg} ]]; then
       echo -e "\\t\\t# Writing message"
-      echo -e "\\t\\techo -e \"${emoji} ${msg}\""
+      echo -e "\\t\\tpretty_print \":info:\" \"${emoji} ${msg}\""
     fi
 
     echo -e "\\t\\t# Executing the command(s)"
-
+  
     while read -r cmd; do
-      echo -e "\\t\\t${cmd}"
+      echo -e "\\t\\trun_command \"${cmd}\""
     done <<< "${commands}"
 
     echo -e "\\tdone\\n"

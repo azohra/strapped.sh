@@ -35,9 +35,9 @@ function strapped_dockutil() {
 		path=$(q "${input}" "apps.\\[${i}\\].path")
 		pos=$(q "${input}" "apps.\\[${i}\\].pos")
 		# Writing message
-		echo -e "🚢 adding ${path}"
+		pretty_print ":info:" "🚢 adding ${path}"
 		# Executing the command(s)
-		dockutil --add "${path}" --position "${pos}" --no-restart
+		run_command "dockutil --add ${path} --position ${pos} --no-restart"
 	done
 
 	# performing functionality for dirs
@@ -48,9 +48,9 @@ function strapped_dockutil() {
 		path=$(q "${input}" "dirs.\\[${i}\\].path")
 		view=$(q "${input}" "dirs.\\[${i}\\].view")
 		# Writing message
-		echo -e "🚢 adding ${path}"
+		pretty_print ":info:" "🚢 adding ${path}"
 		# Executing the command(s)
-		dockutil --add "${path}" --view "${view}" --display "${display}" --sort "${sort}" --no-restart
+		run_command "dockutil --add ${path} --view ${view} --display ${display} --sort ${sort} --no-restart"
 	done
 	# Commands that run after the routines finish
 	killall -KILL Dock

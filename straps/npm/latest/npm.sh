@@ -25,8 +25,8 @@ function strapped_npm() {
 		# Getting fields
 		name=$(q "${input}" "packages.\\[${i}\\].name")
 		# Writing message
-		echo -e "☕ installing ${name}"
+		pretty_print ":info:" "☕ installing ${name}"
 		# Executing the command(s)
-		npm install -g "${name}"
+		run_command "npm install -g ${name}"
 	done
 }

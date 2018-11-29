@@ -9,7 +9,7 @@ strap:
 
   routines:
     packages:
-      exec: "pip install "${name}""
+      exec: "pip install ${name}"
       message: "(2.x.x) installing ${name}"
       emoji: 🐍
       input:

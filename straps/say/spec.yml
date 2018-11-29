@@ -12,12 +12,12 @@ strap:
 
   routines:
     phrase:
-      exec: "say -v "${voice}" "${text}""
+      exec: "say -v ${voice} ${text}"
       emoji: 🔈
       input:
         - { voice: Karen, text: "Strapped is so cool!" }
     file:
-      exec: "say -v "${voice}" -f "${file}""
+      exec: "say -v ${voice} -f ${file}"
       emoji: 🔈
       input:
         - { voice: Alex, file: ~/lyrics.txt }

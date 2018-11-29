@@ -27,8 +27,8 @@ function strapped_git() {
 		repo=$(q "${input}" "clone.\\[${i}\\].repo")
 		folder=$(q "${input}" "clone.\\[${i}\\].folder")
 		# Writing message
-		echo -e "💾 cloning ${repo} into ${folder}"
+		pretty_print ":info:" "💾 cloning ${repo} into ${folder}"
 		# Executing the command(s)
-		if [ ! -d "${folder}" ] ; then git clone "${repo}" "${folder}"; fi
+		run_command "if [ ! -d ${folder} ] ; then git clone ${repo} ${folder}; fi"
 	done
 }

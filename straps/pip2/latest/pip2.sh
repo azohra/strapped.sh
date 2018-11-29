@@ -25,8 +25,8 @@ function strapped_pip2() {
 		# Getting fields
 		name=$(q "${input}" "packages.\\[${i}\\].name")
 		# Writing message
-		echo -e "🐍 (2.x.x) installing ${name}"
+		pretty_print ":info:" "🐍 (2.x.x) installing ${name}"
 		# Executing the command(s)
-		pip install "${name}"
+		run_command "pip install ${name}"
 	done
 }

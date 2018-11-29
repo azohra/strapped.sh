@@ -9,7 +9,7 @@ strap:
 
   routines:
     packages:
-      exec: "npm install -g "${name}""
+      exec: "npm install -g ${name}"
       message: "installing ${name}"
       emoji: ☕
       input:

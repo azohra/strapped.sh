@@ -25,8 +25,8 @@ function strapped_visual_studio_code() {
 		# Getting fields
 		name=$(q "${input}" "extensions.\\[${i}\\].name")
 		# Writing message
-		echo -e "💻 adding extension ${name}"
+		pretty_print ":info:" "💻 adding extension ${name}"
 		# Executing the command(s)
-		code --install-extension "${name}"
+		run_command "code --install-extension ${name}"
 	done
 }
