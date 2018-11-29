@@ -13,6 +13,7 @@
   - [pip3](straps/pip3.md)
   - [plutil](straps/plutil.md)
   - [ruby_gems](straps/ruby_gems.md)
+  - [say](straps/say.md)
   - [strapped](straps/strapped.md)
   - [unix_utils](straps/unix_utils.md)
   - [visual_studio_code](straps/visual_studio_code.md)

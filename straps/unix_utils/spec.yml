@@ -32,3 +32,8 @@ strap:
       emoji: 🗣
       input:
         - { msg: "Hello world" }
+    echo:
+      exec: "echo "🗣 ${msg}""
+      emoji: 🗣
+      input:
+        - { msg: "Hello world" }

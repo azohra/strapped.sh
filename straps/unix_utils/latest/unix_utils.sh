@@ -49,5 +49,6 @@ function strapped_unix_utils() {
 		msg=$(q "${input}" "echo.\\[${i}\\].msg")
 		# Executing the command(s)
 		echo "🗣 ${msg}"
+		echo "🗣 ${msg}"
 	done
 }

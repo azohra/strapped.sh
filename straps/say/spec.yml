@@ -1,0 +1,23 @@
+strap:
+  namespace: say
+
+  version: latest
+
+  description: "uses the mac `say` command to convert text to speech"
+
+  compatability: OSX
+
+  vars:
+    - HOME
+
+  routines:
+    phrase:
+      exec: "say -v "${voice}" "${text}""
+      emoji: 🔈
+      input:
+        - { voice: Karen, text: "Strapped is so cool!" }
+    file:
+      exec: "say -v "${voice}" -f "${file}""
+      emoji: 🔈
+      input:
+        - { voice: Alex, file: ~/lyrics.txt }

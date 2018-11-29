@@ -5,11 +5,10 @@ all: exec straps integrity docs test
 exec:
 	@chmod u+x *.sh
 	@chmod u+x build/*.sh
-	@chmod u+x straps/**/*.sh
+	@chmod u+x straps/**/**/*.sh
 
 test:
 	@shellcheck ./strapped.sh
-	@shellcheck ./straps/**/*.sh
 	@shellcheck ./straps/**/**/*.sh
 	@shellcheck ./build/*.sh
 
