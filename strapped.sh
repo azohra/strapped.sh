@@ -4,12 +4,12 @@
 set -e
 echo ""
 C_GREEN="\\033[32m"
-C_BLUE="\\033[34m"
+C_BLUE="\\033[94m"
 C_REG="\\033[0;39m"
 
 custom_straps=""
 auto_approve=""
-repo_location="https://raw.githubusercontent.com/azohra/strapped/master/straps"
+base_repo="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
@@ -60,7 +60,7 @@ while [ $# -gt 0 ] ; do
         exit $?
     ;;
     -r|--repo)
-        repo_location="$2"
+        base_repo="$2"
         shift # extra value 
     ;;
     -s|--straps)
@@ -114,8 +114,8 @@ parse_config() {
 
 parse_strapped_repo() {
     # Check for Repo
-    if [ "$(q_config "strapped.repo")" != "null" ]; then repo_location="$(q_config "strapped.repo")"; fi
-    if [ ! "${repo_location}" ]; then pretty_print "Strapped:" "Repo not found" && exit 2;else pretty_print "Repo" "${repo_location}"; fi
+    if [ "$(q_config "strapped.repo")" != "null" ]; then base_repo="$(q_config "strapped.repo")"; fi
+    if [ ! "${base_repo}" ]; then pretty_print "Strapped:" "Repo not found" && exit 2;else pretty_print "Base repo" "${base_repo}"; fi
 }
 
 create_strap_array() {
@@ -138,24 +138,29 @@ ask_permission () {
        * )     printf "Y/N: ";;
       esac
     done
+    echo -e "\\n"
 }
 
 stay_strapped () {
     local version
+    local strap_repo
+
     for strap in ${straps}; do
         strap_config=$(q_config_sub "${strap}.")
+
+        strap_repo=$(q "${strap_config}" "repo")
+        strap_repo=${strap_repo:=${base_repo}}
 
         # Get strapped version
         version=$(q "${strap_config}" "version")
         version=${version:="latest"}
 
-        if [[ ${repo_location} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${repo_location}/${strap}/${version}/${strap}.sh")"
+        if [[ ${strap_repo} =~ ${url_regex} ]]; then
+            source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${version}/${strap}.sh")"
         else
-            source "${repo_location}/${strap}/${version}/${strap}.sh"
+            source "${strap_repo}/${strap}/${version}/${strap}.sh"
         fi
-
-        echo -e "\\n${C_GREEN}Strap: ${C_BLUE}${strap}${C_REG}"
+        pretty_print "\\n${strap}" "${version} from ${strap_repo}"
         strapped_"${strap}" "${strap_config}"
     done
 }
