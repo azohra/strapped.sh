@@ -1,0 +1,43 @@
+strap:
+  namespace: bash
+
+  version: latest
+
+  description: "performs bash commands"
+
+  compatability: unix
+
+  deps:
+    - echo
+    - mkdir
+    - touch
+
+  vars:
+    - HOME
+
+  routines:
+    mkdir:
+      exec: "mkdir ${dir}"
+      message: "creating ${dir}"
+      emoji: 📂
+      input:
+        - { dir: ~/photos }
+        - { dir: /www/_static }
+    touch:
+      exec: "touch ${file}"
+      message: "creating ${file}"
+      emoji: 👉
+      input:
+        - { file: .bashrc }
+    echo:
+      exec: "echo ${msg}"
+      message: "echoing ${msg}"
+      emoji: 🗣
+      input:
+        - { msg: "Hello world" }
+    exec:
+      exec: "exec ${file}"
+      message: "running ${file}"
+      emoji: 👟
+      input:
+        - { file: "~/Downloads/osx_defaults.sh" }
