@@ -1,8 +1,8 @@
 #!/bin/bash 
 
-function strapped_unix_utils() {
+function strapped_bash() {
 	# Variables to hold the deps and corresponding checks
-	local __deps="echo "
+	local __deps="echo mkdir touch "
 	local __checks="-v -V --version"
 	local __woo=""
 
@@ -20,6 +20,7 @@ function strapped_unix_utils() {
 	local dir
 	local file
 	local msg
+	local file
 	local i=0
 	local input=${1}
 
@@ -28,7 +29,7 @@ function strapped_unix_utils() {
 		# Getting fields
 		dir=$(q "${input}" "mkdir.\\[${i}\\].dir")
 		# Writing message
-		pretty_print ":info:" "📂 making ${dir}"
+		pretty_print ":info:" "📂 creating ${dir}"
 		# Executing the command(s)
 		run_command "mkdir ${dir}"
 	done
@@ -38,7 +39,7 @@ function strapped_unix_utils() {
 		# Getting fields
 		file=$(q "${input}" "touch.\\[${i}\\].file")
 		# Writing message
-		pretty_print ":info:" "👉 making ${file}"
+		pretty_print ":info:" "👉 creating ${file}"
 		# Executing the command(s)
 		run_command "touch ${file}"
 	done
@@ -47,7 +48,19 @@ function strapped_unix_utils() {
 	for ((i=0; i<$( q_count "${input}" "echo"); i++)); do
 		# Getting fields
 		msg=$(q "${input}" "echo.\\[${i}\\].msg")
+		# Writing message
+		pretty_print ":info:" "🗣 echoing ${msg}"
 		# Executing the command(s)
-		run_command "echo \"🗣 ${msg}\""
+		run_command "echo ${msg}"
+	done
+
+	# performing functionality for exec
+	for ((i=0; i<$( q_count "${input}" "exec"); i++)); do
+		# Getting fields
+		file=$(q "${input}" "exec.\\[${i}\\].file")
+		# Writing message
+		pretty_print ":info:" "👟 running ${file}"
+		# Executing the command(s)
+		run_command "exec ${file}"
 	done
 }

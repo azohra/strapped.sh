@@ -32,10 +32,10 @@ pretty_print () {
 
 run_command() {
     # write your test however you want; this just tests if SILENT is non-empty
-    if [ -n "$STRAPPED_DEBUG" ]; then
-        eval "${1}" > /dev/null
-    else
+    if [ "$STRAPPED_DEBUG" ]; then
         eval "${1}"
+    else
+        eval "${1}" > /dev/null
     fi
 }
 

@@ -1,0 +1,16 @@
+strap:
+  namespace: wget
+  version: latest
+  description: "does fun stuff with wget"
+  compatability: unix
+
+  deps:
+    - wget
+
+  routines:
+    download:
+      exec: "wget -P ${folder} -O {filename} ${url}"
+      message: "downloading ${url} into ${folder}/${filename}"
+      emoji: 💾
+      input:
+        - { url: https://stay.strapped.sh, folder: ~/Downloads, filename: strapped.sh }
