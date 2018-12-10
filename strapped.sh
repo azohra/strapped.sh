@@ -13,6 +13,8 @@ base_repo="https://raw.githubusercontent.com/azohra/strapped/master/straps"
 yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
+YSH_LIB=1;source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/master/ysh)"
+
 pretty_print () { 
     local msg_type=${1} 
     local message=${2}
@@ -58,9 +60,14 @@ function upgrade {
 }
 
 # TODO: Load the parser from raw github url
-init_parser() {
-    parser=$(cat parser.awk)
-}
+# init_parser() {
+#     echo "here"
+
+#     YSH_LIB=1;source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/master/y.sh)"
+
+#     echo "here"
+#     # parser=$(cat parser.awk)
+# }
 
 while [ $# -gt 0 ] ; do
     case "$1" in
@@ -75,8 +82,9 @@ while [ $# -gt 0 ] ; do
         shift # extra value 
     ;;
     -l|--lint)
-        init_parser
-        awk -v force_complete=1 "${parser}" "${2}" > /dev/null
+        # init_parser
+        ysh "${2}" > /dev/null
+        # awk -v force_complete=1 "${parser}" "${2}" > /dev/null
         exit $?
     ;;
     -r|--repo)
@@ -105,42 +113,42 @@ done
 
 
 # Query API
-q() {
-    grep -E "^$2" <<< "$1" | sed 's/^.*=//'
-}
+# q() {
+#     grep -E "^$2" <<< "$1" | sed 's/^.*=//'
+# }
 
-q_sub() {
-    grep -E "^$2" <<< "$1" | sed "s/^$2//"
-}
+# q_sub() {
+#     grep -E "^$2" <<< "$1" | sed "s/^$2//"
+# }
 
-q_count() {
-    q_sub "$1" "$2" | grep -oE "^\\.\\[[0-9]+\\]" | uniq | wc -l
-}
+# q_count() {
+#     q_sub "$1" "$2" | grep -oE "^\\.\\[[0-9]+\\]" | uniq | wc -l
+# }
 
-# Helper for config
-q_config() {
-    q "$config" "$1" | sed 's/^.*=//'
-}
+# # Helper for config
+# q_config() {
+#     q "$config" "$1" | sed 's/^.*=//'
+# }
 
-q_config_sub() {
-    grep -E "$1" <<< "$config" | sed "s/^$1//"
-}
+# q_config_sub() {
+#     grep -E "$1" <<< "$config" | sed "s/^$1//"
+# }
 
 parse_config() {
     # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -s "${yml_location}" | awk "$parser"); else config=$(awk "$parser" "${yml_location}"); fi
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -s "${yml_location}" | ysh -f ); else config=$(ysh -f "${yml_location}"); fi
     if [ ! "${config}" ]; then pretty_print ":announce:" "Strapped::Config not found" && exit 2;else pretty_print ":announce:" "Config::${yml_location}"; fi
 }
 
 parse_strapped_repo() {
     # Check for Repo
-    if [ "$(q_config "strapped.repo")" != "null" ]; then base_repo="$(q_config "strapped.repo")"; fi
+    if [ "$(ysh -T "${config}" -Q "strapped.repo")" != "null" ]; then base_repo="$(ysh -T "${config}" -Q "strapped.repo")"; fi
     if [ ! "${base_repo}" ]; then pretty_print ":announce:" "Strapped::Repo not found" && exit 2;else pretty_print ":announce:" "Base Repo::${base_repo}"; fi
 }
 
 create_strap_array() {
     # Create Strap Array
-    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(q_config_sub "^" | sed "s/\\..*$//" | uniq); fi
+    if [[ "${custom_straps}" ]]; then straps="${custom_straps//,/ }"; else straps=$(ysh -T "${config}" -t | uniq); fi
     straps=${straps/strapped /}
     if [ ! "${straps}" ]; then pretty_print ":announce:" "Strapped::Straps not found" && exit 2;else pretty_print ":announce:" "Straps::${straps//$'\n'/, }"; fi
 }
@@ -166,18 +174,24 @@ stay_strapped () {
     local strap_repo
 
     for strap in ${straps}; do
-        strap_config=$(q_config_sub "${strap}.")
+        strap_config=$(ysh -T "${config}" -Q "${strap}.")
 
-        strap_repo=$(q "${strap_config}" "repo")
+        # Get strapped repo
+        strap_repo=$(ysh -T "${strap_config}" -Q "repo")
         strap_repo=${strap_repo:=${base_repo}}
 
         # Get strapped version
-        version=$(q "${strap_config}" "version")
+        version=$(ysh -T "${strap_config}" -Q "version")
         version=${version:="latest"}
 
         if [[ ${strap_repo} =~ ${url_regex} ]]; then
+            echo "sourcing from remote"
+
             source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${version}/${strap}.sh")"
         else
+
+            echo "sourcing from local"
+
             source "${strap_repo}/${strap}/${version}/${strap}.sh"
         fi
         pretty_print ":announce:" "\\n${strap}::${version} from ${strap_repo}"
@@ -185,7 +199,7 @@ stay_strapped () {
     done
 }
 
-init_parser
+# init_parser
 parse_config
 parse_strapped_repo
 create_strap_array
