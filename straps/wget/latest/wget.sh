@@ -11,26 +11,31 @@ function strapped_wget() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
-
+	# Declaring local variables for the 'download' routine
 	local filename
 	local url
 	local folder
-	local i=0
 	local input=${1}
 
-	# performing functionality for download
-	for ((i=0; i<$( q_count "${input}" "download"); i++)); do
-		# Getting fields
-		filename=$(q "${input}" "download.\\[${i}\\].filename")
-		url=$(q "${input}" "download.\\[${i}\\].url")
-		folder=$(q "${input}" "download.\\[${i}\\].folder")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'download'
+	for ((i=0; i<$( ysh -T "${input}" -c download ); i++)); do
+
+		# Getting fields for routine 'download'
+		filename=$( ysh -T "${input}" -l download -i ${i} -Q filename )
+		url=$( ysh -T "${input}" -l download -i ${i} -Q url )
+		folder=$( ysh -T "${input}" -l download -i ${i} -Q folder )
+
+		# Writing message for routine 'download'
 		pretty_print ":info:" "💾 downloading ${url} into ${folder}/${filename}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'download'
 		run_command "wget -P ${folder} -O {filename} ${url}"
 	done
 }

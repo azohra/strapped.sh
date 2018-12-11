@@ -1,8 +1,8 @@
 #!/bin/bash 
 
-function strapped_bash() {
+function strapped_mac_utils() {
 	# Variables to hold the deps and corresponding checks
-	local __deps="echo mkdir touch "
+	local __deps="mkdir touch "
 	local __checks="-v -V --version"
 	local __woo=""
 
@@ -20,19 +20,7 @@ function strapped_bash() {
 
 	# Declaring local variables for the 'touch' routine
 	local file
-
-	# Declaring local variables for the 'echo' routine
-	local msg
-
-	# Declaring local variables for the 'exec' routine
-	local file
 	local input=${1}
-
-	# Declaring top-level local strap variables
-	local HOME
-
-	# Setting top-level local strap variables
-	HOME=$( ysh -T "${input}" -Q HOME)
 
 	# Initialize array iterator
 	local i=0
@@ -44,7 +32,7 @@ function strapped_bash() {
 		dir=$( ysh -T "${input}" -l mkdir -i ${i} -Q dir )
 
 		# Writing message for routine 'mkdir'
-		pretty_print ":info:" "📂 creating ${dir}"
+		pretty_print ":info:" "📂 making ${dir}"
 
 		# Executing the command(s) for routine 'mkdir'
 		run_command "mkdir ${dir}"
@@ -58,37 +46,9 @@ function strapped_bash() {
 		file=$( ysh -T "${input}" -l touch -i ${i} -Q file )
 
 		# Writing message for routine 'touch'
-		pretty_print ":info:" "👉 creating ${file}"
+		pretty_print ":info:" "👉 making ${file}"
 
 		# Executing the command(s) for routine 'touch'
 		run_command "touch ${file}"
-	done
-
-
-	# performing functionality for routine 'echo'
-	for ((i=0; i<$( ysh -T "${input}" -c echo ); i++)); do
-
-		# Getting fields for routine 'echo'
-		msg=$( ysh -T "${input}" -l echo -i ${i} -Q msg )
-
-		# Writing message for routine 'echo'
-		pretty_print ":info:" "🗣 echoing ${msg}"
-
-		# Executing the command(s) for routine 'echo'
-		run_command "echo ${msg}"
-	done
-
-
-	# performing functionality for routine 'exec'
-	for ((i=0; i<$( ysh -T "${input}" -c exec ); i++)); do
-
-		# Getting fields for routine 'exec'
-		file=$( ysh -T "${input}" -l exec -i ${i} -Q file )
-
-		# Writing message for routine 'exec'
-		pretty_print ":info:" "👟 running ${file}"
-
-		# Executing the command(s) for routine 'exec'
-		run_command "exec ${file}"
 	done
 }

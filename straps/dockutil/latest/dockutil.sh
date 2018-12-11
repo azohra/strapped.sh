@@ -11,47 +11,56 @@ function strapped_dockutil() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
-
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
-
 	# Commands that run before the routines start
-	dockutil --remove all --no-restart
+	run_command "dockutil --remove all --no-restart"
 
-
+	# Declaring local variables for the 'apps' routine
 	local path
 	local pos
+
+	# Declaring local variables for the 'dirs' routine
 	local display
 	local sort
 	local path
 	local view
-	local i=0
 	local input=${1}
 
-	# performing functionality for apps
-	for ((i=0; i<$( q_count "${input}" "apps"); i++)); do
-		# Getting fields
-		path=$(q "${input}" "apps.\\[${i}\\].path")
-		pos=$(q "${input}" "apps.\\[${i}\\].pos")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'apps'
+	for ((i=0; i<$( ysh -T "${input}" -c apps ); i++)); do
+
+		# Getting fields for routine 'apps'
+		path=$( ysh -T "${input}" -l apps -i ${i} -Q path )
+		pos=$( ysh -T "${input}" -l apps -i ${i} -Q pos )
+
+		# Writing message for routine 'apps'
 		pretty_print ":info:" "🚢 adding ${path}"
-		# Executing the command(s)
-		run_command "dockutil --add ${path} --position ${pos} --no-restart"
+
+		# Executing the command(s) for routine 'apps'
+		run_command "dockutil --add \"${path}\" --position ${pos} --no-restart"
 	done
 
-	# performing functionality for dirs
-	for ((i=0; i<$( q_count "${input}" "dirs"); i++)); do
-		# Getting fields
-		display=$(q "${input}" "dirs.\\[${i}\\].display")
-		sort=$(q "${input}" "dirs.\\[${i}\\].sort")
-		path=$(q "${input}" "dirs.\\[${i}\\].path")
-		view=$(q "${input}" "dirs.\\[${i}\\].view")
-		# Writing message
+
+	# performing functionality for routine 'dirs'
+	for ((i=0; i<$( ysh -T "${input}" -c dirs ); i++)); do
+
+		# Getting fields for routine 'dirs'
+		display=$( ysh -T "${input}" -l dirs -i ${i} -Q display )
+		sort=$( ysh -T "${input}" -l dirs -i ${i} -Q sort )
+		path=$( ysh -T "${input}" -l dirs -i ${i} -Q path )
+		view=$( ysh -T "${input}" -l dirs -i ${i} -Q view )
+
+		# Writing message for routine 'dirs'
 		pretty_print ":info:" "🚢 adding ${path}"
-		# Executing the command(s)
-		run_command "dockutil --add ${path} --view ${view} --display ${display} --sort ${sort} --no-restart"
+
+		# Executing the command(s) for routine 'dirs'
+		run_command "dockutil --add \"${path}\" --view ${view} --display ${display} --sort ${sort} --no-restart"
 	done
 	# Commands that run after the routines finish
-	killall -KILL Dock
+	run_command "killall -KILL Dock"
 }

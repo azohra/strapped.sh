@@ -11,44 +11,61 @@ function strapped_brew() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
+	# Declaring local variables for the 'packages' routine
+	local name
 
+	# Declaring local variables for the 'taps' routine
 	local name
+
+	# Declaring local variables for the 'casks' routine
 	local name
-	local name
-	local i=0
 	local input=${1}
 
-	# performing functionality for packages
-	for ((i=0; i<$( q_count "${input}" "packages"); i++)); do
-		# Getting fields
-		name=$(q "${input}" "packages.\\[${i}\\].name")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'packages'
+	for ((i=0; i<$( ysh -T "${input}" -c packages ); i++)); do
+
+		# Getting fields for routine 'packages'
+		name=$( ysh -T "${input}" -l packages -i ${i} -Q name )
+
+		# Writing message for routine 'packages'
 		pretty_print ":info:" "🍺 installing ${name}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'packages'
 		run_command "brew list ${name} || brew install ${name}"
 	done
 
-	# performing functionality for taps
-	for ((i=0; i<$( q_count "${input}" "taps"); i++)); do
-		# Getting fields
-		name=$(q "${input}" "taps.\\[${i}\\].name")
-		# Writing message
+
+	# performing functionality for routine 'taps'
+	for ((i=0; i<$( ysh -T "${input}" -c taps ); i++)); do
+
+		# Getting fields for routine 'taps'
+		name=$( ysh -T "${input}" -l taps -i ${i} -Q name )
+
+		# Writing message for routine 'taps'
 		pretty_print ":info:" "🚰 tapping ${name}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'taps'
 		run_command "brew tap ${name}"
 	done
 
-	# performing functionality for casks
-	for ((i=0; i<$( q_count "${input}" "casks"); i++)); do
-		# Getting fields
-		name=$(q "${input}" "casks.\\[${i}\\].name")
-		# Writing message
+
+	# performing functionality for routine 'casks'
+	for ((i=0; i<$( ysh -T "${input}" -c casks ); i++)); do
+
+		# Getting fields for routine 'casks'
+		name=$( ysh -T "${input}" -l casks -i ${i} -Q name )
+
+		# Writing message for routine 'casks'
 		pretty_print ":info:" "🍻 installing ${name}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'casks'
 		run_command "brew cask list ${name} || brew cask install ${name}"
 	done
 }

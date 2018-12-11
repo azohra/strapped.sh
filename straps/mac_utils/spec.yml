@@ -1,18 +1,13 @@
 strap:
-  namespace: unix_utils
+  namespace: mac_utils
 
-  version: 0.1.0
-
-  description: "performs unix commands"
+  description: "performs mac terminal commands"
 
   compatability: OSX
 
   deps:
-    - echo
-    - brew
-  vars:
-    - HOME
-    - aah
+    - mkdir
+    - touch
 
   routines:
     mkdir:

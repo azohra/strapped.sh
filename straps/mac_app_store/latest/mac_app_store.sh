@@ -11,24 +11,29 @@ function strapped_mac_app_store() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
-
+	# Declaring local variables for the 'apps' routine
 	local name
 	local id
-	local i=0
 	local input=${1}
 
-	# performing functionality for apps
-	for ((i=0; i<$( q_count "${input}" "apps"); i++)); do
-		# Getting fields
-		name=$(q "${input}" "apps.\\[${i}\\].name")
-		id=$(q "${input}" "apps.\\[${i}\\].id")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'apps'
+	for ((i=0; i<$( ysh -T "${input}" -c apps ); i++)); do
+
+		# Getting fields for routine 'apps'
+		name=$( ysh -T "${input}" -l apps -i ${i} -Q name )
+		id=$( ysh -T "${input}" -l apps -i ${i} -Q id )
+
+		# Writing message for routine 'apps'
 		pretty_print ":info:" "🍏 installing installing ${name}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'apps'
 		run_command "mas install ${id}"
 	done
 }

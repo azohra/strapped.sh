@@ -11,24 +11,29 @@ function strapped_git() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
-
+	# Declaring local variables for the 'clone' routine
 	local repo
 	local folder
-	local i=0
 	local input=${1}
 
-	# performing functionality for clone
-	for ((i=0; i<$( q_count "${input}" "clone"); i++)); do
-		# Getting fields
-		repo=$(q "${input}" "clone.\\[${i}\\].repo")
-		folder=$(q "${input}" "clone.\\[${i}\\].folder")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'clone'
+	for ((i=0; i<$( ysh -T "${input}" -c clone ); i++)); do
+
+		# Getting fields for routine 'clone'
+		repo=$( ysh -T "${input}" -l clone -i ${i} -Q repo )
+		folder=$( ysh -T "${input}" -l clone -i ${i} -Q folder )
+
+		# Writing message for routine 'clone'
 		pretty_print ":info:" "💾 cloning ${repo} into ${folder}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'clone'
 		run_command "if [ ! -d ${folder} ] ; then git clone ${repo} ${folder}; fi"
 	done
 }

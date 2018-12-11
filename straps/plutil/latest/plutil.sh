@@ -11,28 +11,33 @@ function strapped_plutil() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
-
+	# Declaring local variables for the 'plists' routine
 	local var_type
 	local value
 	local domain
 	local key
-	local i=0
 	local input=${1}
 
-	# performing functionality for plists
-	for ((i=0; i<$( q_count "${input}" "plists"); i++)); do
-		# Getting fields
-		var_type=$(q "${input}" "plists.\\[${i}\\].var_type")
-		value=$(q "${input}" "plists.\\[${i}\\].value")
-		domain=$(q "${input}" "plists.\\[${i}\\].domain")
-		key=$(q "${input}" "plists.\\[${i}\\].key")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'plists'
+	for ((i=0; i<$( ysh -T "${input}" -c plists ); i++)); do
+
+		# Getting fields for routine 'plists'
+		var_type=$( ysh -T "${input}" -l plists -i ${i} -Q var_type )
+		value=$( ysh -T "${input}" -l plists -i ${i} -Q value )
+		domain=$( ysh -T "${input}" -l plists -i ${i} -Q domain )
+		key=$( ysh -T "${input}" -l plists -i ${i} -Q key )
+
+		# Writing message for routine 'plists'
 		pretty_print ":info:" "️🛠️ Updating ${domain} ${key} to ${value}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'plists'
 		run_command "plutil -replace ${key} -${var_type} ${value} ~/Library/Preferences/${domain}.plist"
 	done
 }

@@ -11,22 +11,27 @@ function strapped_visual_studio_code() {
 		for check in ${__checks}; do
 			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
 		done
+		# Deciding if the dependancy has been satisfied
+		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Deciding if the dependancy has been satisfied
-	if [[ ! "${__woo}" = "1" ]]; then echo "deps not met" && exit 2; fi 
-
+	# Declaring local variables for the 'extensions' routine
 	local name
-	local i=0
 	local input=${1}
 
-	# performing functionality for extensions
-	for ((i=0; i<$( q_count "${input}" "extensions"); i++)); do
-		# Getting fields
-		name=$(q "${input}" "extensions.\\[${i}\\].name")
-		# Writing message
+	# Initialize array iterator
+	local i=0
+
+	# performing functionality for routine 'extensions'
+	for ((i=0; i<$( ysh -T "${input}" -c extensions ); i++)); do
+
+		# Getting fields for routine 'extensions'
+		name=$( ysh -T "${input}" -l extensions -i ${i} -Q name )
+
+		# Writing message for routine 'extensions'
 		pretty_print ":info:" "💻 adding extension ${name}"
-		# Executing the command(s)
+
+		# Executing the command(s) for routine 'extensions'
 		run_command "code --install-extension ${name}"
 	done
 }

@@ -1,5 +1,5 @@
 strap:
-  namespace: mac_utils
+  namespace: say
 
   version: latest
 

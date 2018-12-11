@@ -1,5 +1,11 @@
 #!/bin/bash
-set -e 
+
+set -e
+
+# shellcheck disable=SC2034 
+YSH_LIB=1;
+# shellcheck disable=SC1091
+source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/v0.1.3/ysh)"
 
 # Helpers
 pretty_print () {  
@@ -7,6 +13,15 @@ pretty_print () {
     local value=${2}
 
     echo -e "${C_GREEN}${key}:${C_BLUE} ${value} ${C_REG}"
+}
+
+trim() {
+    local var="$*"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"   
+    echo -n "$var"
 }
 
 create_file () {
@@ -41,39 +56,39 @@ q_children() {
 
 # Helper functions
 function get_routines() {
-  q_children "${file}" "routines"
+  ysh -T "${file}" -s "routines" -t
 }
 
 function get_message() {
-  q "${file}" "routines.${1}.message"
+  ysh -T "${file}" -Q "routines.${1}.message"
 }
 
 function get_commands() {
-  q "${file}" "routines.${1}.exec"
+  ysh -T "${file}" -Q "routines.${1}.exec"
 }
 
 function get_deps() {
-  q "${file}" "deps" | tr '\n' ' '
+  ysh -T "${file}" -L "deps" | tr '\n' ' '
 }
 
 function get_before_commands() {
-  q "${file}" "before"
+  ysh -T "${file}" -l "before"
 }
 
 function get_after_commands() {
-  q "${file}" "after"
+  ysh -T "${file}" -l "after"
 }
 
 function get_emoji() {
-  q "${file}" "routines.${1}.emoji"
+  ysh -T "${file}" -Q "routines.${1}.emoji"
 }
 
 function get_inputs() {
-  q_children "${file}" "routines.$1.input.\\[0\\]" | tr '\n' ' '
+  ysh -T "${file}" -s "routines.${1}.input" -i 0 -t
 }
 
 function get_value_for_routine_input() {
-  q "${file}" "routines.$1.input.\\[0\\].$2"
+  ysh -T "${file}" -s "routines.${1}.input" -i 0 -Q "${2}"
 }
 
 function len() {
@@ -87,7 +102,7 @@ function generate_emoji_string() {
   routines=$( get_routines "${file}" )
 
   for routine in ${routines}; do
-    emoji=$(q "${file}" "routines.${routine}.emoji")
+    emoji=$(ysh -T "${file}" -Q "routines.${routine}.emoji")
     emoji_string+="$emoji [${routine}] "
   done
 
@@ -103,8 +118,8 @@ function generate_chart() {
   local chart="| Attribute     | Value |\\n|--------------:|----|\\n"
 
   emoji=$( generate_emoji_string )
-  desc=$( q "${file}" "description" )
-  comp=$( q "${file}" "compatability" | tr '\n' ' ')
+  desc=$( ysh -T "${file}" -Q "description" )
+  comp=$( ysh -T "${file}" -Q "compatability" | sed "s/.*=//" | tr '\n' ' ')
   deps=$( get_deps )
 
   chart+="| Namespace     | ${namespace} |\\n"
@@ -134,8 +149,8 @@ function generate_example() {
     fields=$( get_inputs "${routine}" )
 
     # Get a 0-indexed iterator
-    field_count=$( q_children "${file}" "routines.${routine}.input.\\[0\\]" )
-    field_count=$( len "${field_count}")
+    # field_count=$( q_children "${file}" "routines.${routine}.input.\\[0\\]" )
+    field_count=$( ysh -T "${file}" -s routines."${routine}".input -i 0 -t | tr '\n' ' ' | wc -w )
     ((field_count--))
 
     # Maybe verify if the user has specified an input
@@ -182,23 +197,39 @@ function generate_local_vars() {
   local routines
   local fields
 
-  vars=$( q "${file}" "vars" )
-  
-  # Iterate over top_level vars
-  for var in ${vars}; do
-    echo -e "\\tlocal ${var}"
-  done
-
   routines=$( get_routines "${file}" )
 
-  for routine in ${routines}; do
-    fields=$( get_inputs "${routine}" )
+  if [[ ${routines} ]]; then
+    for routine in ${routines}; do
+      echo -e "\\n\\t# Declaring local variables for the '${routine}' routine"
+      fields=$( get_inputs "${routine}" )
 
-    for field in ${fields}; do
-      echo -e "\\tlocal ${field}"
+      for field in ${fields}; do
+        echo -e "\\tlocal ${field}"
+      done
     done
 
-  done
+    echo -e "\\tlocal input=\${1}"
+  fi
+  
+  # Iterate over top_level vars
+  if [[ $(ysh -T "${file}" -c vars) -ne 0 ]]; then
+
+    vars=$( ysh -T "${file}" -L "vars" | tr '\n' ' ')
+
+    echo -e "\\n\\t# Declaring top-level local strap variables"
+
+    for var in ${vars}; do
+      echo -e "\\tlocal ${var}"
+    done
+
+    echo -e "\\n\\t# Setting top-level local strap variables"
+
+    for var in ${vars}; do
+      echo -e "\\t${var}=\$( ysh -T \"\${input}\" -Q ${var})"
+    done
+  fi 
+
 }
 
 function generate_routines() {
@@ -212,34 +243,34 @@ function generate_routines() {
   routines=$( get_routines "${file}" )
 
   if [[ ${routines} ]]; then
+    echo -e "\\n\\t# Initialize array iterator"
     echo -e "\\tlocal i=0"
-    echo -e "\\tlocal input=\${1}\\n"
   else
     echo -e "\\ttrue"
   fi 
 
   for routine in ${routines}; do
     
-    echo -e "\\t# performing functionality for ${routine}"
-    echo -e "\\tfor ((i=0; i<\$( q_count \"\${input}\" \"${routine}\"); i++)); do"
+    echo -e "\\n\\t# performing functionality for routine '${routine}'"
+    echo -e "\\tfor ((i=0; i<\$( ysh -T \"\${input}\" -c ${routine} ); i++)); do"
 
     fields=$( get_inputs "${routine}" )
     emoji=$( get_emoji "${routine}" )
     msg=$( get_message "${routine}" )
     commands=$( get_commands "${routine}" )
 
-    echo -e "\\t\\t# Getting fields"
+    echo -e "\\n\\t\\t# Getting fields for routine '${routine}'"
 
     for field in ${fields}; do
-      echo -e "\\t\\t${field}=\$(q \"\${input}\" \"${routine}.\\\\\\\\\\[\${i}\\\\\\\\\\].${field}\")"
+      echo -e "\\t\\t${field}=\$( ysh -T \"\${input}\" -l ${routine} -i \${i} -Q ${field} )"
     done
 
     if [[ ${msg} ]]; then
-      echo -e "\\t\\t# Writing message"
+      echo -e "\\n\\t\\t# Writing message for routine '${routine}'"
       echo -e "\\t\\tpretty_print \":info:\" \"${emoji} ${msg}\""
     fi
 
-    echo -e "\\t\\t# Executing the command(s)"
+    echo -e "\\n\\t\\t# Executing the command(s) for routine '${routine}'"
   
     while read -r cmd; do
       echo -e "\\t\\trun_command \"${cmd}\""
@@ -272,40 +303,41 @@ function generate_deps_check() {
     echo -e "\\t\\tfor check in \${__checks}; do"
     echo -e "\\t\\t\\tif \"\${dep}\" \"\${check}\" &> /dev/null; then __woo=1; fi"
     echo -e "\\t\\tdone"
+    echo -e "\\t\\t# Deciding if the dependancy has been satisfied"
+    echo -e "\\t\\tif [[ ! \"\${__woo}\" = \"1\" ]]; then echo \"dependancy \${dep} not met\" && exit 2; fi"
     echo -e "\\tdone\\n"
-
-    echo -e "\\t# Deciding if the dependancy has been satisfied"
-    echo -e "\\tif [[ ! \"\${__woo}\" = \"1\" ]]; then echo \"deps not met\" && exit 2; fi \\\\n"
   fi
 }
 
 function generate_before_tasks() {
-  local commands
+  local i=0
+  local cmd
+  command_count=$( ysh -T "${file}" -c before )
 
-  commands=$( get_before_commands )
-
-  if [[ "${commands}" ]]; then 
+  if [[ ${command_count} -ne 0 ]]; then
     echo -e "\\t# Commands that run before the routines start"
 
-    while read -r cmd; do
-      echo -e "\\t${cmd}"
-    done <<< "${commands}"
-
-    echo -e "\\\\n"
+    for ((i=0; i<$( ysh -T "${file}" -c before ); i++)); do
+      # cmd=$( ysh -T "${file}" -l before -i ${i} | sed -e 's/^"//' -e 's/"$//' )
+      cmd=$( ysh -T "${file}" -l before -i ${i} )
+      echo -e "\\trun_command ${cmd}"
+    done
   fi
 }
 
 function generate_after_tasks() {
-  local commands
+  local i=0
+  local cmd
+  command_count=$( ysh -T "${file}" -c after )
 
-  commands=$( get_after_commands )
-
-  if [[ "${commands}" ]]; then 
+  if [[ ${command_count} -ne 0 ]]; then
     echo -e "\\t# Commands that run after the routines finish"
 
-    while read -r cmd; do
-      echo -e "\\t${cmd}"
-    done <<< "${commands}"
+    for ((i=0; i<$( ysh -T "${file}" -c after ); i++)); do
+      # cmd=$( ysh -T "${file}" -l after -i ${i} | sed -e 's/^"//' -e 's/"$//' )
+      cmd=$( ysh -T "${file}" -l after -i ${i} )
+      echo -e "\\trun_command ${cmd}"
+    done
   fi
 }
 
@@ -329,15 +361,14 @@ C_GREEN="\\033[32m"
 C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
 
-file=$( awk -f parser.awk "$1")
-file=$( q_sub "${file}" "strap" )
-version=$( q "${file}" "version" )
-namespace=$( q "${file}" "namespace" )
+file=$( ysh -f "$1" -s "strap")
+version=$( ysh -T "${file}" -Q "version" )
+namespace=$( ysh -T "${file}" -Q "namespace" )
+
 strap_location="straps/${namespace}/${version}"
 
 mkdir -p "straps/${namespace}"
 mkdir -p "${strap_location}"
-
 
 create_file "$( generate_docs )" "${strap_location}/README.md"
 create_file "$( generate_func_start )" "${strap_location}/${namespace}.sh"

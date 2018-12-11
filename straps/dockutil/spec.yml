@@ -15,13 +15,13 @@ strap:
 
   routines:
     apps:
-      exec: "dockutil --add ${path} --position ${pos} --no-restart"
+      exec: "dockutil --add \"${path}\" --position ${pos} --no-restart"
       message: "adding ${path}"
       emoji: 🚢
       input:
         - { path: "/Applications/Google Chrome.app", pos: 2}
     dirs:
-      exec: "dockutil --add ${path} --view ${view} --display ${display} --sort ${sort} --no-restart"
+      exec: "dockutil --add \"${path}\" --view ${view} --display ${display} --sort ${sort} --no-restart"
       message: "adding ${path}"
       emoji: 🚢
       input:
