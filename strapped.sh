@@ -18,6 +18,9 @@ pretty_print () {
     local message=${2}
     
     case $msg_type in 
+    ":log:" )  
+        echo -e "\n🔫 ${C_BLUE} ${message} ${C_REG}"
+        ;;
     ":announce:" )  
         echo -e "${C_GREEN}${message%::*}:${C_BLUE} ${message#*::} ${C_REG}"
         ;;
@@ -147,7 +150,7 @@ create_strap_array() {
 
 ask_permission () {  
     local message=${1}
-    pretty_print ":announce:" "\\n🔫::${message}"
+    pretty_print ":log:" "${message}"
     printf "(Y/N): "
     while true
     do
