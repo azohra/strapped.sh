@@ -1,9 +1,8 @@
 strapped:
-  repo: ./straps
-  # repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
+  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
 
-unix_utils:
+bash:
   echo:
-    - "Woop woop! strapped.sh is ready to rock."
-    - "use flag '--yml /path/to/strapped.yml' to #StayStrapped"
-    - "Made with <3 by Azohra"
+    - { msg: "Woop woop! strapped.sh is ready to rock." }
+    - { msg: "use flag '--yml /path/to/strapped.yml' to #StayStrapped" }
+    - { msg: "Made with '<3' by Azohra" }

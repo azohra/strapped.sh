@@ -12,9 +12,6 @@ strap:
     - mkdir
     - touch
 
-  vars:
-    - HOME
-
   routines:
     mkdir:
       exec: "mkdir ${dir}"
@@ -30,8 +27,7 @@ strap:
       input:
         - { file: .bashrc }
     echo:
-      exec: "echo ${msg}"
-      message: "echoing ${msg}"
+      message: " ${msg}"
       emoji: 🗣
       input:
         - { msg: "Hello world" }

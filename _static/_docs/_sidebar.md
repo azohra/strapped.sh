@@ -9,7 +9,6 @@
   - [dockutil](straps/dockutil.md)
   - [git](straps/git.md)
   - [mac_app_store](straps/mac_app_store.md)
-  - [mac_utils](straps/mac_utils.md)
   - [npm](straps/npm.md)
   - [pip2](straps/pip2.md)
   - [pip3](straps/pip3.md)

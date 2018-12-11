@@ -10,7 +10,8 @@ STRAPPED_DEBUG=""
 custom_straps=""
 auto_approve=""
 base_repo="https://raw.githubusercontent.com/azohra/strapped/master/straps"
-yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
+# yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
+yml_location="yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
 # shellcheck disable=SC2034 
@@ -24,7 +25,7 @@ pretty_print () {
     
     case $msg_type in 
     ":log:" )  
-        echo -e "\n🔫 ${C_BLUE} ${message} ${C_REG}"
+        echo -e "\\n🔫 ${C_BLUE} ${message} ${C_REG}"
         ;;
     ":announce:" )  
         echo -e "${C_GREEN}${message%::*}:${C_BLUE} ${message#*::} ${C_REG}"

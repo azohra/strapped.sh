@@ -28,12 +28,6 @@ function strapped_bash() {
 	local file
 	local input=${1}
 
-	# Declaring top-level local strap variables
-	local HOME
-
-	# Setting top-level local strap variables
-	HOME=$( ysh -T "${input}" -Q HOME)
-
 	# Initialize array iterator
 	local i=0
 
@@ -72,10 +66,10 @@ function strapped_bash() {
 		msg=$( ysh -T "${input}" -l echo -i ${i} -Q msg )
 
 		# Writing message for routine 'echo'
-		pretty_print ":info:" "🗣 echoing ${msg}"
+		pretty_print ":info:" "🗣  ${msg}"
 
 		# Executing the command(s) for routine 'echo'
-		run_command "echo ${msg}"
+		run_command ""
 	done
 
 
