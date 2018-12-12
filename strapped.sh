@@ -16,7 +16,7 @@ url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%
 # shellcheck disable=SC2034 
 YSH_LIB=1;
 # shellcheck disable=SC1091
-source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/v0.1.3/ysh)"
+source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/v0.1.4/ysh)"
 
 pretty_print () { 
     local msg_type=${1} 
@@ -109,7 +109,7 @@ done
 
 parse_config() {
     # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -s "${yml_location}" | ysh -f ); else config=$(ysh -f "${yml_location}"); fi
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -s "${yml_location}" | ysh ); else config=$(ysh -f "${yml_location}"); fi
     if [ ! "${config}" ]; then pretty_print ":announce:" "Strapped::Config not found" && exit 2;else pretty_print ":announce:" "Config::${yml_location}"; fi
 }
 

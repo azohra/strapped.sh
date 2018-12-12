@@ -5,7 +5,7 @@ set -e
 # shellcheck disable=SC2034 
 YSH_LIB=1;
 # shellcheck disable=SC1091
-source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/v0.1.3/ysh)"
+source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/v0.1.4/ysh)"
 
 # Helpers
 pretty_print () {  
@@ -318,7 +318,6 @@ function generate_before_tasks() {
     echo -e "\\t# Commands that run before the routines start"
 
     for ((i=0; i<$( ysh -T "${file}" -c before ); i++)); do
-      # cmd=$( ysh -T "${file}" -l before -i ${i} | sed -e 's/^"//' -e 's/"$//' )
       cmd=$( ysh -T "${file}" -l before -i ${i} )
       echo -e "\\trun_command ${cmd}"
     done
@@ -334,7 +333,6 @@ function generate_after_tasks() {
     echo -e "\\t# Commands that run after the routines finish"
 
     for ((i=0; i<$( ysh -T "${file}" -c after ); i++)); do
-      # cmd=$( ysh -T "${file}" -l after -i ${i} | sed -e 's/^"//' -e 's/"$//' )
       cmd=$( ysh -T "${file}" -l after -i ${i} )
       echo -e "\\trun_command ${cmd}"
     done
