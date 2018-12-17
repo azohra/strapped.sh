@@ -397,8 +397,8 @@ if [[ "${version}" != "latest" ]]; then
   cp "${strap_location}/${namespace}.sh.DIGEST" "straps/${namespace}/latest/${namespace}.sh.DIGEST"
 
 else
-  echo "[Build] Error: Invalid version field for strap ${namespace}."
-  echo "[Build] Fix: add a version number to your strap, 'latest' does not count as a version number."
+  echo "[Build] Error: Invalid version field for strap ${namespace}"
+  echo "[Build] Fix: add a version number to your strap, 'latest' does not count as a version number"
   exit 1
 fi
 
