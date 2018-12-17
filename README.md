@@ -8,6 +8,7 @@
 
 ## Rationale
 
+TODO: add rationale
 
 ## Installation
 
@@ -93,3 +94,18 @@ visual_studio_code:
 ```
 
 The complete list of straps and their usage can be found [here](https://docs.strapped.sh/#/)
+
+## Contributing
+
+We are open to anyone contributing to this repo. Please ensure you follow the [code of conduct](https://github.com/azohra/strapped.sh/blob/master/CODE_OF_CONDUCT.md).
+
+If you wish to contribute and don't know where to start, check out the [issues](https://github.com/azohra/strapped.sh/issues)
+section for inspiration. If there is a new strap that you would like added to the official strap repo, follow the guide in the wiki to learn how to use our strap `compiler`!
+
+## License
+
+Strapped.sh is licensed under the [MIT](https://github.com/azohra/strapped.sh/blob/master/LICENSE) license.
+
+---
+
+Made with :heart: by Azohra
