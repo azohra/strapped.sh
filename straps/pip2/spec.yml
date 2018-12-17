@@ -1,12 +1,10 @@
 strap:
   namespace: pip2
-  version: latest
+  version: v0.1.0
   description: "installs python packages globally"
   compatability: universal
-
   deps:
     - pip
-
   routines:
     packages:
       exec: "pip install ${name}"

@@ -1,12 +1,10 @@
 strap:
   namespace: plutil
-  version: latest
+  version: v0.1.0
   description: "edit plists"
   compatability: OSX
-
   deps:
     - plutil
-
   routines:
     plists:
       exec: "plutil -replace ${key} -${var_type} ${value} ~/Library/Preferences/${domain}.plist"

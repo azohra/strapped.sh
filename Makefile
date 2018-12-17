@@ -1,11 +1,10 @@
 .PHONY: all exec test strap straps docs integrity
 
-all: exec straps integrity docs test   
+all: exec straps docs test   
 
 exec:
 	@chmod u+x *.sh
 	@chmod u+x build/*.sh
-	@chmod u+x straps/**/**/*.sh
 
 test:
 	@shellcheck ./strapped.sh
@@ -14,9 +13,6 @@ test:
 
 docs:
 	@./build/docs.sh
-
-integrity:
-	@./build/integrity.sh
 
 strap:
 	@./build/compiler.sh ${yml}

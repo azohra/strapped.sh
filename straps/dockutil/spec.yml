@@ -1,18 +1,14 @@
 strap:
   namespace: dockutil
-  version: latest
+  version: v0.1.0
   description: "adds, removes, and sorts items in the osx dock"
   compatability: OSX
-
   deps:
     - dockutil 
-
   before:
     - dockutil --remove all --no-restart
-    
   after: 
     - killall -KILL Dock
-
   routines:
     apps:
       exec: "dockutil --add \"${path}\" --position ${pos} --no-restart"

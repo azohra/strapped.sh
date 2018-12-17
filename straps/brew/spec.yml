@@ -1,12 +1,10 @@
 strap:
   namespace: brew
-  version: latest
+  version: v0.1.0
   description: "installs packages, casks, and taps via brew"
   compatability: OSX
-
   deps:
     - brew
-
   routines:
     packages:
       exec: "brew list ${name} || brew install ${name}"

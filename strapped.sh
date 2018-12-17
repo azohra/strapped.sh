@@ -80,7 +80,6 @@ while [ $# -gt 0 ] ; do
     -l|--lint)
         # init_parser
         ysh "${2}" > /dev/null
-        # awk -v force_complete=1 "${parser}" "${2}" > /dev/null
         exit $?
     ;;
     -r|--repo)
@@ -95,7 +94,7 @@ while [ $# -gt 0 ] ; do
         auto_approve="true"
     ;;
     -v|--version)
-        echo 'v0.1' && exit 0
+        echo 'v0.1.0' && exit 0
     ;;
     -h|--help)
         usage
@@ -162,6 +161,7 @@ stay_strapped () {
         else
             source "${strap_repo}/${strap}/${version}/${strap}.sh"
         fi
+
         pretty_print ":announce:" "\\n${strap}::${version} from ${strap_repo}"
 
         strapped_"${strap}" "${strap_config}"

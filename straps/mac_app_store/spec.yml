@@ -1,12 +1,10 @@
 strap:
   namespace: mac_app_store
-  version: latest
+  version: v0.1.0
   description: "installs apps from the mac app store"
   compatability: OSX
-
   deps:
     - mas
-
   routines:
     apps:
       exec: "mas install ${id}"

@@ -1,15 +1,10 @@
 strap:
   namespace: visual_studio_code
-
-  version: latest
-
+  version: v0.1.0
   description: "manages settings for visual studio code"
-
   compatability: universal
-
   deps:
     - code
-
   routines:
     extensions:
       exec: "code --install-extension ${name}"
@@ -17,3 +12,4 @@ strap:
       emoji: 💻
       input:
         - { name: zhuangtongfa.material-theme }
+

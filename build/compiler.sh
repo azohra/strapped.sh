@@ -348,8 +348,6 @@ function generate_func_end() {
   echo -e "}"
 }
 
-
-
 # Read the config file, and get data under the strap heading
 if [ ! -f "${1}" ]; then
   echo "spec not found!" && exit 2
@@ -360,20 +358,47 @@ C_BLUE="\\033[34m"
 C_REG="\\033[0;39m"
 
 file=$( ysh -f "$1" -s "strap")
+
+# Load the version from the spec.yml
 version=$( ysh -T "${file}" -Q "version" )
+version=${version:="latest"}
+
+# Load the namespace from the spec.yml
 namespace=$( ysh -T "${file}" -Q "namespace" )
 
-strap_location="straps/${namespace}/${version}"
+# Ensure the user has specified a proper namespace
+if [[ ! "${namespace}" ]]; then
+  echo "[Build] Error: could not find namespace for strap $1."
+  echo "[Build] Fix: specify the namespace for your strap."
+  exit 1
+fi
 
-mkdir -p "straps/${namespace}"
-mkdir -p "${strap_location}"
+# Ensure the user has specified a valid version number
+if [[ "${version}" != "latest" ]]; then
+  strap_location="straps/${namespace}/${version}"
 
-create_file "$( generate_docs )" "${strap_location}/README.md"
-create_file "$( generate_func_start )" "${strap_location}/${namespace}.sh"
+  mkdir -p "straps/${namespace}"
+  mkdir -p "${strap_location}"
 
-update_file "$( generate_deps_check )" "${strap_location}/${namespace}.sh"
-update_file "$( generate_before_tasks )" "${strap_location}/${namespace}.sh"
-update_file "$( generate_local_vars )" "${strap_location}/${namespace}.sh"
-update_file "$( generate_routines )" "${strap_location}/${namespace}.sh"
-update_file "$( generate_after_tasks )" "${strap_location}/${namespace}.sh"
-update_file "$( generate_func_end )" "${strap_location}/${namespace}.sh"
+  create_file "$( generate_docs )" "${strap_location}/README.md"
+  create_file "$( generate_func_start )" "${strap_location}/${namespace}.sh"
+
+  update_file "$( generate_deps_check )" "${strap_location}/${namespace}.sh"
+  update_file "$( generate_before_tasks )" "${strap_location}/${namespace}.sh"
+  update_file "$( generate_local_vars )" "${strap_location}/${namespace}.sh"
+  update_file "$( generate_routines )" "${strap_location}/${namespace}.sh"
+  update_file "$( generate_after_tasks )" "${strap_location}/${namespace}.sh"
+  update_file "$( generate_func_end )" "${strap_location}/${namespace}.sh"
+
+  rm -rf "straps/${namespace}/latest"
+  cp -R "${strap_location}" "straps/${namespace}/latest"
+
+  shasum -a 256 "${strap_location}/${namespace}.sh" > "${strap_location}/${namespace}.sh.DIGEST"
+  cp "${strap_location}/${namespace}.sh.DIGEST" "straps/${namespace}/latest/${namespace}.sh.DIGEST"
+
+else
+  echo "[Build] Error: Invalid version field for strap ${namespace}."
+  echo "[Build] Fix: add a version number to your strap, 'latest' does not count as a version number."
+  exit 1
+fi
+

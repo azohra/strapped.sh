@@ -1,12 +1,10 @@
 strap:
   namespace: pip3
-  version: latest
+  version: v0.1.0
   description: "installs python3 packages globally"
   compatability: universal
-
   deps:
     - pip3
-
   routines:
     packages:
       exec: "pip3 install ${name}"

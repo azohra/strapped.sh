@@ -1,12 +1,10 @@
 strap:
   namespace: ruby_gems
-  version: latest
+  version: v0.1.0
   description: "installs ruby gems globally"
   compatability: universal
-
   deps:
     - ruby
-
   routines:
     packages:
       exec: "gem install ${name}"

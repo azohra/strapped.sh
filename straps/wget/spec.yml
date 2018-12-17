@@ -1,12 +1,10 @@
 strap:
   namespace: wget
-  version: latest
+  version: v0.1.0
   description: "does fun stuff with wget"
   compatability: unix
-
   deps:
     - wget
-
   routines:
     download:
       exec: "wget -P ${folder} -O {filename} ${url}"

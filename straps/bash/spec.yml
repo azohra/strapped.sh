@@ -1,17 +1,12 @@
 strap:
   namespace: bash
-
-  version: latest
-
+  version: v0.1.0
   description: "performs bash commands"
-
   compatability: unix
-
   deps:
     - echo
     - mkdir
     - touch
-
   routines:
     mkdir:
       exec: "mkdir ${dir}"

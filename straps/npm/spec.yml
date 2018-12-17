@@ -1,12 +1,10 @@
 strap:
   namespace: npm
-  version: latest
+  version: v0.1.0
   description: "installs node.js packages globally"
   compatability: universal
-
   deps:
     - npm
-
   routines:
     packages:
       exec: "npm install -g ${name}"

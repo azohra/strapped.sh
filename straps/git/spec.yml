@@ -1,12 +1,10 @@
 strap:
   namespace: git
-  version: latest
+  version: v0.1.0
   description: "clones git repos to the specified folder"
   compatability: universal
-
   deps:
     - git
-
   routines:
     clone:
       exec: "if [ ! -d ${folder} ] ; then git clone ${repo} ${folder}; fi"
