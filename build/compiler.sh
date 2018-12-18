@@ -68,7 +68,29 @@ function get_commands() {
 }
 
 function get_deps() {
-  ysh -T "${file}" -L "deps" | tr '\n' ' '
+  local i=0
+  local names=""
+  for ((i=0; i<$(ysh -T "${file}" -l deps -c); i++)); do
+    names+="$( ysh -T "${file}" -l deps -i ${i} -Q name ) "
+  done
+
+  echo "${names}"
+}
+
+function get_dep_name() {
+  echo "$( ysh -T "${file}" -l deps -i ${1} -Q name )"
+}
+
+function get_dep_message() {
+  local i=0
+  local msg
+  local message=""
+  for ((i=0; i<$(ysh -T "${file}" -l deps -i ${1} -l msg -c); i++)); do
+    msg=$( ysh -T "${file}" -l deps -i ${1} -l msg -i ${i} )
+    message+="${msg:1:${#msg}-2} \\\\n"
+  done
+
+  echo "${message}"
 }
 
 function get_before_commands() {
@@ -287,23 +309,38 @@ function dep_check_string() {
 
 function generate_deps_check() {
   local deps
-  local checks="-v -V --version"
+  local i=0
+  local name
+  local msg
 
   deps=$( get_deps )
 
   if [[ "${deps}" ]]; then 
     echo -e "\\t# Variables to hold the deps and corresponding checks"
     echo -e "\\tlocal __deps=\"${deps}\""
-    echo -e "\\tlocal __checks=\"${checks}\""
-    echo -e "\\tlocal __woo=\"\"\\n"
+    echo -e "\\tlocal __resp"
   
     echo -e "\\t# Performing each check for each dep"
     echo -e "\\tfor dep in \${__deps}; do"
-    echo -e "\\t\\tfor check in \${__checks}; do"
-    echo -e "\\t\\t\\tif \"\${dep}\" \"\${check}\" &> /dev/null; then __woo=1; fi"
-    echo -e "\\t\\tdone"
-    echo -e "\\t\\t# Deciding if the dependancy has been satisfied"
-    echo -e "\\t\\tif [[ ! \"\${__woo}\" = \"1\" ]]; then echo \"dependancy \${dep} not met\" && exit 2; fi"
+    echo -e "\\t\\tcommand -v \"\${dep}\" &> /dev/null"
+    echo -e "\\t\\t__resp=\$?"
+    echo -e "\\t\\tif [[ \$__resp -ne 0 ]]; then"
+    echo -e "\\t\\t\\techo \"dep \${dep} not found:\""
+    echo -e "\\t\\t\\tcase \"\${dep}\" in"
+
+    for ((i=0; i<$(ysh -T "${file}" -l deps -c); i++)); do
+      name=$( get_dep_name ${i} )
+      msg=$( get_dep_message ${i} )
+
+      echo -e "\\t\\t\\t\"${name}\")"
+      echo -e "\\t\\t\\t\\techo -e \"${msg}\""
+      echo -e "\\t\\t\\t;;"
+      # echo -e "\\t\\t\\t${msg}"
+    done
+    echo -e "\\t\\t\\tesac"
+
+    echo -e "\\t\\t\\texit 1"
+    echo -e "\\t\\tfi"
     echo -e "\\tdone\\n"
   fi
 }

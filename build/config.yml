@@ -8,8 +8,14 @@ strap:
   compatability: OSX
 
   deps:
-    - echo
-    - brew
+    - name: brew
+      msg:
+        - "\tplease install brew"
+        - "\tyou can find it here"
+    - name: bash
+      msg:
+        - please install bash
+        - you can install it like this
   vars:
     - HOME
     - aah

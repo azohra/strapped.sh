@@ -1,8 +1,6 @@
 #!/bin/bash
 # shellcheck source=/dev/null
 
-set -e
-echo ""
 C_GREEN="\\033[32m"
 C_BLUE="\\033[94m"
 C_REG="\\033[0;39m"
