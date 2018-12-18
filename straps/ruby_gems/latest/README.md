@@ -5,7 +5,7 @@
 | Namespace     | ruby_gems |
 | Emoji         | 💎 [packages]  |
 | Description   | installs ruby gems globally |
-| Dependencies  | ruby  |
+| Dependencies  | gem  |
 | Compatability | universal  |
 
 ## Configuration

@@ -6,8 +6,8 @@ strap:
   deps:
     - name: brew
       msg:
-        - "\tPlease ensure you have `brew` installed on your system"
-        - "\tTo install `brew`, follow the instructions at https://brew.sh/"
+        - "\tPlease ensure you have brew installed on your system"
+        - "\tTo install brew, follow the instructions at https://brew.sh/"
   routines:
     taps:
       exec: "brew tap ${name}"

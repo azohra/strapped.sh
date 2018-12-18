@@ -6,7 +6,7 @@ strap:
   deps:
     - name: plutil
       msg:
-        - "\tPlease ensure you have `plutil` installed on your system"
+        - "\tPlease ensure you have plutil installed on your system"
   routines:
     plists:
       exec: "plutil -replace ${key} -${var_type} ${value} ~/Library/Preferences/${domain}.plist"

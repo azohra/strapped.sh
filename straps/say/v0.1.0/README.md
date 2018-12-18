@@ -5,7 +5,7 @@
 | Namespace     | say |
 | Emoji         | 🔈 [phrase] 🔈 [file]  |
 | Description   | uses the mac `say` command to convert text to speech |
-| Dependencies  |   |
+| Dependencies  | say  |
 | Compatability | OSX  |
 
 ## Configuration

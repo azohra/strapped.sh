@@ -6,12 +6,12 @@ strap:
   deps:
     - name: npm
       msg:
-        - "\tPlease ensure you have `npm` installed on your system"
-        - "\tWe reccomend using strapped to install `npm`"
+        - "\tPlease ensure you have npm installed on your system"
+        - "\tWe reccomend using strapped to install npm"
         - "\tMacOS"
-        - "\t\tbrew: "
-        - "\t\t\tpackages: "
-        - "\t\t\t\t- { name: npm } "
+        - "\t\t brew: "
+        - "\t\t\t packages: "
+        - "\t\t\t\t - { name: npm } "
   routines:
     packages:
       exec: "npm install -g ${name}"

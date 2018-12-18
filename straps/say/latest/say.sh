@@ -2,17 +2,23 @@
 
 function strapped_say() {
 	# Variables to hold the deps and corresponding checks
-	local __deps=" "
-	local __checks="-v -V --version"
-	local __woo=""
-
+	local __deps="say "
+	local __resp
 	# Performing each check for each dep
 	for dep in ${__deps}; do
-		for check in ${__checks}; do
-			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
-		done
-		# Deciding if the dependancy has been satisfied
-		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
+		command -v "${dep}" &> /dev/null
+		__resp=$?
+		if [[ $__resp -ne 0 ]]; then
+			echo "dep ${dep} not found:"
+			case "${dep}" in
+			"say")
+				echo -e "	Please ensure you have say installed on your system 
+	say is a program that comes pre-installed on MacOS 
+"
+			;;
+			esac
+			exit 1
+		fi
 	done
 
 	# Declaring local variables for the 'phrase' routine
@@ -23,12 +29,6 @@ function strapped_say() {
 	local voice
 	local file
 	local input=${1}
-
-	# Declaring top-level local strap variables
-	local HOME
-
-	# Setting top-level local strap variables
-	HOME=$( ysh -T "${input}" -Q HOME)
 
 	# Initialize array iterator
 	local i=0

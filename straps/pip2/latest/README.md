@@ -5,7 +5,7 @@
 | Namespace     | pip2 |
 | Emoji         | 🐍 [packages]  |
 | Description   | installs python packages globally |
-| Dependencies  | pip  |
+| Dependencies  | pip2  |
 | Compatability | universal  |
 
 ## Configuration

@@ -6,10 +6,10 @@ strap:
   deps:
     - name: dockutil
       msg:
-        - "\tPlease ensure you have `dockutil` installed on your system"
-        - "\tWe reccomend using the brew strap to install `dockutil`"
-        - "\tbrew: "
-        - "\t\tpackages: "
+        - "\tPlease ensure you have dockutil installed on your system"
+        - "\tWe reccomend using the brew strap to install dockutil"
+        - "\t brew: "
+        - "\t\t packages: "
         - "\t\t\t- { name: dockutil } "
   before:
     - dockutil --remove all --no-restart

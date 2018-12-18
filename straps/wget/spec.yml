@@ -6,7 +6,7 @@ strap:
   deps:
     - name: wget
       msg:
-        - "\tPlease ensure you have `wget` installed on your system"
+        - "\tPlease ensure you have wget installed on your system"
   routines:
     download:
       exec: "wget -P ${folder} -O {filename} ${url}"

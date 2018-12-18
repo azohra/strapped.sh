@@ -3,16 +3,26 @@
 function strapped_npm() {
 	# Variables to hold the deps and corresponding checks
 	local __deps="npm "
-	local __checks="-v -V --version"
-	local __woo=""
-
+	local __resp
 	# Performing each check for each dep
 	for dep in ${__deps}; do
-		for check in ${__checks}; do
-			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
-		done
-		# Deciding if the dependancy has been satisfied
-		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
+		command -v "${dep}" &> /dev/null
+		__resp=$?
+		if [[ $__resp -ne 0 ]]; then
+			echo "dep ${dep} not found:"
+			case "${dep}" in
+			"npm")
+				echo -e "	Please ensure you have npm installed on your system 
+	We reccomend using strapped to install npm 
+	MacOS 
+		 brew:  
+			 packages:  
+				 - { name: npm }  
+"
+			;;
+			esac
+			exit 1
+		fi
 	done
 
 	# Declaring local variables for the 'packages' routine

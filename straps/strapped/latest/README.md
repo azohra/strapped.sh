@@ -5,7 +5,7 @@
 | Namespace     | strapped |
 | Emoji         |  |
 | Description   | base configuration to run strapped.sh |
-| Dependencies  |   |
+| Dependencies  |  |
 | Compatability | universal  |
 
 ## Configuration

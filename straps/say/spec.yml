@@ -6,8 +6,8 @@ strap:
   deps:
     - name: say
       msg:
-        - "\tPlease ensure you have `say` installed on your system"
-        - "\t`say` is a program that comes pre-installed on MacOS"
+        - "\tPlease ensure you have say installed on your system"
+        - "\tsay is a program that comes pre-installed on MacOS"
   routines:
     phrase:
       exec: "say -v ${voice} ${text}"

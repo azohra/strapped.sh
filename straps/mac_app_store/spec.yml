@@ -6,7 +6,7 @@ strap:
   deps:
     - name: mas
       msg:
-        - "\tPlease ensure you have `mas` (mac app store) installed on your system"
+        - "\tPlease ensure you have mas (mac app store) installed on your system"
   routines:
     apps:
       exec: "mas install ${id}"

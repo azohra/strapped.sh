@@ -3,16 +3,21 @@
 function strapped_wget() {
 	# Variables to hold the deps and corresponding checks
 	local __deps="wget "
-	local __checks="-v -V --version"
-	local __woo=""
-
+	local __resp
 	# Performing each check for each dep
 	for dep in ${__deps}; do
-		for check in ${__checks}; do
-			if "${dep}" "${check}" &> /dev/null; then __woo=1; fi
-		done
-		# Deciding if the dependancy has been satisfied
-		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
+		command -v "${dep}" &> /dev/null
+		__resp=$?
+		if [[ $__resp -ne 0 ]]; then
+			echo "dep ${dep} not found:"
+			case "${dep}" in
+			"wget")
+				echo -e "	Please ensure you have wget installed on your system 
+"
+			;;
+			esac
+			exit 1
+		fi
 	done
 
 	# Declaring local variables for the 'download' routine

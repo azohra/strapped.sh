@@ -6,16 +6,16 @@ strap:
   deps:
     - name: echo
       msg:
-        - "\tPlease ensure you have `echo` installed on your system"
+        - "\tPlease ensure you have echo installed on your system"
     - name: mkdir
       msg:
-        - "\tPlease ensure you have `mkdir` installed on your system"
+        - "\tPlease ensure you have mkdir installed on your system"
     - name: touch
       msg:
-        - "\tPlease ensure you have `touch` installed on your system"
+        - "\tPlease ensure you have touch installed on your system"
     - name: exec
       msg:
-        - "\tPlease ensure you have `exec` installed on your system"
+        - "\tPlease ensure you have exec installed on your system"
   routines:
     mkdir:
       exec: "mkdir -p ${dir}"

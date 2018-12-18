@@ -5,7 +5,7 @@
 | Namespace     | bash |
 | Emoji         | 📂 [mkdir] 👉 [touch] 🗣 [echo] 👟 [exec]  |
 | Description   | performs bash commands |
-| Dependencies  | echo mkdir touch  |
+| Dependencies  | echo mkdir touch exec  |
 | Compatability | unix  |
 
 ## Configuration
