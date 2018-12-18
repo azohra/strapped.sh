@@ -325,7 +325,7 @@ function generate_deps_check() {
     echo -e "\\t\\tcommand -v \"\${dep}\" &> /dev/null"
     echo -e "\\t\\t__resp=\$?"
     echo -e "\\t\\tif [[ \$__resp -ne 0 ]]; then"
-    echo -e "\\t\\t\\techo \"dep \${dep} not found:\""
+    echo -e "\\t\\t\\techo \"ERROR: dep \${dep} not found:\""
     echo -e "\\t\\t\\tcase \"\${dep}\" in"
 
     for ((i=0; i<$(ysh -T "${file}" -l deps -c); i++)); do
