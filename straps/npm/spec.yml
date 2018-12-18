@@ -8,7 +8,7 @@ strap:
   routines:
     packages:
       exec: "npm install -g ${name}"
-      message: "installing ${name}"
+      message: "npm $(npm -v) installing ${name}"
       emoji: ☕
       input:
         - { name: testcafe }

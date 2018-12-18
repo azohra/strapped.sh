@@ -29,7 +29,7 @@ function strapped_pip3() {
 		name=$( ysh -T "${input}" -l packages -i ${i} -Q name )
 
 		# Writing message for routine 'packages'
-		pretty_print ":info:" "🐍 (3.x.x) installing ${name}"
+		pretty_print ":info:" "🐍 $(python3 --version) installing ${name}"
 
 		# Executing the command(s) for routine 'packages'
 		run_command "pip3 install ${name}"

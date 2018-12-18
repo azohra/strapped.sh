@@ -29,7 +29,7 @@ function strapped_npm() {
 		name=$( ysh -T "${input}" -l packages -i ${i} -Q name )
 
 		# Writing message for routine 'packages'
-		pretty_print ":info:" "☕ installing ${name}"
+		pretty_print ":info:" "☕ npm $(npm -v) installing ${name}"
 
 		# Executing the command(s) for routine 'packages'
 		run_command "npm install -g ${name}"

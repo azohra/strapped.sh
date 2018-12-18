@@ -8,7 +8,7 @@ strap:
   routines:
     packages:
       exec: "pip3 install ${name}"
-      message: "(3.x.x) installing ${name}"
+      message: "$(python3 --version) installing ${name}"
       emoji: 🐍
       input:
         - { name: boto3 }
