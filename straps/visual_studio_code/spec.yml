@@ -4,7 +4,14 @@ strap:
   description: "manages settings for visual studio code"
   compatability: universal
   deps:
-    - code
+    - name: code
+      msg:
+        - "\tPlease ensure you have `code` (VScode) installed on your system"
+        - "\tWe reccomend using strapped to install `VScode`"
+        - "\tMacOS"
+        - "\t\tbrew: "
+        - "\t\t\tcasks: "
+        - "\t\t\t\t- { name: visual-studio-code } "
   routines:
     extensions:
       exec: "code --install-extension ${name}"

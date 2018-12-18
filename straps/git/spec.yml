@@ -4,7 +4,14 @@ strap:
   description: "clones git repos to the specified folder"
   compatability: universal
   deps:
-    - git
+    - name: git
+      msg:
+        - "\tPlease ensure you have `git` installed on your system"
+        - "\tWe reccomend using strapped to install `git`"
+        - "\tMacOS"
+        - "\t\tbrew: "
+        - "\t\t\tpackages: "
+        - "\t\t\t\t- { name: git } "
   routines:
     clone:
       exec: "if [ ! -d ${folder} ] ; then mkdir ${folder} && git clone ${repo} ${folder}; fi"

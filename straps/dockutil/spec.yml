@@ -4,7 +4,13 @@ strap:
   description: "adds, removes, and sorts items in the osx dock"
   compatability: OSX
   deps:
-    - dockutil 
+    - name: dockutil
+      msg:
+        - "\tPlease ensure you have `dockutil` installed on your system"
+        - "\tWe reccomend using the brew strap to install `dockutil`"
+        - "\tbrew: "
+        - "\t\tpackages: "
+        - "\t\t\t- { name: dockutil } "
   before:
     - dockutil --remove all --no-restart
   after: 

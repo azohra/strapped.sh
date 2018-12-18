@@ -4,7 +4,14 @@ strap:
   description: "installs ruby gems globally"
   compatability: universal
   deps:
-    - ruby
+    - name: gem
+      msg:
+        - "\tPlease ensure you have `gem` installed on your system"
+        - "\tWe reccomend using strapped to install `ruby` which contains `gem`"
+        - "\tMacOS"
+        - "\t\tbrew: "
+        - "\t\t\tpackages: "
+        - "\t\t\t\t- { name: ruby } "
   routines:
     packages:
       exec: "gem install ${name}"

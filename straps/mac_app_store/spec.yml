@@ -4,7 +4,9 @@ strap:
   description: "installs apps from the mac app store"
   compatability: OSX
   deps:
-    - mas
+    - name: mas
+      msg:
+        - "\tPlease ensure you have `mas` (mac app store) installed on your system"
   routines:
     apps:
       exec: "mas install ${id}"

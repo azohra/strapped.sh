@@ -4,7 +4,14 @@ strap:
   description: "installs python3 packages globally"
   compatability: universal
   deps:
-    - pip3
+    - name: pip3
+      msg:
+        - "\tPlease ensure you have `pip3` installed on your system"
+        - "\tWe reccomend using strapped to install `pip3`"
+        - "\tMacOS"
+        - "\t\tbrew: "
+        - "\t\t\tpackages: "
+        - "\t\t\t\t- { name: pip3 } "
   routines:
     packages:
       exec: "pip3 install ${name}"

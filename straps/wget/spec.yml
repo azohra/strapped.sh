@@ -4,7 +4,9 @@ strap:
   description: "does fun stuff with wget"
   compatability: unix
   deps:
-    - wget
+    - name: wget
+      msg:
+        - "\tPlease ensure you have `wget` installed on your system"
   routines:
     download:
       exec: "wget -P ${folder} -O {filename} ${url}"

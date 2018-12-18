@@ -3,8 +3,11 @@ strap:
   version: v0.1.0
   description: "uses the mac `say` command to convert text to speech"
   compatability: OSX
-  vars:
-    - HOME
+  deps:
+    - name: say
+      msg:
+        - "\tPlease ensure you have `say` installed on your system"
+        - "\t`say` is a program that comes pre-installed on MacOS"
   routines:
     phrase:
       exec: "say -v ${voice} ${text}"
