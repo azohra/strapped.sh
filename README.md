@@ -1,12 +1,10 @@
-# Strapped.sh
-
 ![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)
 
 [![Build Status](https://travis-ci.org/azohra/strapped.sh.svg?branch=master)](https://travis-ci.org/azohra/strapped.sh)![License](https://img.shields.io/github/license/azohra/strapped.sh.svg)![Issues](https://img.shields.io/github/issues/azohra/strapped.sh.svg)
 
 ---
 
-## Introduction
+# Introduction
 
 Strapped.sh aims to be a universal platform for computer configuration management. Written purely in Bash
 and having no physical dependancies, Strapped.sh maintains a minimal footprint by operating as a SaaS which remotely
@@ -19,7 +17,7 @@ An example of a full computer configuration filecan be seen [here](https://gist.
 
 🔫 #StayStrapped
 
-## Installation
+# Installation
 
 To install strapped.sh, simply run this command:
 
@@ -47,7 +45,7 @@ flags:
   -h, --help                     prints this message
 ```
 
-## Usage
+# Usage
 
 To strap your computer, simply run strapped and point to your strap config file with the `-y` or `--yml` flag
 
@@ -61,7 +59,7 @@ You can even pass the URL to a remotely stored config file!
 strapped -y https://www.example.com/my_config.yml
 ```
 
-### About Configuration Files
+## About Configuration Files
 
 Configuration files are used as a blueprint for your computer's configuration. These files are composed of various `straps`
 which each serve different purposes. Straps themselves are implemented by `routines` that form the functionality of the strap.
@@ -104,7 +102,7 @@ visual_studio_code:
 
 The complete list of straps and their usage can be found [here](https://docs.strapped.sh/#/)
 
-## Contributing
+# Contributing
 
 We are open to anyone contributing to this repo. Please ensure you follow the [code of conduct](https://github.com/azohra/strapped.sh/blob/master/CODE_OF_CONDUCT.md).
 
@@ -113,7 +111,7 @@ section for inspiration.
 
 <!-- ### Using the compiler to generate new straps -->
 
-## License
+# License
 
 Strapped.sh is licensed under the [MIT](https://github.com/azohra/strapped.sh/blob/master/LICENSE) license.
 
