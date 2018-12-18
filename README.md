@@ -2,7 +2,11 @@
 
 ![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)
 
-[![Build Status](https://travis-ci.org/azohra/strapped.svg?branch=master)](https://travis-ci.org/azohra/strapped)
+[![Build Status](https://travis-ci.org/azohra/strapped.svg?branch=master)](https://travis-ci.org/azohra/strapped.sh)
+
+![License](https://img.shields.io/github/license/azohra/strapped.sh.svg)
+
+![Issues](https://img.shields.io/github/issues/azohra/strapped.sh.svg)
 
 ---
 
@@ -12,10 +16,10 @@ Strapped.sh aims to be a universal platform for computer configuration managemen
 and having no physical dependancies, Strapped.sh maintains a minimal footprint by operating as a SaaS which remotely
 sources the files it needs on demand.
 
-At a high level view, Straped.sh operates as a console command orchestrator. These commands are implemented by something we
+At a high level view, Straped.sh acts as a console command orchestrator. These commands are implemented by something we
 call `straps`. Simply write a `yml` configuration file containing any number of these straps and let Strapped.sh do the rest.
 
-An example of a full computer configuration can be seen [here](https://gist.github.com/MatthewNielsen27/92b7c99e8c5b6632e977539110301def)
+An example of a full computer configuration filecan be seen [here](https://gist.github.com/MatthewNielsen27/92b7c99e8c5b6632e977539110301def).
 
 🔫 #StayStrapped
 
