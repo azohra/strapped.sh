@@ -149,7 +149,6 @@ function generate_example() {
     fields=$( get_inputs "${routine}" )
 
     # Get a 0-indexed iterator
-    # field_count=$( q_children "${file}" "routines.${routine}.input.\\[0\\]" )
     field_count=$( ysh -T "${file}" -s routines."${routine}".input -i 0 -t | tr '\n' ' ' | wc -w )
     ((field_count--))
 
@@ -401,4 +400,3 @@ else
   echo "[Build] Fix: add a version number to your strap, 'latest' does not count as a version number"
   exit 1
 fi
-
