@@ -6,9 +6,18 @@
 
 ---
 
-## Rationale
+## Introduction
 
-TODO: add rationale
+Strapped.sh aims to be a universal platform for computer configuration management. Written purely in Bash
+and having no physical dependancies, Strapped.sh maintains a minimal footprint by operating as a SaaS which remotely
+sources the files it needs on demand.
+
+At a high level view, Straped.sh operates as a console command orchestrator. These commands are implemented by something we
+call `straps`. Simply write a `yml` configuration file containing any number of these straps and let Strapped.sh do the rest.
+
+An example of a full computer configuration can be seen [here](https://gist.github.com/MatthewNielsen27/92b7c99e8c5b6632e977539110301def)
+
+🔫 #StayStrapped
 
 ## Installation
 
@@ -100,7 +109,9 @@ The complete list of straps and their usage can be found [here](https://docs.str
 We are open to anyone contributing to this repo. Please ensure you follow the [code of conduct](https://github.com/azohra/strapped.sh/blob/master/CODE_OF_CONDUCT.md).
 
 If you wish to contribute and don't know where to start, check out the [issues](https://github.com/azohra/strapped.sh/issues)
-section for inspiration. If there is a new strap that you would like added to the official strap repo, follow the guide in the wiki to learn how to use our strap `compiler`!
+section for inspiration.
+
+<!-- ### Using the compiler to generate new straps -->
 
 ## License
 
