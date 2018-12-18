@@ -12,13 +12,13 @@ strap:
   routines:
     apps:
       exec: "dockutil --add \"${path}\" --position ${pos} --no-restart"
-      message: "adding ${path}"
+      message: "docking ${path}"
       emoji: 🚢
       input:
         - { path: "/Applications/Google Chrome.app", pos: 2}
     dirs:
       exec: "dockutil --add \"${path}\" --view ${view} --display ${display} --sort ${sort} --no-restart"
-      message: "adding ${path}"
+      message: "docking ${path}"
       emoji: 🚢
       input:
         - { path: "~/Downloads", view: fan, display: stack, sort: dateadded }

@@ -39,7 +39,7 @@ function strapped_dockutil() {
 		pos=$( ysh -T "${input}" -l apps -i ${i} -Q pos )
 
 		# Writing message for routine 'apps'
-		pretty_print ":info:" "🚢 adding ${path}"
+		pretty_print ":info:" "🚢 docking ${path}"
 
 		# Executing the command(s) for routine 'apps'
 		run_command "dockutil --add \"${path}\" --position ${pos} --no-restart"
@@ -56,7 +56,7 @@ function strapped_dockutil() {
 		view=$( ysh -T "${input}" -l dirs -i ${i} -Q view )
 
 		# Writing message for routine 'dirs'
-		pretty_print ":info:" "🚢 adding ${path}"
+		pretty_print ":info:" "🚢 docking ${path}"
 
 		# Executing the command(s) for routine 'dirs'
 		run_command "dockutil --add \"${path}\" --view ${view} --display ${display} --sort ${sort} --no-restart"
