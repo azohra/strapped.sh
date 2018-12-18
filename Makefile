@@ -1,4 +1,4 @@
-.PHONY: all exec test strap straps docs integrity
+.PHONY: all exec test strap straps docs
 
 all: exec straps docs test   
 
