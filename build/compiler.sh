@@ -78,15 +78,15 @@ function get_deps() {
 }
 
 function get_dep_name() {
-  echo "$( ysh -T "${file}" -l deps -i ${1} -Q name )"
+  ysh -T "${file}" -l deps -i "${1}" -Q name
 }
 
 function get_dep_message() {
   local i=0
   local msg
   local message=""
-  for ((i=0; i<$(ysh -T "${file}" -l deps -i ${1} -l msg -c); i++)); do
-    msg=$( ysh -T "${file}" -l deps -i ${1} -l msg -i ${i} )
+  for ((i=0; i<$(ysh -T "${file}" -l deps -i "${1}" -l msg -c); i++)); do
+    msg=$( ysh -T "${file}" -l deps -i "${1}" -l msg -i "${i}" )
     message+="${msg:1:${#msg}-2} \\\\n"
   done
 
