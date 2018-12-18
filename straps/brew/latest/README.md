@@ -3,7 +3,7 @@
 | Attribute     | Value |
 |--------------:|----|
 | Namespace     | brew |
-| Emoji         | 🍺 [packages] 🚰 [taps] 🍻 [casks]  |
+| Emoji         | 🚰 [taps] 🍺 [packages] 🍻 [casks]  |
 | Description   | installs packages, casks, and taps via brew |
 | Dependencies  | brew  |
 | Compatability | OSX  |
@@ -12,10 +12,10 @@
 
 ```yml
 brew:
-  packages:
-    - { name: ruby }
   taps:
     - { name: azohra/tools }
+  packages:
+    - { name: ruby }
   casks:
     - { name: 1password }
 ```

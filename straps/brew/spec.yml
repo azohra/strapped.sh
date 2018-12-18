@@ -6,18 +6,18 @@ strap:
   deps:
     - brew
   routines:
-    packages:
-      exec: "brew list ${name} || brew install ${name}"
-      message: "installing ${name}"
-      emoji: 🍺
-      input:
-        - { name: ruby }
     taps:
       exec: "brew tap ${name}"
       message: "tapping ${name}"
       emoji: 🚰
       input:
         - { name: azohra/tools }
+    packages:
+      exec: "brew list ${name} || brew install ${name}"
+      message: "installing ${name}"
+      emoji: 🍺
+      input:
+        - { name: ruby }
     casks:
       exec: "brew cask list ${name} || brew cask install ${name}"
       message: "installing ${name}"

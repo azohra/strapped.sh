@@ -15,10 +15,10 @@ function strapped_brew() {
 		if [[ ! "${__woo}" = "1" ]]; then echo "dependancy ${dep} not met" && exit 2; fi
 	done
 
-	# Declaring local variables for the 'packages' routine
+	# Declaring local variables for the 'taps' routine
 	local name
 
-	# Declaring local variables for the 'taps' routine
+	# Declaring local variables for the 'packages' routine
 	local name
 
 	# Declaring local variables for the 'casks' routine
@@ -27,20 +27,6 @@ function strapped_brew() {
 
 	# Initialize array iterator
 	local i=0
-
-	# performing functionality for routine 'packages'
-	for ((i=0; i<$( ysh -T "${input}" -c packages ); i++)); do
-
-		# Getting fields for routine 'packages'
-		name=$( ysh -T "${input}" -l packages -i ${i} -Q name )
-
-		# Writing message for routine 'packages'
-		pretty_print ":info:" "🍺 installing ${name}"
-
-		# Executing the command(s) for routine 'packages'
-		run_command "brew list ${name} || brew install ${name}"
-	done
-
 
 	# performing functionality for routine 'taps'
 	for ((i=0; i<$( ysh -T "${input}" -c taps ); i++)); do
@@ -53,6 +39,20 @@ function strapped_brew() {
 
 		# Executing the command(s) for routine 'taps'
 		run_command "brew tap ${name}"
+	done
+
+
+	# performing functionality for routine 'packages'
+	for ((i=0; i<$( ysh -T "${input}" -c packages ); i++)); do
+
+		# Getting fields for routine 'packages'
+		name=$( ysh -T "${input}" -l packages -i ${i} -Q name )
+
+		# Writing message for routine 'packages'
+		pretty_print ":info:" "🍺 installing ${name}"
+
+		# Executing the command(s) for routine 'packages'
+		run_command "brew list ${name} || brew install ${name}"
 	done
 
 
