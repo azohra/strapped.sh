@@ -6,7 +6,7 @@ strap:
   deps:
     - name: npm
       msg:
-        - "\tPlease ensure you have npm installed on your system"
+        - "\n\tPlease ensure you have npm installed on your system"
         - "\tWe reccomend using strapped to install npm"
         - "\tMacOS"
         - "\t\t brew: "

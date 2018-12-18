@@ -6,7 +6,7 @@ strap:
   deps:
     - name: git
       msg:
-        - "\tPlease ensure you have git installed on your system"
+        - "\n\tPlease ensure you have git installed on your system"
         - "\tWe reccomend using strapped to install git"
         - "\tMacOS"
         - "\t\t brew: "

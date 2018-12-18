@@ -6,7 +6,7 @@ strap:
   deps:
     - name: pip3
       msg:
-        - "\tPlease ensure you have pip3 installed on your system"
+        - "\n\tPlease ensure you have pip3 installed on your system"
         - "\tWe reccomend using strapped to install pip3"
         - "\tMacOS"
         - "\t\t brew: "

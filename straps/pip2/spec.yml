@@ -6,7 +6,7 @@ strap:
   deps:
     - name: pip2
       msg:
-        - "\tPlease ensure you have pip2 installed on your system"
+        - "\n\tPlease ensure you have pip2 installed on your system"
         - "\tWe reccomend using strapped to install pip2"
         - "\tMacOS"
         - "\t\t brew: "

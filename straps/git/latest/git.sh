@@ -9,10 +9,11 @@ function strapped_git() {
 		command -v "${dep}" &> /dev/null
 		__resp=$?
 		if [[ $__resp -ne 0 ]]; then
-			echo "dep ${dep} not found:"
+			echo "ERROR: dep ${dep} not found:"
 			case "${dep}" in
 			"git")
-				echo -e "	Please ensure you have git installed on your system 
+				echo -e "
+	Please ensure you have git installed on your system 
 	We reccomend using strapped to install git 
 	MacOS 
 		 brew:  

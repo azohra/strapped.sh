@@ -6,7 +6,7 @@ strap:
   deps:
     - name: gem
       msg:
-        - "\tPlease ensure you have gem installed on your system"
+        - "\n\tPlease ensure you have gem installed on your system"
         - "\tWe reccomend using strapped to install ruby which contains gem"
         - "\tMacOS"
         - "\t\t brew: "

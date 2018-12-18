@@ -9,10 +9,11 @@ function strapped_brew() {
 		command -v "${dep}" &> /dev/null
 		__resp=$?
 		if [[ $__resp -ne 0 ]]; then
-			echo "dep ${dep} not found:"
+			echo "ERROR: dep ${dep} not found:"
 			case "${dep}" in
 			"brew")
-				echo -e "	Please ensure you have brew installed on your system 
+				echo -e "
+	Please ensure you have brew installed on your system 
 	To install brew, follow the instructions at https://brew.sh/ 
 "
 			;;

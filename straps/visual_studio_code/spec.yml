@@ -6,7 +6,7 @@ strap:
   deps:
     - name: code
       msg:
-        - "\tPlease ensure you have code (VScode) installed on your system"
+        - "\n\tPlease ensure you have code (VScode) installed on your system"
         - "\tWe reccomend using strapped to install VScode"
         - "\tMacOS"
         - "\t\t brew: "

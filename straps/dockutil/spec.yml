@@ -6,7 +6,7 @@ strap:
   deps:
     - name: dockutil
       msg:
-        - "\tPlease ensure you have dockutil installed on your system"
+        - "\n\tPlease ensure you have dockutil installed on your system"
         - "\tWe reccomend using the brew strap to install dockutil"
         - "\t brew: "
         - "\t\t packages: "

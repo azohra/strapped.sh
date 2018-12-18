@@ -9,10 +9,11 @@ function strapped_pip2() {
 		command -v "${dep}" &> /dev/null
 		__resp=$?
 		if [[ $__resp -ne 0 ]]; then
-			echo "dep ${dep} not found:"
+			echo "ERROR: dep ${dep} not found:"
 			case "${dep}" in
 			"pip2")
-				echo -e "	Please ensure you have pip2 installed on your system 
+				echo -e "
+	Please ensure you have pip2 installed on your system 
 	We reccomend using strapped to install pip2 
 	MacOS 
 		 brew:  

@@ -9,10 +9,11 @@ function strapped_mac_app_store() {
 		command -v "${dep}" &> /dev/null
 		__resp=$?
 		if [[ $__resp -ne 0 ]]; then
-			echo "dep ${dep} not found:"
+			echo "ERROR: dep ${dep} not found:"
 			case "${dep}" in
 			"mas")
-				echo -e "	Please ensure you have mas (mac app store) installed on your system 
+				echo -e "
+	Please ensure you have mas (mac app store) installed on your system 
 "
 			;;
 			esac

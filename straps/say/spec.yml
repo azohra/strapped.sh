@@ -6,7 +6,7 @@ strap:
   deps:
     - name: say
       msg:
-        - "\tPlease ensure you have say installed on your system"
+        - "\n\tPlease ensure you have say installed on your system"
         - "\tsay is a program that comes pre-installed on MacOS"
   routines:
     phrase:

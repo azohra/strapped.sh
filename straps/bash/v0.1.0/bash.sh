@@ -9,22 +9,26 @@ function strapped_bash() {
 		command -v "${dep}" &> /dev/null
 		__resp=$?
 		if [[ $__resp -ne 0 ]]; then
-			echo "dep ${dep} not found:"
+			echo "ERROR: dep ${dep} not found:"
 			case "${dep}" in
 			"echo")
-				echo -e "	Please ensure you have echo installed on your system 
+				echo -e "
+	Please ensure you have echo installed on your system 
 "
 			;;
 			"mkdir")
-				echo -e "	Please ensure you have mkdir installed on your system 
+				echo -e "
+	Please ensure you have mkdir installed on your system 
 "
 			;;
 			"touch")
-				echo -e "	Please ensure you have touch installed on your system 
+				echo -e "
+	Please ensure you have touch installed on your system 
 "
 			;;
 			"exec")
-				echo -e "	Please ensure you have exec installed on your system 
+				echo -e "
+	Please ensure you have exec installed on your system 
 "
 			;;
 			esac

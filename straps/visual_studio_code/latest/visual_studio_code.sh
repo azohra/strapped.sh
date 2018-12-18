@@ -9,10 +9,11 @@ function strapped_visual_studio_code() {
 		command -v "${dep}" &> /dev/null
 		__resp=$?
 		if [[ $__resp -ne 0 ]]; then
-			echo "dep ${dep} not found:"
+			echo "ERROR: dep ${dep} not found:"
 			case "${dep}" in
 			"code")
-				echo -e "	Please ensure you have code (VScode) installed on your system 
+				echo -e "
+	Please ensure you have code (VScode) installed on your system 
 	We reccomend using strapped to install VScode 
 	MacOS 
 		 brew:  
