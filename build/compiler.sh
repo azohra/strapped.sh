@@ -178,7 +178,7 @@ function generate_example() {
 }
 
 function generate_docs() {
-  echo -e "# ${namespace}\\n"
+  echo -e "# ${namespace} :: ${version}\\n"
 
   echo -e "$( generate_chart )\\n"
 

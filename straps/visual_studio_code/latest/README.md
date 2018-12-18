@@ -1,4 +1,4 @@
-# visual_studio_code
+# visual_studio_code :: v0.1.0
 
 | Attribute     | Value |
 |--------------:|----|

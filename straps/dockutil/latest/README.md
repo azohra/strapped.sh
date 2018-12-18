@@ -1,4 +1,4 @@
-# dockutil
+# dockutil :: v0.1.0
 
 | Attribute     | Value |
 |--------------:|----|

@@ -1,4 +1,4 @@
-# brew
+# brew :: v0.1.0
 
 | Attribute     | Value |
 |--------------:|----|

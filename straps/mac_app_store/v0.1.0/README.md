@@ -1,4 +1,4 @@
-# mac_app_store
+# mac_app_store :: v0.1.0
 
 | Attribute     | Value |
 |--------------:|----|

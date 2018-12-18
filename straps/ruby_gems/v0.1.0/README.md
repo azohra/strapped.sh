@@ -1,4 +1,4 @@
-# ruby_gems
+# ruby_gems :: v0.1.0
 
 | Attribute     | Value |
 |--------------:|----|
