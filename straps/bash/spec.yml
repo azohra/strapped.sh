@@ -9,7 +9,7 @@ strap:
     - touch
   routines:
     mkdir:
-      exec: "mkdir ${dir}"
+      exec: "mkdir -p ${dir}"
       message: "creating ${dir}"
       emoji: 📂
       input:

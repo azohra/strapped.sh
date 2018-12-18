@@ -41,7 +41,7 @@ function strapped_bash() {
 		pretty_print ":info:" "📂 creating ${dir}"
 
 		# Executing the command(s) for routine 'mkdir'
-		run_command "mkdir ${dir}"
+		run_command "mkdir -p ${dir}"
 	done
 
 
