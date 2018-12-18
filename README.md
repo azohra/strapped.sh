@@ -2,7 +2,7 @@
 
 ![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)
 
-[![Build Status](https://travis-ci.org/azohra/strapped.svg?branch=master)](https://travis-ci.org/azohra/strapped.sh)![License](https://img.shields.io/github/license/azohra/strapped.sh.svg)![Issues](https://img.shields.io/github/issues/azohra/strapped.sh.svg)
+[![Build Status](https://travis-ci.org/azohra/strapped.sh.svg?branch=master)](https://travis-ci.org/azohra/strapped.sh)![License](https://img.shields.io/github/license/azohra/strapped.sh.svg)![Issues](https://img.shields.io/github/issues/azohra/strapped.sh.svg)
 
 ---
 
