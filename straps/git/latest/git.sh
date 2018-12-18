@@ -34,6 +34,6 @@ function strapped_git() {
 		pretty_print ":info:" "💾 cloning ${repo} into ${folder}"
 
 		# Executing the command(s) for routine 'clone'
-		run_command "if [ ! -d ${folder} ] ; then git clone ${repo} ${folder}; fi"
+		run_command "if [ ! -d ${folder} ] ; then mkdir ${folder} && git clone ${repo} ${folder}; fi"
 	done
 }
