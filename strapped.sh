@@ -136,7 +136,6 @@ ask_permission () {
        * )     printf "Y/N: ";;
       esac
     done
-    echo -e "\\n"
 }
 
 stay_strapped () {
