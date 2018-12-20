@@ -9,7 +9,7 @@ strap:
         - "\n\tPlease ensure you have wget installed on your system"
   routines:
     download:
-      exec: "wget -P ${folder} -O {filename} ${url}"
+      exec: "wget -P ${folder} -O ${filename} ${url}"
       message: "downloading ${url} into ${folder}/${filename}"
       emoji: 💾
       input:

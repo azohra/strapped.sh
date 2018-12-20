@@ -42,6 +42,6 @@ function strapped_wget() {
 		pretty_print ":info:" "💾 downloading ${url} into ${folder}/${filename}"
 
 		# Executing the command(s) for routine 'download'
-		run_command "wget -P ${folder} -O {filename} ${url}"
+		run_command "wget -P ${folder} -O ${filename} ${url}"
 	done
 }
