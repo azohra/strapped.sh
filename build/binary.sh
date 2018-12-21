@@ -1,3 +1,6 @@
-cat src/helpers.sh > aaa.sh
-cat src/cli.sh >> aaa.sh
-cat src/main.sh >> aaa.sh
+#!/bin/bash
+
+# Copy components and put them into final file
+cat src/helpers.sh > strapped
+cat src/cli.sh >> strapped
+cat src/main.sh >> strapped

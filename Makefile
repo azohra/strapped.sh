@@ -1,13 +1,12 @@
 .PHONY: all exec test strap straps docs
 
-all: exec straps docs test   
+all: exec straps binary docs test   
 
 exec:
-	@chmod u+x *.sh
 	@chmod u+x build/*.sh
 
 test:
-	@shellcheck ./strapped.sh
+	@shellcheck ./strapped
 	@shellcheck ./straps/**/**/*.sh
 	@shellcheck ./build/*.sh
 
@@ -19,3 +18,6 @@ strap:
 
 straps:
 	@./build/straps.sh
+
+binary:
+	@./build/binary.sh
