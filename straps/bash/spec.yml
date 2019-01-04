@@ -1,6 +1,6 @@
 strap:
   namespace: bash
-  version: v0.1.0
+  version: v0.2.0
   description: "performs bash commands"
   compatability: unix
   deps:
@@ -16,6 +16,9 @@ strap:
     - name: exec
       msg:
         - "\n\tPlease ensure you have exec installed on your system"
+    - name: ln
+      msg:
+        - "\n\tPlease ensure you have ln installed on your system"
   routines:
     mkdir:
       exec: "mkdir -p ${dir}"
@@ -24,6 +27,13 @@ strap:
       input:
         - { dir: ~/photos }
         - { dir: /www/_static }
+    ln:
+      exec: "if [ ${symbolic} == 'true' ]; then ln -s ${target} ${name}; else ln ${target} ${name}; fi"
+      emoji: 🔗
+      message: "linking ${target} to ${name}"
+      input:
+        - { target: ~/.configs/.bashrc, name: ~/.bashrc, symbolic: false}
+        - { target: ~/.configs/.bashrc, name: ~/.bashrc}
     touch:
       exec: "touch ${file}"
       message: "creating ${file}"
