@@ -1,7 +1,7 @@
 language: shell
 sudo: false
 script:
- - bash -c 'shopt -s globstar; shellcheck strapped.sh'
+ - bash -c 'shopt -s globstar; shellcheck strapped'
  - bash -c 'shopt -s globstar; shellcheck straps/**/*.sh'
  - bash -c 'shopt -s globstar; shellcheck build/*.sh'
 matrix:
