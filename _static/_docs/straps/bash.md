@@ -1,1 +1,1 @@
-[bash](https://raw.githubusercontent.com/azohra/strapped/master/straps/bash/latest/README.md ":include")
+[bash](https://raw.githubusercontent.com/azohra/strapped/master/straps/bash/latest/README.md ':include')
