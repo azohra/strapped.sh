@@ -1,4 +1,6 @@
-.PHONY: all exec test strap straps docs
+INSTALL_DIR=/usr/local/bin
+
+.PHONY: all exec install uninstall test strap straps docs
 
 all: exec straps binary docs test   
 
@@ -21,3 +23,13 @@ straps:
 
 binary:
 	@./build/binary.sh
+
+install: strapped
+	@echo "📦 Installing strapped"
+	@mkdir -p $(INSTALL_DIR)
+	@cp strapped $(INSTALL_DIR)/strapped
+	@chmod u+x $(INSTALL_DIR)/strapped
+
+uninstall:
+	@echo "🗑️  Uninstalling strapped"
+	@rm $(INSTALL_DIR)/strapped
