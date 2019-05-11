@@ -20,6 +20,7 @@ echo "$base" > "${docs_location}/_sidebar.md"
 for dir in ./straps/*/ ; do
     dir=${dir##*./straps/}
     dir=${dir%*/}
+    touch "$docs_location/straps/$dir.md"
     echo "[Build] linking documentation for ${dir}"
     echo "[$dir](${raw_strap_url}/${dir}/latest/README.md ':include')" > "${docs_location}/straps/$dir.md"
     echo "  - [${dir}](straps/${dir}.md)" >> "${docs_location}/_sidebar.md"

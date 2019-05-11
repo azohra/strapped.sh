@@ -8,6 +8,7 @@
   - [brew](straps/brew.md)
   - [dockutil](straps/dockutil.md)
   - [git](straps/git.md)
+  - [hyper](straps/hyper.md)
   - [mac_app_store](straps/mac_app_store.md)
   - [npm](straps/npm.md)
   - [pip2](straps/pip2.md)

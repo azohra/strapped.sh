@@ -1,0 +1,21 @@
+strap:
+  namespace: hyper
+
+  version: 0.1.0
+
+  description: "configures the hyper terminal"
+
+  compatability: OSX, Windows, Linux
+
+  deps:
+    - name: hyper
+      msg:
+        - "\tplease install hyper"
+
+  routines:
+    plugins:
+      exec: "hyper install ${name}"
+      message: "installing ${name}"
+      emoji: ⚡
+      input:
+        - { name: hyperlinks }
