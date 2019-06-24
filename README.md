@@ -74,7 +74,7 @@ Lets take a look at a config file:
 strapped:
   repo: https://raw.githubusercontent.com/azohra/strapped/master/straps
 
-# Use the brew strap (specifically v0.1.0) to install tap taps and install packages
+# Use the brew strap (specifically v0.1.0) to tap taps and install packages and casks
 brew:
   version: v0.1.0
   # Tap routine
@@ -88,8 +88,8 @@ brew:
     - { name: visual-studio-code }
 
 # Use the git strap to clone repos into a specific directory.
-# Since we have not specified a version it will search for the 
-# latest version in the repo
+# Since we have not specified a strap version it will search for the 
+# latest version in the globally specified strapped repo
 git:
   clone:
     - { repo: git@github.com:kelseyhightower/nocode.git, folder: ~/repos }
