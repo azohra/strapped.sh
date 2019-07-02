@@ -7,7 +7,7 @@ C_REG="\\033[0;39m"
 STRAPPED_DEBUG=""
 custom_straps=""
 auto_approve=""
-base_repo="https://raw.githubusercontent.com/azohra/strapped/master/straps"
+base_repo="https://repo.strapped.sh"
 yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
