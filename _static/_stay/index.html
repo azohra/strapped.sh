@@ -35,7 +35,7 @@ print_path_err() {
 if [ ! -d '/usr/local/bin' ]; then
   mkdir /usr/local/bin 2> /dev/null || print_folder_err
 fi
-curl -s -L https://raw.githubusercontent.com/azohra/strapped.sh/0.1.2/strapped --output /usr/local/bin/strapped || print_copy_err
+curl -s -L https://raw.githubusercontent.com/azohra/strapped.sh/0.2.0/strapped --output /usr/local/bin/strapped || print_copy_err
 echo "Your all set to 🔫 #StayStrapped"
 chmod u+x /usr/local/bin/strapped 2> /dev/null || print_chmod_err
 echo $PATH | grep "[:^]/usr/local/bin[:$]" > /dev/null || print_path_err
