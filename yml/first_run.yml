@@ -1,5 +1,5 @@
 strapped:
-  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps/
+  repo: https://repo.strapped.sh
 
 bash:
   echo:
