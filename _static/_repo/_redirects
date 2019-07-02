@@ -1,5 +1,5 @@
 # Redirect domain aliases to primary domain
-https://repo.strapped.sh/* https://raw.githubusercontent.com/azohra/strapped/master/straps:splat 301!
+https://repo.strapped.sh/* https://raw.githubusercontent.com/azohra/strapped.sh/master/straps:splat 301!
 
 # Redirect default Netlify subdomain to primary domain
 https://repo-strapped.netlify.com/* https://repo.strapped.sh/:splat 301!
