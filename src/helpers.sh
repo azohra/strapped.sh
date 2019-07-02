@@ -93,7 +93,7 @@ stay_strapped () {
         version=${version:="latest"}
 
         if [[ ${strap_repo} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s "${strap_repo}/${strap}/${version}/${strap}.sh")"
+            source /dev/stdin <<< "$(curl -s -L "${strap_repo}/${strap}/${version}/${strap}.sh")"
         else
             source "${strap_repo}/${strap}/${version}/${strap}.sh"
         fi
