@@ -47,7 +47,7 @@ while [ $# -gt 0 ] ; do
         auto_approve="true"
     ;;
     -v|--version)
-        echo 'v0.2.0' && exit 0
+        echo "v$VERSION" && exit 0
     ;;
     -h|--help)
         usage

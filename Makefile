@@ -1,5 +1,11 @@
 INSTALL_DIR=/usr/local/bin
 
+# List of files that contain the version
+VERSIONED_FILES=strapped src/helpers.sh _static/_stay/index.html
+VERSION="0.3.0"
+
+VERSION_REPLACE_EXP="s/^VERSION=\".+\"/VERSION=\"${VERSION}\"/g"
+
 .PHONY: all exec install uninstall test strap straps docs
 
 all: exec straps binary docs test   
@@ -15,13 +21,13 @@ test:
 docs:
 	@./build/docs.sh
 
-strap:
+strap: update-version
 	@./build/compiler.sh ${yml}
 
-straps:
+straps: update-version
 	@./build/straps.sh
 
-binary:
+binary: update-version
 	@./build/binary.sh
 
 install: strapped
@@ -33,3 +39,10 @@ install: strapped
 uninstall:
 	@echo "🗑️  Uninstalling strapped"
 	@rm $(INSTALL_DIR)/strapped
+
+$(VERSIONED_FILES): Makefile
+	@echo "Updateing version in " $@ " to "$(VERSION)
+	@sed -i .old -E $(VERSION_REPLACE_EXP) $@ && rm "$@.old"
+
+.PHONY: update-version
+update-version: $(VERSIONED_FILES)
