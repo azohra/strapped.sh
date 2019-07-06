@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck source=/dev/null
 
+VERSION="0.3.0"
 C_GREEN="\\033[32m"
 C_BLUE="\\033[94m"
 C_REG="\\033[0;39m"

@@ -1,0 +1,23 @@
+strap:
+  namespace: asdf
+  version: v0.1.0
+  description: "Extendable version manager"
+  compatability: unix
+  deps:
+    - name: asdf
+      msg:
+        - "\n\tPlease ensure you have asdf installed on your system"
+        - "\tTo install asdf, follow the instructions at https://asdf-vm.com/#/core-manage-asdf-vm"
+  routines:
+    plugins:
+      exec: "asdf plugin-add ${name} ${url}"
+      message: "adding ${name} plugin to asdf"
+      emoji: 🐙
+      input:
+        - { name: clojure,     url: https://github.com/halcyon/asdf-clojure.git }
+    versions:
+      exec: "test '${dir}' && (cd ${dir} && asdf local ${name} ${version}) || asdf global global ${name} ${version}"
+      message: "shimming ${name} to ${version}"
+      emoji: ⌨
+      input:
+        - { name: clojure,     version: 1.9.0, dir: ~/opeional_local_install }
