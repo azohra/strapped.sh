@@ -30,6 +30,13 @@ straps: update-version
 binary: update-version
 	@./build/binary.sh
 
+release:
+	@echo "Generating a release for strapped"
+	@wget -N --quiet https://github.com/azohra/strapped.sh/archive/${VERSION}.tar.gz
+	@echo "1. Fetched the corresponding release from GitHub: https://github.com/azohra/strapped.sh/archive/${VERSION}.tar.gz"
+	@python build/generate_release.py -d ../homebrew-tools -t ${VERSION}
+	@rm ${VERSION}.tar.gz
+
 install: strapped
 	@echo "📦 Installing strapped"
 	@mkdir -p $(INSTALL_DIR)
