@@ -49,17 +49,26 @@ function strapped_brew() {
 	done
 
 
-	# performing functionality for routine 'packages'
+# performing functionality for routine 'packages'
 	for ((i=0; i<$( ysh -T "${input}" -c packages ); i++)); do
 
 		# Getting fields for routine 'packages'
 		name=$( ysh -T "${input}" -l packages -i ${i} -Q name )
 
-		# Writing message for routine 'packages'
-		pretty_print ":info:" "🍺 installing ${name}"
+		# Checks if routine 'packages' is previously installed
+		run_command "brew list ${name} &> /dev/null" 
+		__installed=$?
 
-		# Executing the command(s) for routine 'packages'
-		run_command "brew list ${name} || brew install ${name}"
+		if [[ $__installed -ne 0 ]]; then
+			# Writing message for routine 'package'
+			pretty_print ":info:" "🍺 installing ${name}..."
+
+			# Executing the command for routine 'package'
+			run_command "brew install ${name}"
+		else
+			# Writing message for previously installed 'packages'
+			pretty_print ":info:" "🍺 ${name} is already installed."
+		fi	
 	done
 
 
@@ -68,11 +77,20 @@ function strapped_brew() {
 
 		# Getting fields for routine 'casks'
 		name=$( ysh -T "${input}" -l casks -i ${i} -Q name )
+		
+		# Checks if routine 'casks' is previously installed
+		run_command "brew cask list ${name} &> /dev/null" 
+		__installed=$?
 
-		# Writing message for routine 'casks'
-		pretty_print ":info:" "🍻 installing ${name}"
+		if [[ $__installed -ne 0 ]]; then
+			# Writing message for routine 'casks'
+			pretty_print ":info:" "🍻 installing ${name}..."
 
-		# Executing the command(s) for routine 'casks'
-		run_command "brew cask list ${name} || brew cask install ${name}"
+			# Executing the command for routine 'casks'
+			run_command "brew cask install ${name}"
+		else
+			# Writing message for previously installed 'casks'
+			pretty_print ":info:" "🍻 ${name} is already installed."
+		fi
 	done
 }
