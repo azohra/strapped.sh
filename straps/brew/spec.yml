@@ -1,6 +1,6 @@
 strap:
   namespace: brew
-  version: v0.1.0
+  version: v0.1.1
   description: "installs packages, casks, and taps via brew"
   compatability: OSX
   deps:
