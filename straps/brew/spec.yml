@@ -1,6 +1,6 @@
 strap:
   namespace: brew
-  version: v0.1.0
+  version: v0.1.1
   description: "installs packages, casks, and taps via brew"
   compatability: OSX
   deps:
@@ -16,13 +16,13 @@ strap:
       input:
         - { name: azohra/tools }
     packages:
-      exec: "brew list ${name} || brew install ${name}"
+      exec: "brew list ${name} &> /dev/null && echo ${name} is already installed. 1>&2 || (brew install ${name} && echo ${name} successfully installed. 1>&2 || ${name} failed to install. 1>&2 )"
       message: "installing ${name}"
       emoji: 🍺
       input:
         - { name: ruby }
     casks:
-      exec: "brew cask list ${name} || brew cask install ${name}"
+      exec: "brew cask list ${name} &> /dev/null && echo ${name} is already installed. 1>&2 || (brew cask install ${name} && echo ${name} successfully installed. 1>&2 || ${name} failed to install. 1>&2 )"
       message: "installing ${name}"
       emoji: 🍻
       input:
