@@ -14,6 +14,8 @@ print_copy_err() {
   echo "" > /dev/stderr
   echo "\tPlease grant permission to copy strapped:" > /dev/stderr
   echo "\t\t$ sudo chmod u+w /usr/local/bin" > /dev/stderr
+  echo "\tIf you tried giving persimission and you still have this error, make sure you have brew installed and then run this command:" > /dev/stderr
+  echo "\t\t$ sudo chown $USER /usr/local/bin | sudo chmod u+w /usr/local/bin" > /dev/stderr"
   echo "" > /dev/stderr
 }
 
