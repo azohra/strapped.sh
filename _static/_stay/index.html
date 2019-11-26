@@ -1,4 +1,4 @@
-VERSION="0.3.0"
+VERSION="master"
 print_folder_err() {
   echo "Could not install strapped to /usr/local/bin" > /dev/stderr
   echo "" > /dev/stderr
@@ -15,7 +15,7 @@ print_copy_err() {
   echo "\tPlease grant permission to copy strapped:" > /dev/stderr
   echo "\t\t$ sudo chmod u+w /usr/local/bin" > /dev/stderr
   echo "\tIf you tried giving persimission and you still have this error, make sure you have brew installed and then run this command:" > /dev/stderr
-  echo "\t\t$ sudo chown $USER /usr/local/bin | sudo chmod u+w /usr/local/bin" > /dev/stderr"
+  echo "\t\t$ sudo chown $USER /usr/local/bin | sudo chmod u+w /usr/local/bin" > /dev/stderr
   echo "" > /dev/stderr
 }
 
@@ -38,7 +38,8 @@ print_path_err() {
 if [ ! -d '/usr/local/bin' ]; then
   mkdir /usr/local/bin 2> /dev/null || print_folder_err
 fi
-curl -s -L "https://raw.githubusercontent.com/azohra/strapped.sh/master/strapped" --output /usr/local/bin/strapped || print_copy_err
+curl -s -L "https://raw.githubusercontent.com/azohra/strapped.sh/${VERSION}/strapped" --output /usr/local/bin/strapped || print_copy_err
 echo "Your all set to 🔫 #StayStrapped"
 chmod u+x /usr/local/bin/strapped 2> /dev/null || print_chmod_err
 echo $PATH | grep "[:^]/usr/local/bin[:$]" > /dev/null || print_path_err
+
