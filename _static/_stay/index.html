@@ -1,45 +1,46 @@
 VERSION="master"
+
 print_folder_err() {
-  echo "Could not install strapped to /usr/local/bin" > /dev/stderr
+  echo "Could not find or create /usr/local/bin!" > /dev/stderr
   echo "" > /dev/stderr
-  echo "\tPlease try again after creating the directory:" > /dev/stderr
-  echo "\t\t$ sudo mkdir /usr/local/bin" > /dev/stderr
-  echo "\t\t$ sudo chmod u+w /usr/local/bin" > /dev/stderr
-  echo "" > /dev/stderr
+  echo "Please run the following commands:" > /dev/stderr
+  echo "sudo mkdir /usr/local/bin" > /dev/stderr
+  echo "sudo chmod u+w /usr/local/bin" > /dev/stderr
   exit 1
 }
 
+print_path_err() {
+  echo "Could not find /usr/local/bin is your \$PATH!" > /dev/stderr
+    echo "" > /dev/stderr
+  echo "You will need to add the following to your shell config: " > /dev/stderr
+  echo "export PATH=\$PATH:/usr/local/bin" > /dev/stderr
+  exit 1
+}
+
+
 print_copy_err() {
-  echo "Could not copy strapped to your system!" > /dev/stderr
+  echo "Could not download strapped.sh to your system!" > /dev/stderr
   echo "" > /dev/stderr
-  echo "\tPlease grant permission to copy strapped:" > /dev/stderr
-  echo "\t\t$ sudo chmod u+w /usr/local/bin" > /dev/stderr
-  echo "\tIf you tried giving persimission and you still have this error, make sure you have brew installed and then run this command:" > /dev/stderr
-  echo "\t\t$ sudo chown $USER /usr/local/bin | sudo chmod u+w /usr/local/bin" > /dev/stderr
-  echo "" > /dev/stderr
+  echo "Please grant permission to copy strapped:" > /dev/stderr
+  echo "$ sudo chmod u+w /usr/local/bin" > /dev/stderr
+  echo "If you tried giving persimission and you still have this error, make sure you have brew installed and then run this command:" > /dev/stderr
+  echo "\$ sudo chown $USER /usr/local/bin | sudo chmod u+w /usr/local/bin" > /dev/stderr
+  exit
 }
 
 print_chmod_err() {
-  echo "Strapped has been succesfully installed, but it needs further permissions to run!" > /dev/stderr
+  echo "Could not grant strapped.sh permission to run!" > /dev/stderr
   echo "" > /dev/stderr
   echo "\tExecute the following command before running strapped" > /dev/stderr
   echo "\t\t$ sudo chmod u+x /usr/local/bin/strapped" > /dev/stderr
-  echo "" > /dev/stderr
+  exit 1
 }
 
-print_path_err() {
-  echo "Your system path does not currently contain /usr/local/bin" > /dev/stderr
-  echo "" > /dev/stderr
-  echo "\tYou will need to execute, and add to your .bashrc, this command" > /dev/stderr
-  echo "\t\t$ export PATH=$PATH:/usr/local/bin" > /dev/stderr
-  echo "" > /dev/stderr
-}
 
 if [ ! -d '/usr/local/bin' ]; then
   mkdir /usr/local/bin 2> /dev/null || print_folder_err
 fi
+echo $PATH | grep "/usr/local/bin" > /dev/null || print_path_err
 curl -s -L "https://raw.githubusercontent.com/azohra/strapped.sh/${VERSION}/strapped" --output /usr/local/bin/strapped || print_copy_err
-echo "Your all set to 🔫 #StayStrapped"
 chmod u+x /usr/local/bin/strapped 2> /dev/null || print_chmod_err
-echo $PATH | grep "[:^]/usr/local/bin[:$]" > /dev/null || print_path_err
-
+echo "Your all set to 🔫 #StayStrapped"
