@@ -1,46 +1,97 @@
+#!/bin/bash
+# shellcheck source=/dev/null
+
 VERSION="master"
+C_RED="\\033[31m"
+C_GREEN="\\033[32m"
+C_BLUE="\\033[94m"
+C_REG="\\033[0;39m"
+auto_approve=""
 
-print_folder_err() {
-  echo "Could not find or create /usr/local/bin!" > /dev/stderr
-  echo "" > /dev/stderr
-  echo "Please run the following commands:" > /dev/stderr
-  echo "sudo mkdir /usr/local/bin" > /dev/stderr
-  echo "sudo chmod u+w /usr/local/bin" > /dev/stderr
-  exit 1
+pretty_print () { 
+    local msg_type=${1} 
+    local message=${2}
+    
+    case $msg_type in 
+    ":warn:" )  
+        printf "\n⚠️ ${C_RED} ${message} ${C_REG}"
+        ;;
+    ":error:" )  
+        printf "\n❌${C_RED} ${message} ${C_REG}"
+        exit 1
+        ;;
+    ":success:" )  
+        printf "\n✅${C_GREEN} ${message} ${C_REG}"
+        ;;  
+    ":log:" )  
+        printf "\n📢${C_BLUE} ${message} ${C_REG}"
+        ;;
+    ":section:" )  
+        printf "\n\n${C_GREEN}${message%::*}:${C_BLUE} ${message#*::} ${C_REG}"
+        ;;
+    esac
+        
+}   
+
+run_command() {
+    # write your test however you want; this just tests if SILENT is non-empty
+    if [ "$STRAPPED_DEBUG" ]; then
+        eval "${1}"
+    else
+        eval "${1}" > /dev/null
+    fi
 }
 
-print_path_err() {
-  echo "Could not find /usr/local/bin is your \$PATH!" > /dev/stderr
-    echo "" > /dev/stderr
-  echo "You will need to add the following to your shell config: " > /dev/stderr
-  echo "export PATH=\$PATH:/usr/local/bin" > /dev/stderr
-  exit 1
+ask_permission () {  
+    local message=${1}
+    printf "(y/n): "
+    while true
+    do
+      read -n 1 ans 
+      case ${ans} in
+       [yY]* ) break;; 
+       [nN]* ) exit;;
+       * )     printf "y/n: ";;
+      esac
+    done
 }
 
 
-print_copy_err() {
-  echo "Could not download strapped.sh to your system!" > /dev/stderr
-  echo "" > /dev/stderr
-  echo "Please grant permission to copy strapped:" > /dev/stderr
-  echo "$ sudo chmod u+w /usr/local/bin" > /dev/stderr
-  echo "If you tried giving persimission and you still have this error, make sure you have brew installed and then run this command:" > /dev/stderr
-  echo "\$ sudo chown $USER /usr/local/bin | sudo chmod u+w /usr/local/bin" > /dev/stderr
-  exit
-}
-
-print_chmod_err() {
-  echo "Could not grant strapped.sh permission to run!" > /dev/stderr
-  echo "" > /dev/stderr
-  echo "\tExecute the following command before running strapped" > /dev/stderr
-  echo "\t\t$ sudo chmod u+x /usr/local/bin/strapped" > /dev/stderr
-  exit 1
-}
-
+pretty_print ":section:" "Installer::Verifying Directory Structure"
 
 if [ ! -d '/usr/local/bin' ]; then
-  mkdir /usr/local/bin 2> /dev/null || print_folder_err
+  pretty_print ":warn:" "/usr/local/bin not found. Try fix it?"
+  ask_permission
+  sudo mkdir /usr/local/bin 2> /dev/null || pretty_print ":error:" "Could not create /usr/local/bin"
+  pretty_print ":success:" "Created /usr/local/bin"
+  sudo chmod u+w /usr/local/bin 2> /dev/null || pretty_print ":error:" "Could not modify permissions for /usr/local/bin"
+  pretty_print ":success:" "Modified Permissions for /usr/local/bin"
+  sudo chown $USER /usr/local/bin 2> /dev/null || pretty_print ":error:" "Could not change owner of /usr/local/bin"
+  pretty_print ":success:" "Changed Owner of /usr/local/bin to ${USER}"
+else
+  pretty_print ":success:" "Structure Correct"
 fi
-echo $PATH | grep "/usr/local/bin" > /dev/null || print_path_err
-curl -s -L "https://raw.githubusercontent.com/azohra/strapped.sh/${VERSION}/strapped" --output /usr/local/bin/strapped || print_copy_err
-chmod u+x /usr/local/bin/strapped 2> /dev/null || print_chmod_err
-echo "Your all set to 🔫 #StayStrapped"
+
+pretty_print ":section:" "Installer::Verifying \$PATH Structure"
+if [ -z $(grep "/usr/local/bin" "/etc/paths") ]; then 
+  pretty_print ":warn:" "/usr/local/bin is not in your \$PATH. Try fix it?"
+  ask_permission
+  printf '/usr/local/bin' | sudo tee -a /etc/paths > /dev/null || pretty_print ":error:" "Could not add /usr/local/bin to \$PATH"
+  pretty_print ":success:" "Added /usr/local/bin to your \$PATH."
+  pretty_print ":log:" "Terminal must be re-opened for new \$PATH to be active"
+else
+  pretty_print ":success:" "\$PATH Correct"
+fi
+
+pretty_print ":section:" "Installer::Verifying Binary"
+if [ ! -f /usr/local/bin/strapped ]; then
+  curl -s -L "https://raw.githubusercontent.com/azohra/strapped.sh/${VERSION}/strapped" --output /usr/local/bin/strapped || pretty_print ":error:" "Could not download strapped"
+  pretty_print ":success:" "Downloaded Strapped"
+  chmod u+x /usr/local/bin/strapped 2> /dev/null || pretty_print ":error:" "Could not give strapped permissions to execute"
+    pretty_print ":success:" "Installed Strapped"
+else
+  pretty_print ":success:" "Strapped Already Installed"
+fi
+
+echo ""
+pretty_print ":log:" "You are now ready to #StayStrapped"
