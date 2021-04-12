@@ -6,7 +6,7 @@
 
 # Introduction
 
-Strapped.sh aims to be a universal platform for computer configuration management. Written purely in Bash
+Strapped.sh aims to be a universal platform for computer configuration management. Written purely in sh
 and having no physical dependancies, Strapped.sh maintains a minimal footprint by operating as a SaaS which remotely
 sources the files it needs on demand.
 
