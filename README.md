@@ -100,7 +100,7 @@ visual_studio_code:
     - { name: PKief.material-icon-theme }
 ```
 
-The complete list of straps and their usage can be found [here](https://docs.strapped.sh/#/).
+The complete list of straps and their usage can be found [here](https://docs.strapped.azohra.com/#/).
 
 # Contributing
 
