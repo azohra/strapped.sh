@@ -1,0 +1,31 @@
+// https://developers.cloudflare.com/workers/wrangler/configuration/
+// Four static sites, one repo: each environment pins its own worker,
+// hostname, and _static sibling.
+{
+  "account_id": "075fc545fdb23bfb095addc959d84052",
+  "compatibility_date": "2026-08-23",
+  "workers_dev": false,
+  "preview_urls": false,
+  "env": {
+    "www": {
+      "name": "strapped-azohra-com",
+      "routes": [{ "pattern": "strapped.azohra.com", "custom_domain": true }],
+      "assets": { "directory": "_static/_www" }
+    },
+    "repo": {
+      "name": "repo-strapped-azohra-com",
+      "routes": [{ "pattern": "repo.strapped.azohra.com", "custom_domain": true }],
+      "assets": { "directory": "_static/_repo" }
+    },
+    "stay": {
+      "name": "stay-strapped-azohra-com",
+      "routes": [{ "pattern": "stay.strapped.azohra.com", "custom_domain": true }],
+      "assets": { "directory": "_static/_stay" }
+    },
+    "docs": {
+      "name": "docs-strapped-azohra-com",
+      "routes": [{ "pattern": "docs.strapped.azohra.com", "custom_domain": true }],
+      "assets": { "directory": "_static/_docs" }
+    }
+  }
+}
