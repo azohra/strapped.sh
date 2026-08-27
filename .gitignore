@@ -4,3 +4,9 @@ justin.strapped.yml
 matt.strapped.yml
 
 build/straps
+
+# mise
+mise.local.toml
+
+# cloudflare
+.wrangler/

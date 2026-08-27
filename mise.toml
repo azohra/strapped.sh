@@ -1,4 +1,3 @@
-# mise is the command surface for this repo: `mise tasks` lists the verbs.
 
 # Tools resolve from the committed mise.lock: version, checksum, and url.
 [tool_config]
@@ -22,7 +21,7 @@ echo "check: all four sites intact"
 [tasks.deploy]
 description = "Deploy every environment at the tip of main"
 confirm = "Deploy every strapped.sh site to production?"
-timeout = "10m"
+timeout = "5m"
 usage = 'flag "--dry-run" help="Validate without shipping"'
 run = """
 #!/usr/bin/env bash
