@@ -1,5 +1,9 @@
 # mise is the command surface for this repo: `mise tasks` lists the verbs.
 
+# Tools resolve from the committed mise.lock: version, checksum, and url.
+[tool_config]
+locked = true
+
 [tools]
 node = "24"
 wrangler = "4.126.0"
