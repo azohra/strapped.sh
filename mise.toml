@@ -1,8 +1,8 @@
 # mise is the command surface for this repo: `mise tasks` lists the verbs.
 
-[tasks.setup]
-description = "Arm the commit gate"
-run = "mise generate git-pre-commit --write --task=pre-commit"
+[tools]
+node = "24"
+wrangler = "4.126.0"
 
 [tasks.check]
 description = "Site integrity: every environment's index exists"
@@ -15,11 +15,26 @@ done
 echo "check: all four sites intact"
 """
 
-[tasks.pre-commit]
-description = "Commit gate: branches author, main never does"
+[tasks.deploy]
+description = "Deploy every environment at the tip of main"
+confirm = "Deploy every strapped.sh site to production?"
+timeout = "10m"
+usage = 'flag "--dry-run" help="Validate without shipping"'
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
-[ "$(git branch --show-current)" != "main" ] || { echo "pre-commit: refusing — commits are authored on branches, never on main" >&2; exit 1; }
+[ -n "${CLOUDFLARE_API_TOKEN:-}" ] || { echo "deploy: refusing — CLOUDFLARE_API_TOKEN is unset" >&2; exit 1; }
+[ -z "$(git status --porcelain)" ] || { echo "deploy: refusing — tree is dirty" >&2; exit 1; }
+git fetch -q origin main
+[ "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)" ] || { echo "deploy: refusing — HEAD is not the tip of origin/main" >&2; exit 1; }
 mise run check
+tag="$(git rev-parse --short HEAD)"
+message="$(git log -1 --pretty=%s)"
+for e in www repo stay docs; do
+  if [ "${usage_dry_run:-false}" = "true" ]; then
+    wrangler deploy --dry-run --env "$e"
+  else
+    wrangler deploy --env "$e" --tag "$tag" --message "$message"
+  fi
+done
 """
