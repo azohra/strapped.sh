@@ -13,5 +13,5 @@
 ```yml
 wget:
   download:
-    - { filename: strapped.sh, url: https://stay.strapped.sh, folder: ~/Downloads }
+    - { filename: strapped.sh, url: https://stay.strapped.azohra.com, folder: ~/Downloads }
 ```

@@ -1,120 +1,67 @@
-![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)
+<p align="center">
+  <img src="_static/img/logo-black.png" alt="Strapped" width="560">
+</p>
 
-[![Build Status](https://travis-ci.org/azohra/strapped.sh.svg?branch=master)](https://travis-ci.org/azohra/strapped.sh)![License](https://img.shields.io/github/license/azohra/strapped.sh.svg)![Issues](https://img.shields.io/github/issues/azohra/strapped.sh.svg)
+# Strapped
 
----
+[![Check](https://github.com/azohra/strapped.sh/actions/workflows/check.yml/badge.svg)](https://github.com/azohra/strapped.sh/actions/workflows/check.yml)
+[![License](https://img.shields.io/github/license/azohra/strapped.sh.svg)](LICENSE)
 
-# Introduction
+Strapped applies a YAML machine setup with reusable Bash scripts called straps. A configuration can use the public straps in this repository or another local or remote collection.
 
-Strapped.sh aims to be a universal platform for computer configuration management. Written purely in sh
-and having no physical dependancies, Strapped.sh maintains a minimal footprint by operating as a SaaS which remotely
-sources the files it needs on demand.
+## Install
 
-At a high level view, Strapped.sh acts as a console command orchestrator. These commands are implemented by something we
-call `straps`. Simply write a `yml` configuration file containing any number of these straps and let Strapped.sh do the rest.
-
-An example of a full computer configuration file can be seen [here](https://gist.github.com/MatthewNielsen27/92b7c99e8c5b6632e977539110301def).
-
-🔫 #StayStrapped
-
-# Installation
-
-To install strapped.sh, simply run this command:
+The installer targets macOS and writes `strapped` to `/usr/local/bin`. Review the [installer](https://stay.strapped.azohra.com) before running it:
 
 ```console
-curl -s https://stay.strapped.sh | sh
+curl -fsSL https://stay.strapped.azohra.com | bash
 ```
 
-Upgrading strapped.sh can be done by re-running the installation command above or in the following way:
+Run the same command again, or use `strapped --upgrade`, to replace an existing installation.
 
-```console
-strapped --upgrade
-```
+## Use
 
-Here are all the command-line flags for strapped.sh (if that's your thing):
-
-```console
-Usage: strapped [flags]
-
-flags:
-  -u, --upgrade                  upgrade strapped to the latest version
-  -v, --version                  print the current strapped version
-  -a, --auto                     do not prompt for confirmation
-  -y, --yml                      path to a valid strapped yml config [type: file path or url]
-  -s, --straps                   run a subset of your config. Comma seperated
-  -h, --help                     prints this message
-```
-
-# Usage
-
-To strap your computer, simply run strapped and point to your strap config file with the `-y` or `--yml` flag
-
-```console
-strapped -y my_config.yml
-```
-
-You can even pass the URL to a remotely stored config file!
-
-```console
-strapped -y https://www.example.com/my_config.yml
-```
-
-## About Configuration Files
-
-Configuration files are used as a blueprint for your computer's configuration. These files are composed of various `straps`
-which each serve different purposes. Straps themselves are implemented by `routines` that form the functionality of the strap.
-
-Lets take a look at a config file:
+Create a configuration file:
 
 ```yaml
-# You must specify the repo that strapped.sh will source its straps from
-# this can be in the form of a URL or a link to a local repo.
-# By default, straps will be sourced from this repository, but you can link
-# strapped to any repo that implements strapped functionality.
 strapped:
-  repo: https://raw.githubusercontent.com/azohra/strapped/master/straps
+  repo: https://repo.strapped.azohra.com
 
-# Use the brew strap (specifically v0.1.0) to tap taps and install packages and casks
-brew:
-  version: v0.1.0
-  # Tap routine
-  taps:
-    - { name: homebrew/core }
-  # Packages routine
-  packages:
-    - { name: terraform }
-  # Casks routine
-  casks:
-    - { name: visual-studio-code }
-
-# Use the git strap to clone repos into a specific directory.
-# Since we have not specified a strap version it will search for the 
-# latest version in the globally specified strapped repo
-git:
-  clone:
-    - { repo: git@github.com:kelseyhightower/nocode.git, folder: ~/repos }
-
-# Install vscode extensions using latest version of the visual_studio_code strap
-visual_studio_code:
-  extensions:
-    - { name: PKief.material-icon-theme }
+bash:
+  echo:
+    - { msg: "Strapped is ready." }
 ```
 
-The complete list of straps and their usage can be found [here](https://docs.strapped.azohra.com/#/).
+Apply it:
 
-# Contributing
+```console
+strapped --yml setup.yml
+```
 
-We are open to anyone contributing to this repo. Please ensure you follow the [code of conduct](https://github.com/azohra/strapped.sh/blob/master/CODE_OF_CONDUCT.md).
+Pass `--auto` to skip the confirmation prompt or `--straps brew,git` to run part of a configuration. Run `strapped --help` for the complete command reference.
 
-If you wish to contribute and don't know where to start, check out the [issues](https://github.com/azohra/strapped.sh/issues)
-section for inspiration.
+Each top-level configuration key names a strap. Strapped loads `<repository>/<strap>/<version>/<strap>.sh` and runs the function that script provides. Because straps execute with your account's permissions, review every configuration and strap repository before using it.
 
-<!-- ### Using the compiler to generate new straps -->
+The [strap reference](https://docs.strapped.azohra.com) documents the collection included here.
 
-# License
+## Repository
 
-Strapped.sh is licensed under the [MIT](https://github.com/azohra/strapped.sh/blob/master/LICENSE) license.
+- `src/` contains the CLI source; `strapped` is its generated executable.
+- `straps/` contains versioned strap implementations and examples.
+- `_static/` contains the website, documentation, and installer.
+- `wrangler.jsonc` defines the Cloudflare Workers and their asset directories.
 
----
+Install the locked tools and run the repository proof before committing:
 
-Made with :heart: by Azohra
+```console
+mise install
+mise run check
+```
+
+After changing `src/`, run `make binary`. After adding or removing a strap, run `make docs`. Use `mise run deploy --dry-run` to validate every Worker without publishing it. Pushes to `main` deploy through GitHub Actions after the check passes.
+
+Contributions must follow the [Code of Conduct](CODE_OF_CONDUCT.md). Bug reports and focused changes are welcome in the [issue tracker](https://github.com/azohra/strapped.sh/issues).
+
+## License
+
+Strapped is available under the [MIT License](LICENSE).

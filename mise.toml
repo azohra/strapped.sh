@@ -5,6 +5,7 @@ locked = true
 
 [tools]
 node = "24"
+shellcheck = "0.11.0"
 wrangler = "4.126.0"
 
 # What this repository needs in its environment, and which of those
@@ -19,14 +20,51 @@ CONTRACT
 """
 
 [tasks.check]
-description = "Site integrity: every environment's index exists"
+description = "Validate deployment assets, shell sources, and generated files"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
-for d in _www _repo _stay _docs; do
-  [ -f "_static/$d/index.html" ] || { echo "check: _static/$d/index.html missing" >&2; exit 1; }
-done
-echo "check: all four sites intact"
+node <<'NODE'
+const { execFileSync, spawnSync } = require("node:child_process");
+const { existsSync, readFileSync, readdirSync, statSync } = require("node:fs");
+
+const config = JSON.parse(readFileSync("wrangler.jsonc", "utf8"));
+const environments = Object.entries(config.env ?? {});
+
+if (environments.length === 0) {
+  throw new Error("check: wrangler.jsonc declares no environments");
+}
+
+for (const [name, environment] of environments) {
+  const directory = environment.assets?.directory;
+  if (typeof directory !== "string" || directory.length === 0) {
+    throw new Error(`check: environment ${name} has no asset directory`);
+  }
+  if (!statSync(directory).isDirectory() || readdirSync(directory).length === 0) {
+    throw new Error(`check: environment ${name} asset directory is empty`);
+  }
+}
+
+console.log(`check: ${environments.length} deployment asset directories intact`);
+
+const tracked = execFileSync("git", ["ls-files", "-z"])
+  .toString()
+  .split(String.fromCharCode(0))
+  .filter(Boolean);
+const shellSources = tracked.filter((path) =>
+  existsSync(path) && readFileSync(path, "utf8").split(String.fromCharCode(10), 1)[0].match(/^#!.*(?:ba)?sh$/),
+);
+const shellcheck = spawnSync("shellcheck", shellSources, { stdio: "inherit" });
+
+if (shellcheck.status !== 0) {
+  process.exit(shellcheck.status ?? 1);
+}
+NODE
+cmp strapped <(cat src/helpers.sh src/cli.sh src/main.sh) || {
+  echo "check: strapped is not current with src" >&2
+  exit 1
+}
+echo "check: shell sources clean and generated CLI current"
 """
 
 [tasks.deploy]
@@ -37,18 +75,31 @@ usage = 'flag "--dry-run" help="Validate without shipping"'
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
-[ -n "${CLOUDFLARE_API_TOKEN:-}" ] || { echo "deploy: refusing — CLOUDFLARE_API_TOKEN is unset" >&2; exit 1; }
-[ -z "$(git status --porcelain)" ] || { echo "deploy: refusing — tree is dirty" >&2; exit 1; }
-git fetch -q origin main
-[ "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)" ] || { echo "deploy: refusing — HEAD is not the tip of origin/main" >&2; exit 1; }
 mise run check
-tag="$(git rev-parse --short HEAD)"
-message="$(git log -1 --pretty=%s)"
-for e in www repo stay docs; do
-  if [ "${usage_dry_run:-false}" = "true" ]; then
+
+environments=$(
+  node -e '
+    const { readFileSync } = require("node:fs");
+    const config = JSON.parse(readFileSync("wrangler.jsonc", "utf8"));
+    const names = Object.keys(config.env ?? {});
+    if (names.length === 0) throw new Error("deploy: wrangler.jsonc declares no environments");
+    process.stdout.write(names.join(String.fromCharCode(10)));
+  '
+)
+
+if [ "${usage_dry_run:-false}" = "true" ]; then
+  while IFS= read -r e; do
     wrangler deploy --dry-run --env "$e"
-  else
+  done <<< "${environments}"
+else
+  [ -n "${CLOUDFLARE_API_TOKEN:-}" ] || { echo "deploy: refusing — CLOUDFLARE_API_TOKEN is unset" >&2; exit 1; }
+  [ -z "$(git status --porcelain)" ] || { echo "deploy: refusing — tree is dirty" >&2; exit 1; }
+  git fetch -q origin main
+  [ "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)" ] || { echo "deploy: refusing — HEAD is not the tip of origin/main" >&2; exit 1; }
+  tag="$(git rev-parse --short HEAD)"
+  message="$(git log -1 --pretty=%s)"
+  while IFS= read -r e; do
     wrangler deploy --env "$e" --tag "$tag" --message "$message"
-  fi
-done
+  done <<< "${environments}"
+fi
 """

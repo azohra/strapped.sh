@@ -8,7 +8,5 @@ build/straps
 # mise
 mise.local.toml
 
-/.azohra/
-
 # cloudflare
 .wrangler/

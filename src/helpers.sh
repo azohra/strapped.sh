@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck source=/dev/null
+# shellcheck disable=SC2034
 
 VERSION="0.3.0"
 C_GREEN="\\033[32m"
@@ -8,14 +9,14 @@ C_REG="\\033[0;39m"
 STRAPPED_DEBUG=""
 custom_straps=""
 auto_approve=""
-base_repo="https://repo.strapped.sh"
-yml_location="https://raw.githubusercontent.com/azohra/strapped/master/yml/first_run.yml"
+base_repo="https://repo.strapped.azohra.com"
+yml_location="https://raw.githubusercontent.com/azohra/strapped.sh/main/yml/first_run.yml"
 url_regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
 
 # shellcheck disable=SC2034 
 YSH_LIB=1;
 # shellcheck disable=SC1091
-source /dev/stdin <<< "$(curl -s https://raw.githubusercontent.com/azohra/yaml.sh/v0.2.0/ysh)"
+source /dev/stdin <<< "$(curl -fsSL https://raw.githubusercontent.com/azohra/yaml.sh/v0.2.0/ysh)"
 
 pretty_print () { 
     local msg_type=${1} 
@@ -46,7 +47,7 @@ run_command() {
 
 parse_config() {
     # Check for YML
-    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -s -L "${yml_location}" | ysh ); else config=$(ysh -f "${yml_location}"); fi
+    if [[ "${yml_location}" =~ ${url_regex} ]]; then config=$(curl -fsSL "${yml_location}" | ysh ); else config=$(ysh -f "${yml_location}"); fi
     if [ ! "${config}" ]; then pretty_print ":announce:" "Strapped::Config not found" && exit 2;else pretty_print ":announce:" "Config::${yml_location}"; fi
 }
 
@@ -94,7 +95,7 @@ stay_strapped () {
         version=${version:="latest"}
 
         if [[ ${strap_repo} =~ ${url_regex} ]]; then
-            source /dev/stdin <<< "$(curl -s -L "${strap_repo}/${strap}/${version}/${strap}.sh")"
+            source /dev/stdin <<< "$(curl -fsSL "${strap_repo}/${strap}/${version}/${strap}.sh")"
         else
             source "${strap_repo}/${strap}/${version}/${strap}.sh"
         fi

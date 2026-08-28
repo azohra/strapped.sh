@@ -1,9 +1,10 @@
-[![logo](https://raw.githubusercontent.com/azohra/strapped/master/_static/img/logo-black.png)](https://strapped.sh)
+[![logo](https://raw.githubusercontent.com/azohra/strapped.sh/main/_static/img/logo-black.png)](https://strapped.azohra.com)
 
 - [Home](/)
 - [Guide](README.md)
 
 - Straps
+  - [asdf](straps/asdf.md)
   - [bash](straps/bash.md)
   - [brew](straps/brew.md)
   - [dockutil](straps/dockutil.md)

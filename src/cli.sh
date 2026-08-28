@@ -5,16 +5,25 @@ function usage {
     echo "  -v, --version               print the current strapped version"
     echo "  -a, --auto                  do not prompt for confirmation"
     echo "  -y, --yml file/url          path to a valid strapped yml config"
-    echo "  -l, --lint                  exits after reading config file"
-    echo "  -s, --straps string         run a subset of your config. Comma seperated."
-    echo "  -h, --help                  prints this message"
-    exit 1
+    echo "  -l, --lint file             exit after validating a config file"
+    echo "  -r, --repo URL              override the default strap repository"
+    echo "  -s, --straps string         run a comma-separated subset of the config"
+    echo "  -d, --debug                 show command output"
+    echo "  -h, --help                  print this message"
+    exit "${1:-1}"
 }
 
 function upgrade {
-    rm /usr/local/bin/strapped
-    curl -s https://stay.strapped.sh | sh
-    pretty_print ":announce:" "Strapped::Upgraded Successfully!"
+    local installer
+    installer=$(curl -fsSL https://stay.strapped.azohra.com) || {
+        pretty_print ":announce:" "Strapped::Upgrade download failed"
+        exit 2
+    }
+    bash /dev/stdin <<< "${installer}" || {
+        pretty_print ":announce:" "Strapped::Upgrade failed"
+        exit 2
+    }
+    pretty_print ":announce:" "Strapped::Upgraded successfully"
     exit 0
 }
 
@@ -50,10 +59,11 @@ while [ $# -gt 0 ] ; do
         echo "v$VERSION" && exit 0
     ;;
     -h|--help)
-        usage
+        usage 0
     ;;
     -*)
-        "Unknown option: '$1'"
+        printf "Unknown option: %s\n" "$1" >&2
+        usage 1
     ;;
     esac
     shift

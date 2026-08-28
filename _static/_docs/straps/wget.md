@@ -1,1 +1,1 @@
-[wget](https://raw.githubusercontent.com/azohra/strapped/master/straps/wget/latest/README.md ':include')
+[wget](https://raw.githubusercontent.com/azohra/strapped.sh/main/straps/wget/latest/README.md ':include')

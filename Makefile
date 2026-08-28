@@ -1,7 +1,7 @@
 INSTALL_DIR=/usr/local/bin
 
 # List of files that contain the version
-VERSIONED_FILES=strapped src/helpers.sh _static/_stay/index.html
+VERSIONED_FILES=strapped src/helpers.sh
 VERSION="0.3.0"
 
 VERSION_REPLACE_EXP="s/^VERSION=\".+\"/VERSION=\"${VERSION}\"/g"
@@ -14,9 +14,7 @@ exec:
 	@chmod u+x build/*.sh
 
 test:
-	@shellcheck ./strapped
-	@shellcheck ./straps/**/**/*.sh
-	@shellcheck ./build/*.sh
+	@mise run check
 
 docs:
 	@./build/docs.sh
@@ -41,7 +39,8 @@ uninstall:
 	@rm $(INSTALL_DIR)/strapped
 
 $(VERSIONED_FILES): Makefile
-	@echo "Updateing version in " $@ " to "$(VERSION)
+	@[ -f "$@" ] || { echo "version: refusing — $@ is missing" >&2; exit 1; }
+	@echo "Updating version in " $@ " to "$(VERSION)
 	@sed -i .old -E $(VERSION_REPLACE_EXP) $@ && rm "$@.old"
 
 .PHONY: update-version
