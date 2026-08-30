@@ -51,7 +51,7 @@ The [strap reference](https://docs.strapped.azohra.com) documents the collection
 - `_static/` contains the website, documentation, and installer.
 - `wrangler.jsonc` defines the Cloudflare Workers and their asset directories.
 
-Install the locked tools and run the repository proof before committing:
+Install the repository tools and run its proof before committing:
 
 ```console
 mise install
