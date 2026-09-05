@@ -73,6 +73,7 @@ jobs:
           app-id: ${{ vars.BOSUN_APP_ID }}
           private-key: ${{ secrets.BOSUN_PRIVATE_KEY }}
           repositories: ${{ github.event.repository.name }}
+          permission-actions: read
           permission-contents: write
           permission-pull-requests: write
           permission-administration: read
