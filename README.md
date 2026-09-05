@@ -44,6 +44,19 @@ Each top-level configuration key names a strap. Strapped loads `<repository>/<st
 
 The [strap reference](https://docs.strapped.azohra.com) documents the collection included here.
 
+### Strap versions
+
+Set `version` under a strap to select a specific release. If omitted, Strapped uses `latest`:
+
+```yaml
+bash:
+  version: v0.1.0
+  echo:
+    - { msg: "Strapped is ready." }
+```
+
+When building a strap, its `spec.yml` must declare a version other than `latest`. The compiler writes that version's output and refreshes the strap's `latest` directory. Compilation fails if the version is missing or set to `latest`.
+
 ## Repository
 
 - `src/` contains the CLI source; `strapped` is its generated executable.

@@ -98,3 +98,16 @@ else
   done <<< "${environments}"
 fi
 """
+
+[tasks.push]
+description = "Push a checked Strapped feature branch"
+depends = ["check"]
+run = '''
+set -eu
+branch=$(git branch --show-current)
+[ -n "$branch" ] && [ "$branch" != main ]
+[ -z "$(git status --porcelain)" ]
+[ "$(gh api user --jq .login)" = azohra ]
+[ "$(gh api repos/azohra/strapped.sh --jq '.id == 157925286 and .visibility == "public"')" = true ]
+git push https://github.com/azohra/strapped.sh.git "HEAD:refs/heads/$branch"
+'''
