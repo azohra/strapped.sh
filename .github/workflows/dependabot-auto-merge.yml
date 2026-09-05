@@ -1,0 +1,131 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: dependabot-auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  auto-merge:
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.ref == github.event.repository.default_branch &&
+      startsWith(github.event.pull_request.head.ref, 'dependabot/') &&
+      !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_REPO: ${{ github.repository }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      PR_HEAD: ${{ github.event.pull_request.head.sha }}
+      BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+    steps:
+      # fetch-metadata reads the first commit; require it to be the signed head.
+      - name: Verify Dependabot head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GH_REPO/pulls/$PR_NUMBER" > "$RUNNER_TEMP/dependabot-pr.json"
+          jq -e --arg head "$PR_HEAD" --arg repo "$GH_REPO" --arg base "$BASE_BRANCH" '
+            .state == "open" and .draft == false and .commits == 1 and
+            .user.login == "dependabot[bot]" and .head.sha == $head and
+            .head.repo.full_name == $repo and .base.ref == $base and
+            (.head.ref | startswith("dependabot/"))
+          ' "$RUNNER_TEMP/dependabot-pr.json"
+          gh api "repos/$GH_REPO/pulls/$PR_NUMBER/commits" | jq -e --arg head "$PR_HEAD" '
+            length == 1 and .[0].sha == $head and
+            .[0].author.login == "dependabot[bot]" and .[0].commit.verification.verified == true
+          '
+
+      - name: Read update metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Check every update type
+        id: eligible
+        env:
+          UPDATES: ${{ steps.metadata.outputs.updated-dependencies-json }}
+        run: |
+          set -euo pipefail
+          if jq -e '
+            type == "array" and length > 0 and
+            all(.[]; .updateType == "version-update:semver-minor" or .updateType == "version-update:semver-patch")
+          ' <<< "$UPDATES" > /dev/null; then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create repository token
+        if: steps.eligible.outputs.allowed == 'true'
+        id: bosun
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          app-id: ${{ vars.BOSUN_APP_ID }}
+          private-key: ${{ secrets.BOSUN_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-administration: read
+          permission-checks: read
+          permission-statuses: read
+          permission-workflows: write
+
+      - name: Merge after required checks
+        if: steps.bosun.outputs.token != ''
+        env:
+          GH_TOKEN: ${{ steps.bosun.outputs.token }}
+        run: |
+          set -euo pipefail
+          require_checks() {
+            gh api "repos/$GH_REPO/branches/$BASE_BRANCH/protection" | jq -e '
+              .enforce_admins.enabled == true and
+              .required_status_checks.strict == true and
+              (.required_status_checks.checks | any(.context == "Check" and .app_id == 15368))
+            '
+          }
+          require_checks
+          # Wait for this PR's required checks; missing and skipped checks cannot pass.
+          ready=false
+          for _attempt in $(seq 1 90); do
+            checks=$(gh pr checks "$PR_NUMBER" --required --json name,state) || true
+            if ! jq -e 'type == "array"' <<< "$checks" > /dev/null; then
+              sleep 10
+              continue
+            fi
+            if jq -e '
+              any(.[]; .name == "Check" and .state == "SUCCESS") and
+              all(.[]; .state == "SUCCESS")
+            ' <<< "$checks" > /dev/null; then
+              ready=true
+              break
+            fi
+            if jq -e 'any(.[]; .state == "FAILURE" or .state == "ERROR" or .state == "CANCELLED" or .state == "TIMED_OUT")' \
+              <<< "$checks" > /dev/null; then
+              echo "Required checks failed; leaving the PR open."
+              exit 1
+            fi
+            sleep 10
+          done
+          if [ "$ready" != true ]; then
+            echo "Required checks did not succeed within 15 minutes; leaving the PR open."
+            exit 1
+          fi
+          require_checks
+          gh api "repos/$GH_REPO/pulls/$PR_NUMBER" | jq -e \
+            --arg head "$PR_HEAD" --arg repo "$GH_REPO" --arg base "$BASE_BRANCH" '
+            .state == "open" and .draft == false and .commits == 1 and
+            .user.login == "dependabot[bot]" and .head.sha == $head and
+            .head.repo.full_name == $repo and .base.ref == $base and
+            (.head.ref | startswith("dependabot/"))
+          '
+          gh pr merge "$PR_NUMBER" --squash --match-head-commit "$PR_HEAD"
