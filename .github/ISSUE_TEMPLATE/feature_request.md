@@ -1,17 +1,18 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-
+about: Suggest a CLI improvement or a strap
+labels: enhancement
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problem
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Describe the setup you want to automate and where the current behaviour falls short.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Proposed behaviour
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+Show the command or YAML configuration you would like to use. For a new strap,
+name the tool or service it would configure.
+
+## Current workaround
+
+Describe how you handle this today, if applicable.
