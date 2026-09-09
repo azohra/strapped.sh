@@ -70,8 +70,6 @@ usage = 'flag "--dry-run" help="Validate without shipping"'
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
-mise run check
-
 environments=$(
   node -e '
     const { readFileSync } = require("node:fs");
